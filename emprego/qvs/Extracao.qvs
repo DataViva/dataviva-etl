@@ -1,0 +1,308 @@
+	
+if '$(executarExtracao)'='S' then
+
+	if anoProcessamento='2002' then 
+	
+		RAIS:
+		LOAD  
+		  MUNICIPIO_Fonte as [Municipality_ID],
+		 
+		  ApplyMap('MapCNAExISIC',
+			  
+			  trim(ApplyMap('MapCNAE95x20',
+			  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
+			  	//Casos de CNAE95x20 Nao encontrados
+			  	,-trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
+			  	))
+			  	
+			 	//Casos de CNAE20xISIC Nao encontrados
+			  	,- ApplyMap('MapCNAE95x20',
+				  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
+				  ,-[CLAS CNAE 95])
+			 	)		 	 
+			 as [EconomicAtivity_ID_ISIC] ,
+			 
+		  
+			  ApplyMap('MapCNAE95x20',
+			  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
+			  	 //Casos de CNAE95x20 Nao encontrados
+			  	,-trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
+			  )		  as [EconomicActivity_ID_CNAE],
+		  
+		  ApplyMap('MapCBO94x2002',
+		  	trim(MapSubString('MapRetiraTextosLixo',[OCUPACAO]))
+		  	//Casos de CBO94x2002 Nao encontrados
+		  	,-trim([OCUPACAO])+'1'
+		  ) as [BrazilianOcupation_ID], 
+		     
+		  [REM MED (R$)] as AverageMonthlyWage , 
+		  [REM DEZ (R$)] as WageReceived ,
+		  PIS as Employee_ID, 
+		  IDENTIFICAD as Establishment_ID, 
+		  $(anoProcessamento) as Year	     
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*.TXT] 
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq)	;
+	
+	
+	elseif anoProcessamento>2002 and anoProcessamento<2006 then 
+	
+		RAIS:
+		LOAD  
+			MUNICIPIO_Fonte as Municipality_ID,
+			
+			
+			ApplyMap('MapCNAExISIC',
+			  
+			  ApplyMap('MapCNAE95x20',
+			  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95_Fonte]))
+			  	//Casos de CNAE95x20 Nao encontrados
+			  	,-trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95_Fonte]))
+			  	)
+			 	//Casos de CNAE20xISIC Nao encontrados
+			  	,- ApplyMap('MapCNAE95x20',
+				  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95_Fonte]))
+				  ,-[CLAS CNAE 95])
+			 	)		 	  as [EconomicAtivity_ID_ISIC] ,
+			 
+		
+			ApplyMap('MapCNAE95x20',
+				MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95_Fonte])
+				//Casos de CNAE95x20 Nao encontrados
+				,MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95_Fonte])
+			)	as [EconomicActivity_ID_CNAE],
+			
+			
+			[CBO 2002_Fonte] as [BrazilianOcupation_ID], 
+			[REM MED (R$)] as AverageMonthlyWage, 
+			[REM DEZ (R$)] as WageReceived,	    
+			PIS as Employee_ID, 
+			IDENTIFICAD as Establishment_ID, 
+			$(anoProcessamento) as Year	     
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*$(padraoNomeArquivo)_*.TXT] 
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq)
+		where [EMP EM 31/12_Fonte] = '1';
+	
+	elseif anoProcessamento=2006 then 
+	
+		RAIS:
+		LOAD  
+			MUNICIPIO_Fonte as Municipality_ID,
+			
+			
+			IF ([SB CLAS 20_Fonte]='-1' or [SB CLAS 20_Fonte]='' or [SB CLAS 20_Fonte]='1'   ,
+				ApplyMap('MapCNAEClassxISIC',
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte])
+				)
+			
+			,
+				ApplyMap('MapCNAExISIC',
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+				)
+			
+			)
+			 as [EconomicAtivity_ID_ISIC],	  
+			
+			IF ([SB CLAS 20_Fonte]='-1' or [SB CLAS 20_Fonte]='' or [SB CLAS 20_Fonte]='1'   ,
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte]&'  '),
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+			) as [EconomicActivity_ID_CNAE],	
+			
+			  
+			[CBO 2002_Fonte] as [BrazilianOcupation_ID], 
+			[REM MED (R$)] as AverageMonthlyWage, 
+			[REM DEZ (R$)] as WageReceived,
+			PIS as Employee_ID, 
+			IDENTIFICAD as Establishment_ID, 
+			$(anoProcessamento) as Year	     
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*$(padraoNomeArquivo)_*.TXT] 
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq)
+		;
+	
+	elseif anoProcessamento>2007 and anoProcessamento<2011 then 
+	
+		RAIS:
+		LOAD  
+			MUNICIPIO_Fonte as Municipality_ID,
+						
+			IF ([SB CLAS 20_Fonte]='-1' or [SB CLAS 20_Fonte]='' or [SB CLAS 20_Fonte]='1'   ,
+				ApplyMap('MapCNAEClassxISIC',
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte])
+				)
+			
+			,
+				ApplyMap('MapCNAExISIC',
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+				)
+			
+			) as [EconomicAtivity_ID_ISIC],	  
+			
+			IF ([SB CLAS 20_Fonte]='-1' or [SB CLAS 20_Fonte]='' or [SB CLAS 20_Fonte]='1'   ,
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20_Fonte]&'  '),
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20_Fonte])
+			) as [EconomicActivity_ID_CNAE],	  
+			
+			
+			[CBO 2002_Fonte] as [BrazilianOcupation_ID], 
+			[REM MED (R$)] as AverageMonthlyWage, 
+			[REM DEZ (R$)] as WageReceived,
+			PIS as Employee_ID, 
+			IDENTIFICAD as Establishment_ID, 
+			$(anoProcessamento) as Year	     
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*$(padraoNomeArquivo)_*.TXT] 
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq, no eof)
+		;//where [EMP EM 31/12] = '1';
+	
+	
+	
+	
+	elseif anoProcessamento='2007'  then
+		RAIS:
+		LOAD  
+			MUNICIPIO as Municipality_ID,
+			
+			
+			IF ([SB CLAS 20]='-1' or [SB CLAS 20]='' or [SB CLAS 20]='1'   ,
+				ApplyMap('MapCNAEClassxISIC',
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20])
+				)
+			
+			,
+				ApplyMap('MapCNAExISIC',
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[SB CLAS 20])
+				)
+			
+			) as [EconomicAtivity_ID_ISIC],	  
+			
+						
+			IF ([SB CLAS 20]='-1' or [SB CLAS 20]='' or [SB CLAS 20]='1'   ,
+					MapSubString('MapRetiraTextosLixo',[CLAS CNAE 20]&'  '),
+					MapSubString('MapRetiraTextosLixo',[SB CLAS 20])
+			) as [EconomicActivity_ID_CNAE],
+						 
+			  MapSubString('MapRetiraTextosLixo',trim([OCUP 2002]))
+			 as [BrazilianOcupation_ID],  
+			 
+			[REM MED (R$)] as AverageMonthlyWage, 
+			[REM DEZ (R$)] as WageReceived,	 
+			PIS as Employee_ID, 
+			IDENTIFICAD as Establishment_ID, 
+			$(anoProcessamento) as Year	  
+			    
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*$(padraoNomeArquivo)*.TXT]
+		(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+		where [EMP EM 31/12] = '1';
+		
+		
+		
+	
+	elseif anoProcessamento='2011' then
+		RAIS:
+		LOAD  
+		@1 as Municipality_ID,//MUNICIPIO,			
+		
+		//@39 as [Clas CNAE 20],@40 as [SB Clas 20],
+		IF (@40='-1' or @40='' or @40='1'   ,
+				ApplyMap('MapCNAEClassxISIC',
+					MapSubString('MapRetiraTextosLixo',@39)
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',@39)
+				)
+			
+			,
+				ApplyMap('MapCNAExISIC',
+					MapSubString('MapRetiraTextosLixo',@40)
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',@40)
+				)
+			
+			) as [EconomicAtivity_ID_ISIC],	  
+			
+	
+		IF (@40='-1' or @40='' or @40='1'   ,
+					MapSubString('MapRetiraTextosLixo',@39&'  '),
+					MapSubString('MapRetiraTextosLixo',@40)
+			) as [EconomicActivity_ID_CNAE], //@39 as [Clas CNAE 20],@40 as [SB Clas 20],
+	
+		  MapSubString('MapRetiraTextosLixo',trim(@38 ))
+			 as [BrazilianOcupation_ID],  //[OCUP 2002],
+		
+		@26 as WageReceived,//[REM DEZ (R$)],
+		@24 as AverageMonthlyWage,//[REM MED (R$)],	 		
+		@31 as Employee_ID, //PIS,
+		@35 as Establishment_ID, //IDENTIFICAD,
+		$(anoProcessamento) as Year 
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*.TXT]
+		(txt, codepage is 1252, no labels, delimiter is ';', msq)
+		where @3='1' ;//as [EMP EM 31/12];
+	
+	
+	
+	
+	elseif anoProcessamento='2012' then
+	
+		RAIS:
+		LOAD  
+		Município as Municipality_ID,//MUNICIPIO,			
+	
+		//@39 as [Clas CNAE 20],@40 as [SB Clas 20],
+		IF ([CNAE 2.0 Subclasse]='-1' or [CNAE 2.0 Subclasse]='' or [CNAE 2.0 Subclasse]='1'   ,
+				ApplyMap('MapCNAEClassxISIC',
+					MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Classe])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Classe])
+				)
+			
+			,
+				ApplyMap('MapCNAExISIC',
+					MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Subclasse])
+					//Casos de CNAE20xISIC Nao encontrados
+					,-MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Subclasse])
+				)
+			
+			) as [EconomicAtivity_ID_ISIC],	  
+			
+	
+		IF ([CNAE 2.0 Subclasse]='-1' or [CNAE 2.0 Subclasse]='' or [CNAE 2.0 Subclasse]='1'   ,
+					MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Classe]&'  '),
+					MapSubString('MapRetiraTextosLixo',[CNAE 2.0 Subclasse])
+			) as [EconomicActivity_ID_CNAE], 
+	
+		  MapSubString('MapRetiraTextosLixo',trim([CBO Ocupação 2002] ))
+			 as [BrazilianOcupation_ID],  
+		
+		[Vl Remun Dezembro Nom] as WageReceived,//[REM DEZ (R$)],
+		[Vl Remun Média Nom] as AverageMonthlyWage,//[REM MED (R$)],	 		
+		PIS as Employee_ID, //PIS,
+		[CNPJ / CEI] as Establishment_ID, //IDENTIFICAD,
+		$(anoProcessamento) as Year 
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\*.txt]
+		(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+		where [Vínculo Ativo 31/12]='1' ;//as [EMP EM 31/12];
+		
+	end if
+	
+	
+	store RAIS into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv (txt);
+	
+	
+end if	
+

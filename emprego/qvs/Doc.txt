@@ -1,0 +1,236 @@
+
+	
+	
+	/**
+	
+	Municipality_ID,
+	[EconomicAtivity_ID_ISIC],	  
+	[EconomicActivity_ID_CNAE],	  
+	[BrazilianOcupation_ID], 
+	AverageMonthlyWage, 
+	WageReceived,
+	Employee_ID, 
+	Establishment_ID, 
+		 Year	     
+			*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 /**
+	 CAMPOS ORIGINAIS DA BASE DA RAIS
+	 
+	 [CAUSA DESLI], 
+	     [CAUSA DESLI_Fonte], 
+	     [CBO 2002], 
+	     [CBO 2002_Fonte], 
+	     [CEI VINC], 
+	     [CLAS CNAE 95], 
+	     [CLAS CNAE 95_Fonte], 
+	     [EMP EM 31/12], 
+	     [EMP EM 31/12_Fonte], 
+	     [GRAU INSTR], 
+	     [GRAU INSTR_Fonte], 
+	     [HORAS CONTR], 
+	     IDADE, 
+	     IDENTIFICAD, 
+	     [IND CEI VINC], 
+	     [IND CEI VINC_Fonte], 
+	     [IND PAT], 
+	     [IND PAT_Fonte], 
+	     [IND SIMPLES], 
+	     [IND SIMPLES_Fonte], 
+	     MUNICIPIO, 
+	     MUNICIPIO_Fonte, 
+	     NACIONALIDAD, 
+	     NACIONALIDAD_Fonte, 
+	     [NATUR JUR], 
+	     [NATUR JUR_Fonte], 
+	     PIS, 
+	     RACA_COR, 
+	     RACA_COR_Fonte, 
+	     [RADIC CNPJ], 
+	     [REM DEZ (R$)], 
+	     [REM DEZEMBRO], 
+	     [REM MED (R$)], 
+	     [REM MEDIA], 
+	     [SUBS IBGE], 
+	     SEXO, 
+	     SEXO_Fonte, 
+	     TAMESTAB, 
+	     TAMESTAB_Fonte, 
+	     [TEMP EMPR], 
+	     [TIPO ADM], 
+	     [TIPO ADM_Fonte], 
+	     [TIPO ESTBL], 
+	     [TIPO ESTBL_Fonte], 
+	     [TP VINCULO], 
+	     [TP VINCULO_Fonte], 
+	     [DT NASCIMENT], 
+	     [DT ADMISSAO], 
+	     [MES DESLIG], 
+	     [MES DESLIG_Fonte]**/
+	     
+	     
+	
+	/**
+	
+	
+	MAPEAMENTO ORIGINAL
+	
+	//RAIS2011:
+	//LOAD [Bairros SP], 
+	//     [Bairros Fortaleza], 
+	//     [Bairros RJ], 
+	//     [Causa Afastamento 1], 
+	//     [Causa Afastamento 2], 
+	//     [Causa Afastamento 3], 
+	//     [Motivo Desligamento], 
+	//     [CBO Ocupação 2002], 
+	//     [CNAE 2.0 Classe], 
+	//     [CNAE 95 Classe], 
+	//     [Distritos SP], 
+	//     [Vínculo Ativo 31/12], 
+	//     [Faixa Etária], 
+	//     [Faixa Hora Contrat], 
+	//     [Faixa Remun Dezem (SM)], 
+	//     [Faixa Remun Média (SM)], 
+	//     [Faixa Tempo Emprego], 
+	//     [Escolaridade após 2005], 
+	//     [Qtd Hora Contr], 
+	//     Idade, 
+	//     [Ind CEI Vinculado], 
+	//     [Ind Simples], 
+	//     [Mês Admissão], 
+	//     [Mês Desligamento], 
+	//     [Mun Trab], 
+	//     Município, 
+	//     Nacionalidade, 
+	//     [Natureza Jurídica], 
+	//     [Ind Portador Defic], 
+	//     [Qtd Dias Afastamento], 
+	//     [Raça Cor], 
+	//     [Regiões Adm DF], 
+	//     [Vl Remun Dezembro Nom], 
+	//     [Vl Remun Dezembro (SM)], 
+	//     [Vl Remun Média Nom], 
+	//     [Vl Remun Média (SM)], 
+	//     [CNAE 2.0 Subclasse], 
+	//     [Sexo Trabalhador], 
+	//     [Tamanho Estabelecimento], 
+	//     [Tempo Emprego], 
+	//     [Tipo Admissão], 
+	//     [Tipo Estab], 
+	//     [Tipo Estab] AS TipoEstabelecimento, 
+	//     [Tipo Defic], 
+	//     [Tipo Vínculo]
+	//FROM
+	//TXT\TXT\*.txt
+	//(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
+	
+	
+	
+	TabelaMapeamento:
+	MAPPING LOAD 
+	       DE,      
+	    PARA 
+	    FROM
+	[Support Table_MTE.xls]
+	(biff, embedded labels, table is [Economic Activity_CNAE-ISIC$]);
+	
+	
+	Rais2011Estabelecimento:
+	LOAD Year, 
+	     Municipality_ID, 
+	     SBCLAS20, 
+	     ApplyMap('TabelaMapeamento',SBCLAS20,9999999999999) as EconomicActivity_ID_ISIC,
+	     CLASCNAE20, 
+	     Employment
+	FROM
+	QVD\RaisEstabelecimento2011.qvd
+	(qvd);
+	
+	
+	//Rais2011Ativos:
+	//LOAD Year, 
+	//     Municipality_ID, 
+	//     BrazilianOcupation_ID, 
+	//     SBCLAS20, 
+	//     ApplyMap('TabelaMapeamento',SBCLAS20,9999999999999) as EconomicActivity_ID_ISIC,
+	//     CLASCNAE20, 
+	//     WagesReceived
+	//FROM
+	//QVD\RAISAtivos.qvd
+	//(qvd);
+	
+	STORE Rais2011Estabelecimento INTO Rais2011Estabelecimento.txt (txt, delimiter is '|');
+	//STORE Rais2011Ativos INTO Rais2011Ativos.txt (txt, delimiter is '|');
+	
+	
+	
+	//
+	//TabelaMapeamentoIgnorados:
+	//MAPPING LOAD 
+	//CLASCNAE20__IG,
+	//SBCLAS20_IG 
+	//FROM [..\IGNORADOS_CNAE.xlsx] (ooxml, embedded labels, table is [valores encontrados]);
+	//
+	//RAIS2010: 
+	//LOAD *, 
+	//ApplyMap('TabelaMapeamento',ValorMapeado,9999999999999) as EconomicActivity_ID_ISIC;
+	//LOAD 
+	//'2010'    as Year,
+	//PIS as Employee_ID, 
+	//     IDENTIFICAD as Establishment_ID,     
+	//     Right(Replace(MUNICIPIO,'.',''),6) as Municipality_ID, //tirar mum
+	//      
+	//      Right(Replace(OCUP2002,'.',''),6) as BrazilianOcupation_ID,   
+	//    SBCLAS20, 
+	//    CLASCNAE20,
+	//      REMDEZR as WagesReceived,    
+	// // IF(SBCLAS20='IGNORADO', ApplyMap('TabelaMapeamentoIgnorados',Replace(CLASCNAE20,'CLASSE ',''),8888888888888),ApplyMap('TabelaMapeamento',Replace(SBCLAS20,'CLAS ',''),9999999999999)) as ValorMapeado,
+	//  IF(SBCLAS20='IGNORADO', ApplyMap('TabelaMapeamentoIgnorados',Replace(CLASCNAE20,'CLASSE ',''),8888888888888) , Replace(SBCLAS20,'CLAS ','')) as ValorMapeado 
+	//     
+	//  
+	//      
+	//    
+	// FROM
+	//Tabelas\RaisCompleta2010.dat
+	//(txt, codepage is 1252, embedded labels, delimiter is '\t', msq);
+	////Where SB_CLAS20<>'IGNORADO' and CLAS_CNAE20 <>'IGNORADO';
+	//
+	
+	
+	
+	
+	//STORE RAIS2011 INTO RAIS2011.txt (txt, delimiter is '|');
+	
+	**/
+
+//Teste: load count(1) as total Resident CNAE95x20;
+
+/*
+MapeamentosErradosCNAE:
+load 
+ 
+	  
+[EconomicActivity_ID_CNAE],	
+count([EconomicActivity_ID_CNAE]) as total    
+
+ from F:\Banco de dados\MTE\RAIS_COMPLETA\MapeamentosErradosCNAE$(anoProcessamento)_$(padraoNomeArquivo).csv (txt)
+ 
+ group by [EconomicActivity_ID_CNAE];
+ 
+ exit script;
+*/

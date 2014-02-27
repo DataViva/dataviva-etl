@@ -1,0 +1,246 @@
+	
+if '$(executarTransformacao)'='S' then
+
+
+	//transforma todos os códigos de NCM para 2007
+	
+	//Anos da SECEX com padrão NCM96: 2000 a 2001
+	SECEX2000_2001:	
+	LOAD      
+		ANO,
+		MES,		
+		ApplyMap('NCM1996xNCM2002',trim(NCM),trim(NCM)) as NCM2002A,	
+		NCM as NCM1996,	
+		PAIS,
+		UF,
+		PORTO,
+		MUNICÍPIO,
+		UNIDADE,
+		QUANTIDADE,
+		KGLIQUIDO,
+		VALORFOB	
+	FROM
+	F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20.qvd (qvd) where ANO>=2000 and ANO<=2001;
+	
+	NoConcatenate
+	
+	SECEX2000_2001Erros:
+	load * ,
+		ApplyMap('NCM1996xNCM2002_erros',trim(NCM2002A),trim(NCM2002A))  as NCM2002			
+	resident SECEX2000_2001;
+	
+	NoConcatenate
+	
+	SECEX2000_2001A:
+	load * ,
+		ApplyMap('NCM2002xNCM2007',trim(NCM2002),trim(NCM2002))  as NCM2007			
+	resident SECEX2000_2001Erros;
+	
+	
+	NoConcatenate
+	
+	SECEX2000_2001Final:
+	load *,
+		 ApplyMap('NCM2007',NCM2007,'X'&NCM2007) as NCM2007Check
+	resident SECEX2000_2001A;
+	
+	
+	
+	drop table SECEX2000_2001;
+	drop table SECEX2000_2001Erros;
+	drop table SECEX2000_2001A;
+	
+
+	
+	/**
+	
+	
+		Anos da SECEX com padrão NCM2002: 2002 a 2006	
+		
+		
+	*/
+	SECEX2002_2006:
+	LOAD      
+		ANO,
+		MES,
+		ApplyMap('NCM1996xNCM2002_em2002',trim(NCM),trim(NCM)) as NCM2007A,		
+		NCM as NCM2002,
+		PAIS,
+		UF,
+		PORTO,
+		MUNICÍPIO,
+		UNIDADE,
+		QUANTIDADE,
+		KGLIQUIDO,
+		VALORFOB
+	FROM
+	F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20.qvd (qvd) where ANO>=2002 and ANO<=2006;
+	
+	NoConcatenate
+	
+	SECEX2002_2006A:
+	load *,
+		 ApplyMap('NCM2002xNCM2007',trim(NCM2007A),trim(NCM2007A)) as NCM2007B
+	resident SECEX2002_2006;
+	
+	
+	NoConcatenate	
+		
+		
+	SECEX2002_2006Erros:
+	load *,
+		 ApplyMap('NCM2002xNCM2007_erros',trim(NCM2007B),trim(NCM2007B)) as NCM2007
+	resident SECEX2002_2006A;
+		
+	NoConcatenate
+		
+	SECEX2002_2006Final:
+	load *,
+		 ApplyMap('NCM2007',NCM2007,'X'&NCM2007) as NCM2007Check
+	resident SECEX2002_2006Erros;
+	
+	drop table SECEX2002_2006;
+	drop table SECEX2002_2006A;
+	drop table SECEX2002_2006Erros;
+		
+		
+		
+	/**
+	
+	
+	//Anos da SECEX com padrão NCM2007: 2007 a 2011	
+	
+	
+	
+	*/	
+	SECEX2007_2011:
+	LOAD      
+		ANO,
+		MES,
+		ApplyMap('NCM1996xNCM2002_em2007',NCM,NCM) as NCM2007A,		
+		PAIS,
+		UF,
+		PORTO,
+		MUNICÍPIO,
+		UNIDADE,
+		QUANTIDADE,
+		KGLIQUIDO,
+		VALORFOB
+	
+	FROM
+	F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20.qvd (qvd) where ANO>=2007 and ANO<=2011;
+
+	NoConcatenate
+	
+	SECEX2007_2011FinalA:
+	load *,
+		 ApplyMap('NCM2002xNCM2007_em2007',NCM2007A,NCM2007A) as NCM2007B
+	resident SECEX2007_2011;
+	
+	NoConcatenate
+	
+	SECEX2007_2011FinalB:
+	load *,
+		 ApplyMap('NCM2002xNCM2007_erros',NCM2007B,NCM2007B) as NCM2007
+	resident SECEX2007_2011FinalA;
+	
+	NoConcatenate
+	
+	SECEX2007_2011Final:
+	load *,
+		 ApplyMap('NCM2007',NCM2007,NCM2007) as NCM2007Check
+	resident SECEX2007_2011FinalB;
+	
+	drop table SECEX2007_2011;
+	drop table SECEX2007_2011FinalA;
+	drop table SECEX2007_2011FinalB;
+
+
+
+	/*Anos da SECEX com padrão NCM2012: 2012	*/
+	/*Anos da SECEX com padrão NCM2012: 2012	*/
+	SECEX2012:
+	LOAD      
+		ANO,
+		MES,
+		ApplyMap('NCM1996xNCM2002_em2012',trim(NCM),trim(NCM)) as NCM2007A,
+		PAIS,
+		UF,
+		PORTO,
+		MUNICÍPIO,
+		UNIDADE,
+		QUANTIDADE,
+		KGLIQUIDO,
+		VALORFOB
+	
+	FROM
+	F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20.qvd (qvd) where ANO>=2012;
+		
+	NoConcatenate
+		
+	SECEX2012A:
+	load *,
+		 ApplyMap('NCM2002xNCM2007_em2012',trim(NCM2007A),trim(NCM2007A)) as NCM2007B
+	resident SECEX2012;
+		
+	NoConcatenate
+	
+	SECEX2012B:
+	load *,
+		 ApplyMap('NCM2012xNCM2007',trim(NCM2007B),trim(NCM2007B)) as NCM2007
+	resident SECEX2012A;
+	
+	NoConcatenate
+	
+	SECEX2012Final:
+	load 
+		*, 
+		ApplyMap('NCM2007',NCM2007,'X'&NCM2007) as NCM2007Check,
+		ApplyMap('NCM2007Classe',left(NCM2007,4),'X'&left(NCM2007,4)) as NCM2007ClasseCheck	
+	resident SECEX2012B;
+	
+	
+	drop table SECEX2012;
+	drop table SECEX2012A;
+	drop table SECEX2012B;
+	
+	
+	
+	
+	
+			
+		
+		
+	/**
+	
+	SECEX - UNIFICANDO ANOS
+	
+	*/
+	NoConcatenate
+		
+	SECEX:
+		load * Resident SECEX2000_2001Final;
+		Concatenate
+		Load * Resident SECEX2002_2006Final;
+		Concatenate
+		load * Resident SECEX2007_2011Final;
+		Concatenate
+		load * Resident SECEX2012Final;
+	
+	drop table SECEX2000_2001Final;
+	drop table SECEX2002_2006Final;
+	drop table SECEX2007_2011Final;
+	drop table SECEX2012Final;
+		
+	store SECEX into 
+	F:\Banco de dados\MDIC\Dados finais MDIC\MDIC.qvd (qvd);
+	
+	exit Script;
+	drop table SECEX;
+	
+	
+	
+	
+
+	
+end if	

@@ -1,0 +1,161 @@
+MapRetiraTextosLixo:
+Mapping load * inline 
+[
+	'Code','Classname'
+	'CLAS CNAE',''    
+     'CLASSE',''
+     'CLASS',''
+     'CLAS',''
+     'CBO',''      
+];
+
+
+
+/**
+
+CNAE ISIC
+
+**/
+
+CNAExISIC:
+LOAD CNAE2.0_SUBCLASSE, 
+     ISIC
+FROM
+[F:\Banco de dados\MTE\Support Table_MTE.xls]
+(biff, embedded labels, table is [Economic Activity_CNAE-ISIC$]);
+
+
+MapCNAExISIC:
+mapping 
+	Load 
+	MapSubString('MapRetiraTextosLixo',CNAE2.0_SUBCLASSE) as CNAE2.0_SUBCLASSE, 
+	MapSubString('MapRetiraTextosLixo',ISIC) as ISIC 
+resident CNAExISIC;
+
+drop table CNAExISIC;
+
+
+
+
+
+
+/**
+
+CNAE x ISIC - Utilizando Classes e fazendo relacionamento de Classe CNAE com apenas 1 ISIC
+
+**/
+
+CNAExISIC:
+LOAD 
+	if (Len(CNAE2.0_SUBCLASSE)<7,'0'&CNAE2.0_SUBCLASSE,CNAE2.0_SUBCLASSE) as CNAE2.0_SUBCLASSE
+	,     ISIC
+FROM
+[F:\Banco de dados\MTE\Support Table_MTE.xls]
+(biff, embedded labels, table is [Economic Activity_CNAE-ISIC$]);
+
+
+
+CNAExISIC2:
+LOAD 
+
+	
+	left(CNAE2.0_SUBCLASSE,5) as CNAE, 
+     ISIC,count(1) as Total
+Resident CNAExISIC
+Group by left(CNAE2.0_SUBCLASSE,5),ISIC;
+
+NoConcatenate
+
+CNAExISIC3:
+load CNAE,Concat(ISIC,';') as ISIC,count(1) as TotalISIC 
+	Resident CNAExISIC2
+	Group by CNAE;
+
+NoConcatenate
+
+CNAExISIC4:
+load CNAE,ISIC
+	Resident CNAExISIC3
+	where TotalISIC<2	;
+
+LOAD CNAE, 
+     ISIC
+FROM
+[F:\Banco de dados\MTE\CNAExISIC-ClassesRepetidas.xls]
+(biff, embedded labels, table is [Sheet1$]);
+
+
+MapCNAEClassxISIC:
+mapping 
+	Load 
+	left(MapSubString('MapRetiraTextosLixo',CNAE),5) as CNAE, 
+	Max(MapSubString('MapRetiraTextosLixo',ISIC)) as ISIC 
+resident CNAExISIC4
+Group by left(MapSubString('MapRetiraTextosLixo',CNAE),5)
+;
+
+
+drop table CNAExISIC;
+drop table CNAExISIC2;
+drop table CNAExISIC3;
+drop table CNAExISIC4;
+
+
+
+
+//CBO 94 to 2002
+CBO94x2002:
+LOAD A as CBO94_CODE, 
+     C as CBO2002
+FROM
+[F:\Product Space\Demais Dados\CBO\Compatibilização_Felipe\Conversão_DEFINITIVA.xlsx]
+(ooxml, no labels, header is 1 lines, table is DEFINITIVA);
+
+MapCBO94x2002:
+mapping Load 
+	MapSubString('MapRetiraTextosLixo',CBO94_CODE) as CBO94_CODE, 
+	MapSubString('MapRetiraTextosLixo',CBO2002) as CBO2002 
+	resident CBO94x2002;
+
+drop table CBO94x2002;
+
+
+//CNAE 95 x 2.0
+CNAE95x20:
+LOAD 
+		 @1 as CNAE95,
+		 @3 as CNAE20
+FROM
+[F:\Product Space\Demais Dados\CNAE_ISIC\RAIS_MERGE_CNAE95.xls]
+(biff, no labels, header is 1 lines, table is [RAIS_MERGE_CNAE95$]);
+
+
+MapCNAE95x20:
+mapping Load 
+	MapSubString('MapRetiraTextosLixo',CNAE95) as CNAE95,
+	MapSubString('MapRetiraTextosLixo',CNAE20) as CNAE20 
+	
+resident CNAE95x20;
+	
+drop table CNAE95x20;
+
+
+Correcoes2007:
+mapping
+LOAD 
+     PIS&IDENTIFICAD as PIS_CNPJ, 
+     Right([FAMILIA OCUP],4)&'00' as OCUPACAO
+FROM
+[$(caminhoArquivos)\2007\R2007_1111 e 1112.TXT]
+(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
+
+
+
+		
+		
+	MapRetiraVirgula:
+	Mapping load * inline 
+	[
+		'Code','Classname'
+		',','.'      
+	];

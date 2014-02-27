@@ -1,0 +1,305 @@
+MapRetiraTextosLixo:
+Mapping load * inline 
+[
+	'Code','Classname'
+	' ',''    
+     'ex',''
+     '.',''    
+];
+
+
+/**
+
+1996 x 2002
+
+Anos da SECEX com padrão NCM96: 2000 a 2001
+**/
+
+NCM1996xNCM2002Tabela:
+LOAD trim([NCM 1996]) as NCM1996xNCM2002_Origem, 
+     MinString(trim([NCM 2002])) as NCM1996xNCM2002_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [1996x2002])
+group by trim([NCM 1996])
+;
+
+NCM1996xNCM2002:
+mapping 
+load * resident NCM1996xNCM2002Tabela;
+
+
+/**
+
+2002 x 2007
+
+Anos da SECEX com padrão NCM2002: 2002 a 2006
+**/
+// MapSubString('MapRetiraTextosLixo',[NCM 2002])
+
+NCM2002xNCM2007Tabela:
+LOAD trim([NCM 2002]) as NCM2002xNCM2007_Origem, 
+     MinString(trim([NCM 2007])) as NCM2002xNCM2007_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2002x2007])
+group by trim([NCM 2002])
+;
+
+NCM2002xNCM2007:
+mapping 
+load * resident NCM2002xNCM2007Tabela;
+
+
+
+
+
+
+
+
+
+
+
+/**
+
+1996x2002_em_2002
+
+**/
+
+NCM1996xNCM2002_em2002Tabela:
+LOAD trim([NCM 1996]) as NCM1996xNCM2002_em2002_Origem, 
+     MinString(trim([NCM 2002])) as NCM1996xNCM2002_em2002_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [1996x2002_em_2002])
+group by trim([NCM 1996])
+;
+
+NCM1996xNCM2002_em2002:
+mapping 
+load * resident NCM1996xNCM2002_em2002Tabela;
+
+
+
+
+
+
+
+
+
+/**
+
+1996x2002_em_2007
+
+**/
+
+NCM1996xNCM2002_em2007Tabela:
+LOAD trim([NCM 1996]) as NCM1996xNCM2002_em2007_Origem, 
+     MinString(trim([NCM 2002])) as NCM1996xNCM2002_em2007_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [1996x2002_em_2007])
+group by trim([NCM 1996])
+;
+
+NCM1996xNCM2002_em2007:
+mapping 
+load * resident NCM1996xNCM2002_em2007Tabela;
+
+
+
+/**
+
+2002x2007_em_2007
+
+**/
+
+NCM2002xNCM2007_em2007Tabela:
+LOAD trim([NCM 2002]) as NCM2002xNCM2007_em2007_Origem, 
+     MinString(trim([NCM 2007])) as NCM2002xNCM2007_em2007_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2002x2007_em_2007])
+group by trim([NCM 2002])
+;
+
+NCM2002xNCM2007_em2007:
+mapping 
+load * resident NCM2002xNCM2007_em2007Tabela;
+
+
+
+
+
+/**
+
+Erros 1996x2002
+
+**/
+
+NCM1996xNCM2002_errosTabela:
+LOAD trim([NCM 1996]) as NCM1996xNCM2002_erros_Origem, 
+     MinString(trim([NCM 2002])) as NCM1996xNCM2002_erros_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [erros_finais])
+group by trim([NCM 1996])
+;
+
+NCM1996xNCM2002_erros:
+mapping 
+load * resident NCM1996xNCM2002_errosTabela;
+
+
+
+
+/**
+
+Erros 2002x2007
+
+**/
+
+NCM2002xNCM2007_errosTabela:
+LOAD trim([NCM 2002_erro]) as NCM2002xNCM2007_erros_Origem, 
+     MinString(trim([NCM 2007])) as NCM2002xNCM2007_erros_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [erros_finais])
+group by trim([NCM 2002_erro])
+;
+
+NCM2002xNCM2007_erros:
+mapping 
+load * resident NCM2002xNCM2007_errosTabela;
+
+
+
+
+
+
+/**
+
+Erros 2007x2011
+
+**/
+
+NCM2007xNC2011_errosTabela:
+LOAD trim([NCM 2007_erro]) as NCM2007xNCM2011_erros_Origem, 
+     MinString(trim([NCM 2007_correto])) as NCM2007xNCM2007_erros_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [erros_finais])
+group by trim([NCM 2007_erro])
+;
+
+NCM2007xNC2011_erros:
+mapping 
+load * resident NCM2007xNC2011_errosTabela;
+
+
+
+
+
+
+//
+
+
+/**
+
+1996x2002_em_2012
+
+**/
+
+NCM1996xNCM2002_em2012Tabela:
+LOAD trim([NCM 1996]) as NCM1996xNCM2002_em2012_Origem, 
+     MinString(trim([NCM 2002])) as NCM1996xNCM2002_em2012_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [1996x2002_em_2012])
+group by trim([NCM 1996])
+;
+
+NCM1996xNCM2002_em2012:
+mapping 
+load * resident NCM1996xNCM2002_em2012Tabela;
+
+
+
+/**
+
+2002x2007_em_2012
+
+**/
+
+NCM2002xNCM2007_em2012Tabela:
+LOAD trim([NCM 2002]) as NCM2002xNCM2007_em2012_Origem, 
+     MinString(trim([NCM 2007])) as NCM2002xNCM2012_em2007_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2002x2007_em_2012])
+group by trim([NCM 2002])
+;
+
+NCM2002xNCM2007_em2012:
+mapping 
+load * resident NCM2002xNCM2007_em2012Tabela;
+
+
+
+
+
+
+
+/**
+Utilizado para conferir os codigos de 2007
+*/
+NCM2007:
+mapping
+LOAD 
+	MapSubString('MapRetiraTextosLixo',trim(NCM)),
+	MapSubString('MapRetiraTextosLixo',trim(NCM))
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2007]);
+
+
+
+NCM2007Classe:
+mapping
+LOAD 
+	MapSubString('MapRetiraTextosLixo',trim(left(NCM,4))),
+	MapSubString('MapRetiraTextosLixo',trim(left(NCM,4)))
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2007]);
+
+
+
+drop table NCM1996xNCM2002Tabela;
+
+
+/**
+
+2007 x 2012
+
+Anos da SECEX com padrão NCM2007: 2007 a 2011
+Anos da SECEX com padrão NCM2012: 2012
+**/
+
+NCM2012xNCM2007:
+mapping 
+LOAD MapSubString('MapRetiraTextosLixo',trim([NCM 2012])) as NCM2012xNCM2007_Origem, 
+     MapSubString('MapRetiraTextosLixo',trim([NCM 2007])) as NCM2012xNCM2007_Destino
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\NCM_Todos_Anos.xlsx]
+(ooxml, embedded labels, table is [2012x2007]);
+
+
+
+
+/**
+
+1996 x 2007
+
+Conversão direta de 1996 para 2007
+**/

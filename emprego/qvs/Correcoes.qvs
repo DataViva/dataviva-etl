@@ -1,0 +1,32 @@
+
+if '$(executarCorrecoes)'='S' then
+
+	if anoProcessamento='2007' then
+	
+		Rais2007:
+		LOAD Municipality_ID, 
+		     EconomicAtivity_ID_ISIC, 
+		     EconomicActivity_ID_CNAE,      
+		     
+			  ApplyMap('Correcoes2007',
+			  	Employee_ID&Establishment_ID,
+			  	BrazilianOcupation_ID)
+			  	
+			  	 as BrazilianOcupation_ID,
+			  	 
+		     AverageMonthlyWage, 
+		     WageReceived, 
+		     Employee_ID, 
+		     Establishment_ID, 
+		     Year
+		FROM
+		[$(caminhoArquivos)\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv]
+		(txt, utf8, embedded labels, delimiter is ',', msq);
+		
+		
+		store Rais2007 into [$(caminhoArquivos)\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv](txt);
+		
+		drop table Rais2007;
+		
+	end if
+end if

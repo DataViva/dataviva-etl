@@ -1,0 +1,197 @@
+
+if '$(executarCheckDados)'='S' then
+	
+	TRACE 'CHECK DADOS';
+	
+	LET rowsRAIS=noOfRows('RAIS');
+	if '$(rowsRAIS)'='' then
+	
+		
+		
+		if '$(anoProcessamento)'='2002' then
+		
+		NoConcatenate
+		
+			RAIS:
+			load  *, EconmicAtivity_ID_ISIC as EconomicAtivity_ID_ISIC
+			 from F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv (txt);
+		 
+		 
+		else
+		
+		
+			RAIS:
+			load *
+			 from F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv (txt);
+			 
+		end if
+		
+		TRACE 'CHECK DADOS/: Load Rais';
+
+	endif
+	
+	
+	
+	NoConcatenate
+ 	
+	 	
+	 	
+	 	
+	ValoresTotaisInicialCBO:
+	load 
+		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
+		sum(WageReceived) as WageReceivedTotal,
+		count(1) as Total	,
+		left(BrazilianOcupation_ID,4)
+		resident RAIS
+	 group by left(BrazilianOcupation_ID,4) order by BrazilianOcupation_ID;
+	 
+	 	store ValoresTotaisInicialCBO into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCBO$(anoProcessamento).csv (txt);
+	 	
+	 	
+	drop table ValoresTotaisInicialCNAE;
+	drop Table ValoresTotaisInicialCBO;
+
+	NoConcatenate
+	
+	ValoresTotaisISIC:
+	load 
+		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
+		sum(WageReceived) as WageReceivedTotal,
+		count(1) as Total	,
+		EconomicAtivity_ID_ISIC
+		resident RAIS
+	 group by EconomicAtivity_ID_ISIC order by EconomicAtivity_ID_ISIC;
+	
+	store ValoresTotaisISIC into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisISIC$(anoProcessamento).csv (txt);
+	
+	NoConcatenate
+	
+	ValoresTotaisCNAE:
+	load 
+		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
+		sum(WageReceived) as WageReceivedTotal,
+		count(1) as Total	,
+		EconomicActivity_ID_CNAE
+		resident RAIS
+	 group by EconomicActivity_ID_CNAE order by EconomicActivity_ID_CNAE;
+	 
+	 	store ValoresTotaisCNAE into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCNAE$(anoProcessamento).csv (txt);
+	 	
+	
+	
+	 	
+	 	NoConcatenate
+	
+	ValoresTotaisCNAEClasse:
+	load 
+		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
+		sum(WageReceived) as WageReceivedTotal,
+		count(1) as Total	,
+		left(EconomicActivity_ID_CNAE,5) as EconomicActivity_ID_CNAE
+		resident RAIS
+	 group by left(EconomicActivity_ID_CNAE,5) order by EconomicActivity_ID_CNAE;
+	 
+	 	store ValoresTotaisCNAEClasse into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCNAEClasse$(anoProcessamento).csv (txt);
+	 	
+	 	
+	 	NoConcatenate
+	
+	ValoresTotais:
+	load 
+		count(1) as Total	
+		resident RAIS;
+	 
+	 	store ValoresTotais into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotais$(anoProcessamento).csv (txt);
+	
+	drop table RAIS;
+	drop table ValoresTotaisISIC;
+	drop table ValoresTotaisCNAE;
+	drop table ValoresTotais;
+	
+	
+	if '$(anoProcessamento)'='2002' then
+		RAIS:
+		load Municipality_ID, 
+	     EconmicAtivity_ID_ISIC,     
+	     sum(AverageMonthlyWage),
+	     count(1) as total ,
+	     Year 
+	     from 
+	     F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)*.csv 
+	     (txt, utf8, embedded labels, delimiter is ',', msq)
+	     
+	     group by Municipality_ID,      EconmicAtivity_ID_ISIC,Year;
+	ELSE
+	
+		RAIS:
+		load Municipality_ID, 
+	     EconomicAtivity_ID_ISIC,     
+	     sum(AverageMonthlyWage),
+	     count(1) as total ,
+	     Year 
+	     from 
+	     F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)*.csv 
+	     (txt, utf8, embedded labels, delimiter is ',', msq)
+	     
+	     group by Municipality_ID,      EconomicAtivity_ID_ISIC,Year;
+	     
+	end if 
+	
+		store RAIS  into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisMunicipioISIC$(anoProcessamento).csv (txt);
+		 
+		drop table RAIS;
+		
+	
+	if '$(anoProcessamento)'='2002' then
+
+		
+		RAIS:
+		load
+			*
+		
+		FROM
+				[C:\Users\m1165564\Documents\Projetos\product-space\bd\2002\*.TXT] 
+				(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
+		
+		OCUPACOES:
+		load
+			[OCUPACAO], count(1) as totalOCUPACAO		
+			Resident RAIS		Group by [OCUPACAO];
+			
+			
+		CNAE:
+		load
+			[CLAS CNAE 95], count(1) as totalCNAE		
+			Resident RAIS		Group by [CLAS CNAE 95];
+		
+		store CNAE into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\CNAE$(anoProcessamento).csv (txt);
+		store OCUPACOES into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\OCUPACOES$(anoProcessamento).csv (txt);
+		
+		drop table RAIS;
+	end if
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	
+
+		LOAD 
+		     id_ibge,isic_id, left( id_ibge,6) ,count(1) as total
+		    
+			FROM
+			[F:\Banco de dados\MTE\RAIS_COMPLETA\testRaisISIC.txt]
+			(txt, codepage is 1252, embedded labels, delimiter is '\t', msq)
+		
+				group by left( id_ibge,6),isic_id,id_ibge, year
+		;
+
+*/
+	
+end if

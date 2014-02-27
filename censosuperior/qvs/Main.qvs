@@ -1,0 +1,203 @@
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='R$ #.##0,00;:R$ #.##0,00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
+SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
+
+ 
+SET extracao='False';
+SET transformacao='False'; //True e False
+SET agruparAno='False'; //True e False
+SET agruparFinal='False'; //True e False
+SET ajustes='False'; //True e False
+set anoProcessa='2000';
+
+
+
+
+
+IF 'True' = '$(extracao)' then	
+
+	
+	if '$(anoProcessa)'='' then
+		For ano = 0 to 8
+			TRACE 'EXTRACAO - 200$(ano)';	
+			DIRECTORY;
+			$(Include=qvs\extrator\200$(ano).qvs);
+			
+		Next ano  
+		
+		TRACE 'EXTRACAO - 2009-2012';	
+		DIRECTORY;
+		$(Include=qvs\extrator\2009-2012.qvs);
+	end if
+	if  '$(anoProcessa)'<>'' then	
+		TRACE 'EXTRACAO - $(anoProcessa)';
+		DIRECTORY;
+		$(Include=qvs\extrator\$(anoProcessa).qvs);
+	end if
+	
+end if
+
+IF 'True' = '$(transformacao)' then	
+	if '$(anoProcessa)'='' then
+		For ano = 0 to 8
+			TRACE 'TRANSFORMACAO $(ano)';
+			DIRECTORY;
+			$(Include=qvs\transformador\200$(ano).qvs);		
+		Next ano  
+		
+		TRACE 'TRANSFORMACAO 2009-2012)';
+		DIRECTORY;
+		$(Include=qvs\transformador\2009-2012.qvs);
+	end if
+	
+	if  '$(anoProcessa)'<>'' then
+		TRACE 'TRANSFORMACAO - $(anoProcessa)';
+		DIRECTORY;
+		$(Include=qvs\transformador\$(anoProcessa).qvs);
+	end if
+end if
+
+trace 'AGRUPAR ANO';
+IF 'True' = '$(agruparAno)' then	
+	trace 'AGRUPAR ANO';
+	if '$(anoProcessa)'='' then
+	end if
+	
+	if  '$(anoProcessa)'<>'' and '$(anoProcessa)' <= '2008' then
+		TRACE 'AGRUPA ANO - $(anoProcessa)';
+		DIRECTORY;
+		$(Include=qvs\transformador\Agrupa2000-2008.qvs);
+	end if
+	
+	if  '$(anoProcessa)'<>'' and '$(anoProcessa)' = '2009' then
+		TRACE 'AGRUPA ANO - $(anoProcessa)';
+		DIRECTORY;
+		$(Include=qvs\transformador\Agrupa2009.qvs);
+	end if
+	
+	if  '$(anoProcessa)'<>'' and '$(anoProcessa)' > '2009' then
+		TRACE 'AGRUPA ANO - $(anoProcessa)';
+		DIRECTORY;
+		$(Include=qvs\transformador\Agrupa2010-2012.qvs);
+	end if
+
+end if
+
+IF 'True' = '$(agruparFinal)' then	
+	Final:
+	load * from 
+	[F:\Banco de dados\Censo Ensino Superior\2000\2000_T.qvd] (qvd);
+				
+	For ano = 2001 to 2012
+		TRACE 'ABRINDO BASES TRANSFORMADAS - $(ano)';	
+		
+		Concatenate
+		
+		load * from 
+		[F:\Banco de dados\Censo Ensino Superior\$(ano)\$(ano)_T.qvd] (qvd);
+		
+	Next ano  
+	
+	store Final into [F:\Banco de dados\Censo Ensino Superior\FinalAgrupado.qvd] (qvd);
+	drop table Final;
+end if
+
+IF 'True' = '$(ajustes)' then		
+
+	Final:
+	load * from 
+		[F:\Banco de dados\Censo Ensino Superior\FinalAgrupado.qvd] (qvd);
+
+	// Compatibilizar CO Organização apartir do DS -> Mudança no codigo de organização durante o tempo, 
+	// portanto fazendo a unificação por meio do nome
+	NomeOrganizacaoConvertCodigo:
+	MAPPING LOAD * INLINE [
+		Nome, Codigo                                     
+		'Centro de Educação Tecnológica','7'				
+		'Centro Federal de Educação Tecnológica','5'
+		'CENTRO UNIVERSITARIO','2'
+		'Centro Universitário','2'
+		'Centro Universitário Especializado','2'
+		'FACULDADE','3'
+		'Faculdade','3'
+		'Faculdade de Tecnologia','3'
+		'Faculdade Integrada','3'
+		'Faculdades Integradas','3'
+		'INSTITUTO FEDERAL DE EDUCACAO CIENCIA E TECNOLOGIA','4'
+		'Instituto Federal de Educação, Ciência e Tecnologia','4'
+		'Instituto Superior ou Escola Superior','6'
+		'UNIVERSIDADE','1'
+		'Universidade','1'
+		'Universidade Especializada','1'
+	];
+
+
+	// Grau academico transofmrar . em vazio 
+	//Apenas para anteiuorr a 2009 foi utilizado . no lugar de espaço
+	RetiraPontoPorEspaco:
+	MAPPING LOAD * INLINE [
+	Nome, Codigo                                     
+		'.',''	
+	];
+
+
+	FinalAjustesInicial:
+	load 
+		ApplyMap('NomeOrganizacaoConvertCodigo',trim(DS_ORGANIZACAO_ACADEMICA),0) as CO_ORGANIZACAO_ACADEMICA,
+		
+		// Cortar o municipio pegando os 2 primeiros e os ultimos 5 
+		// O codigo do municipio contempla também Meso e Micro regioes, portanto cortando apenas para cod IBGE
+		IF(Len(CO_MUNICIPIO_CURSO)=7, CO_MUNICIPIO_CURSO, 
+			left(CO_MUNICIPIO_CURSO,2) & right(CO_MUNICIPIO_CURSO,5) )			 as CO_MUNICIPIO_CURSO, 
+		//CO_MUNICIPIO_CURSO as CO_MUNICIPIO_CURSO_ORIGINAL,
+		
+		CO_IES, 
+		ANO,
+		CO_CATEGORIA_ADMINISTRATIVA,
+		CO_CURSO,
+		NO_CURSO,
+		CO_OCDE,
+		NO_OCDE,
+		CO_OCDE_AREA_GERAL,
+		NO_OCDE_AREA_GERAL,
+		CO_OCDE_AREA_ESPECIFICA,
+		NO_OCDE_AREA_ESPECIFICA,
+		CO_OCDE_AREA_DETALHADA,
+		NO_OCDE_AREA_DETALHADA,
+		CO_MODALIDADE_ENSINO,
+		CO_NIVEL_ACADEMICO,
+		VAGAS,
+		 MATRICULADOS,
+		CONCLUINTES, 
+		INGRESSANTES,
+		
+		//Grau academico transformar 4 em 1 -> Em 2009 houve uma separação de categoria não adotado nos próximos anos
+		IF(
+			//Grau academico transofmrar . em vazio -> Apenas para anteiuorr a 2009 foi utilizado . no lugar de espaço
+			IF(trim(CO_GRAU_ACADEMICO)='.','',trim(CO_GRAU_ACADEMICO))=4
+			,1,
+			IF(trim(CO_GRAU_ACADEMICO)='.','',trim(CO_GRAU_ACADEMICO))
+			) as CO_GRAU_ACADEMICO
+		//CO_GRAU_ACADEMICO as CO_GRAU_ACADEMICO_ORIGINAL,
+		
+
+	resident Final;
+ 
+ 
+	store FinalAjustesInicial into [F:\Banco de dados\Censo Ensino Superior\Final.qvd] (qvd);
+	store FinalAjustesInicial into [F:\Banco de dados\Censo Ensino Superior\Final.csv] (txt);
+
+	drop Table Final;
+	drop table FinalAjustesInicial;
+
+end if
+
+
+//QUALIFY *;
