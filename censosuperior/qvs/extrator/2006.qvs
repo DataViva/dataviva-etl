@@ -9,7 +9,7 @@ CURSO:
 	
 	
 	
-	@1:8 as MASCARA,
+@1:8 as MASCARA,
 @9:16   as ANO,
 @17:24   as CURSO,
 @25:224 as NOMEDOCURSO,
@@ -696,7 +696,7 @@ CURSO:
 load 	
 	
 	
-	@1:8  as MASCARA,
+@1:8  as MASCARA,
 @9:16   as ANO,
 @17:24   as CURSO,
 @25:224 as NOMEDOCURSO,
