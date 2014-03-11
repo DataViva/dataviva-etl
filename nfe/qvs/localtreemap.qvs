@@ -1,0 +1,89 @@
+/*
+ProdutoFinal:
+load 
+
+	sum([Vr Produto SUM]),
+	sum([Vr ICMS SUM]),
+	[Nm Localidade  Destinatário], 
+		     [Sigla UF  Destinatário]
+      from F:\Banco de dados\SEF\NFE _NCM\DeMGFinal.qvd (qvd)
+	where [Nm Localidade Remetente]='SAO JOAO DEL REI' and [Sigla UF Remetente]='MG'
+//'SAO JOAO DEL REY'
+//'ITAJUBA'
+	group by [Nm Localidade  Destinatário], 
+		     [Sigla UF  Destinatário]
+;
+
+
+
+store ProdutoFinal into F:\Banco de dados\SEF\NFE _NCM\UFSJDR.qvd (qvd);
+
+drop table ProdutoFinal;
+
+exit script;
+
+
+
+
+
+Produto:
+load 
+
+	sum([Vr Produto SUM]),
+	sum([Vr ICMS SUM]),
+	[Nm Localidade Remetente], 		   
+	  [Sigla UF Remetente],	 
+	  //left([Cd Capítulo NCM],  Len([Cd Capítulo NCM])-2) as NCM2007,
+	 Num#( trim([Cd Capítulo NCM]) ) as NCM2007,
+	   [Ds Capítulo NCM]  
+	//  left([Cd Sub Item NCM],  Len([Cd Sub Item NCM])-2)  as NCM2007, 		     [Ds Sub Item NCM] 
+      from F:\Banco de dados\SEF\NFE _NCM\DeMGFinal.qvd (qvd)
+	where [Nm Localidade Remetente]='SAO JOAO DEL REI' and [Sigla UF Remetente]='MG'
+//SAO JOAO DEL REY
+//'ITAJUBA'
+	group by [Nm Localidade Remetente], 		     [Sigla UF Remetente],  
+	[Cd Capítulo NCM],[Ds Capítulo NCM]
+//	 [Cd Sub Item NCM],      [Ds Sub Item NCM]
+;
+
+
+
+
+//SELECT *,SUBSTRING(id FROM 3) FROM ps2.attrs_hs  where length(id)=4 limit 0 , 10000
+left join(Produto)
+LOAD A as id, 
+     B as NomeEn, 
+     C as DescEn, 
+     D, 
+     E as NomePt, 
+     F as DescPt, 
+     G, 
+     H, 
+     I, 
+     J, 
+     K, 
+    Num#( trim(L) ) as NCM2007
+FROM
+[F:\Banco de dados\Correspondências das Classificações\HS\HSNomeclaturaCapitulo2007.xlsx]
+(ooxml, no labels, table is Plan1);
+
+
+NoConcatenate
+
+
+
+ProdutoFinal:
+load * 
+	resident Produto where not isnull(NomePt) ;
+	
+drop table Produto;
+
+store ProdutoFinal into F:\Banco de dados\SEF\NFE _NCM\ProdutoSJDR.qvd (qvd);
+//ProdutoItajuba
+
+drop table ProdutoFinal;
+
+exit script;
+
+
+*/

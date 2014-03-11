@@ -1,0 +1,236 @@
+
+if '$(executarExtracao)'='S' then
+
+	/*
+
+	ERROS:
+	2012
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_84.txt'
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_85.txt'
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_26a29.txt' 
+
+	2013
+	'2013-01\De MG para todas as UFs\MG_EX_para_todas_012013_NCM_30.txt.qvd' (qvd)
+	*/
+
+	Directory $(diretorioSaida); 
+
+		For each Arquivo in filelist ('*.txt')
+		
+
+		trace 'Extraindo Arquivo $(Arquivo)';
+		LET vListqvdexists=isnull(QvdCreateTime('$(Arquivo).qvd'));
+		
+		if $(vListqvdexists) then 
+		
+			trace 'Extraindo Arquivo $(Arquivo)';
+			NFE:
+			LOAD 
+			 
+				 
+				//Código Sub Item NCM
+				[Cd Sub Item NCM], 
+
+				//Código CNAE Destinatário
+				[Cd Cnae 2.0 Destinatário], 
+
+				//Código CNAE Rementente
+				[Cd Cnae 2.0 Remetente], 
+
+				//Código Capítulo NCM
+				[Cd Capítulo NCM],
+
+				//Código Recolhimento Destinatário
+				[Código Recolhimento Destinatário], 
+
+				//Descrição Regime de Recolhimento Destinatário				 
+				[Ds Regime Recolhimento Destinatario], 
+
+				//Código Recolhimento Rementente
+				[Código Recolhimento Remetente], 
+
+				//Descrição Regime de Recolhimento Remetente
+				[Ds Regime Recolhimento Remetente], 
+
+				//Código CFOP
+				[Cd Cfop], 
+
+				//Código CST
+				[Cd Cst], 
+
+				//Descrição Tipo de Destinatário
+				[Ds tp destinatario], 
+
+				//Descrição Tipo de Remetente
+				[Ds tp remetente], 
+
+				//Localidade Destinatário
+				[Nm Localidade  Destinatário], 
+
+				//Localidade Remetente
+				[Nm Localidade Remetente], 
+
+				//Ano/mês
+				[Nr ano mes], 
+
+				//Sigla UF do Destinatário -  [Sigla UF  Destinatário], 
+				[Sigla Uf Destinatario], 
+
+				//Sigla UF do Remetente - [Sigla UF Remetente], 
+				[Sigla Uf Remetente], 
+
+
+				//Situação Destinatário
+				[Ds situacao Destinatario], 
+
+				//Situação Remetente
+				[Ds situacao Remetente], 
+
+				//Valor ICMS ST
+				[Vr ICMS ST SUM], 
+
+				//Valor ICMS ST RET
+				[Vr Icms St Ret SUM], 
+
+				//Valor ICMS
+				[Vr ICMS SUM], 
+
+				//Valor IPI
+				[Vr IPI SUM], 
+
+				//Valor PIS
+				[Vr PIS SUM], 
+
+				//Valor COFINS
+				[Vr Cofins SUM], 
+
+				//Valor II
+				[Vr II SUM], 
+
+				//Valor do Produto
+				[Vr Produto SUM], 
+
+				//Valor Despesa
+				[Vr Despesa SUM], 
+
+				//Valor ISSQN		    	     
+				[Vr ISSQN SUM], 
+			 
+				 '$(Arquivo)' as arquivo
+					FROM
+					$(Arquivo)
+					(txt, utf8, embedded labels, delimiter is '\t', msq);
+					
+				store NFE into '$(Arquivo).qvd' (qvd);
+				
+				drop table NFE;
+				
+		endif;
+	Next Arquivo;
+
+
+	/*
+	Dois arquivos com layout diferente
+
+	F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_85.txt
+	F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_84.txt
+
+	LOAD CD_CFOP, 
+		 CD_CST, 
+		 DS_CFOP, 
+		 DS_CST, 
+		 DS_REGIME_RECOLHIMENTO, 
+		 DS_REGIME_RECOLHIMENTO_1, 
+		 DS_SITUACAO, 
+		 DS_SITUACAO_1, 
+		 DS_SUBCLASSE, 
+		 DS_SUBCLASSE_1, 
+		 DS_TP_DESTINATARIO, 
+		 DS_TP_DESTINATARIO_1, 
+		 NR_ANO_MES, 
+		 NR_SUBCLASSE, 
+		 NR_SUBCLASSE_1, 
+		 SIGLA_UF, 
+		 SIGLA_UF_1, 
+		 NM_LOCALIDADE, 
+		 SIGLA_UF_2, 
+		 NM_LOCALIDADE_1, 
+		 SIGLA_UF_3, 
+		 [(O146853.CD_REGIME_RECOLHIMENTO||''||O146853.SG_REGIME_RECOLHIMENTO)], 
+		 [(O146854.CD_REGIME_RECOLHIMENTO||''||O146854.SG_REGIME_RECOLHIMENTO)], 
+		 CD_CAPITULO_NCM, 
+		 DS_CAPITULO_NCM, 
+		 CD_ITEM_NCM, 
+		 DS_ITEM_NCM, 
+		 CD_SUB_ITEM_NCM, 
+		 DS_SUB_ITEM_NCM, 
+		 [SUM(O146864.VR_PRODUTO)], 
+		 [SUM(O146864.VPIS)], 
+		 [SUM(O146864.VISSQN)], 
+		 [SUM(O146864.VIPI)], 
+		 [SUM(O146864.VII)], 
+		 [SUM(O146864.VR_ICMS_ST_RET)], 
+		 [SUM(O146864.VR_ICMS_ST)], 
+		 [SUM(O146864.VR_ICMS)], 
+		 [SUM(O146864.VR_DESPESAS)], 
+		 [SUM(O146864.VCOFINS)], 
+		 [SUM(O146864.VR_BC_ST_RET)], 
+		 [SUM(O146864.VR_BC)], 
+		 [SUM(O146864.VR_BC_ST)]
+	FROM
+	[F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_84.txt]
+	(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
+
+
+
+	LOAD CD_CFOP, 
+		 CD_CST, 
+		 DS_CFOP, 
+		 DS_CST, 
+		 DS_REGIME_RECOLHIMENTO, 
+		 DS_REGIME_RECOLHIMENTO_1, 
+		 DS_SITUACAO, 
+		 DS_SITUACAO_1, 
+		 DS_SUBCLASSE, 
+		 DS_SUBCLASSE_1, 
+		 DS_TP_DESTINATARIO, 
+		 DS_TP_DESTINATARIO_1, 
+		 NR_ANO_MES, 
+		 NR_SUBCLASSE, 
+		 NR_SUBCLASSE_1, 
+		 SIGLA_UF, 
+		 SIGLA_UF_1, 
+		 NM_LOCALIDADE, 
+		 SIGLA_UF_2, 
+		 NM_LOCALIDADE_1, 
+		 SIGLA_UF_3, 
+		 [(O146853.CD_REGIME_RECOLHIMENTO||''||O146853.SG_REGIME_RECOLHIMENTO)], 
+		 [(O146854.CD_REGIME_RECOLHIMENTO||''||O146854.SG_REGIME_RECOLHIMENTO)], 
+		 CD_CAPITULO_NCM, 
+		 DS_CAPITULO_NCM, 
+		 CD_ITEM_NCM, 
+		 DS_ITEM_NCM, 
+		 CD_SUB_ITEM_NCM, 
+		 DS_SUB_ITEM_NCM, 
+		 [SUM(O146864.VR_PRODUTO)], 
+		 [SUM(O146864.VPIS)], 
+		 [SUM(O146864.VISSQN)], 
+		 [SUM(O146864.VIPI)], 
+		 [SUM(O146864.VII)], 
+		 [SUM(O146864.VR_ICMS_ST_RET)], 
+		 [SUM(O146864.VR_ICMS_ST)], 
+		 [SUM(O146864.VR_ICMS)], 
+		 [SUM(O146864.VR_DESPESAS)], 
+		 [SUM(O146864.VCOFINS)], 
+		 [SUM(O146864.VR_BC_ST_RET)], 
+		 [SUM(O146864.VR_BC)], 
+		 [SUM(O146864.VR_BC_ST)]
+	FROM
+	[F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_85.txt]
+	(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
+
+
+
+
+	*/
+end if

@@ -1,0 +1,37 @@
+SET executarExtracao='N';
+
+SET executarTransformacao='N';
+
+SET executarLeitura='N';
+
+
+SET diretorioBaseDados='F:\Banco de dados\SEF\';
+
+
+//2013-01
+//2012-12
+SET anomesProcessa='2013-01';
+
+set diretorioFinal=$(diretorioBaseDados)$(anomesProcessa);
+
+set diretorioSaida=$(diretorioFinal)\De MG para todas as UFs\;
+set diretorioEntrada=$(diretorioFinal)\Para MG\;
+
+trace $(diretorioSaida);
+
+
+DIRECTORY;
+$(Include=qvs\extrator.qvs);
+
+
+DIRECTORY;
+$(Include=qvs\transformador.qvs);
+
+
+DIRECTORY;
+$(Include=qvs\localtreemap.qvs);
+
+if '$(executarLeitura)'='S' then
+	NFE:
+	load * from $(diretorioFinal)DeMGFinal.qvd (qvd);
+end if

@@ -1,0 +1,20 @@
+if '$(executarTransformacao)'='S' then
+	NFE:
+	load * from $(diretorioSaida)*.qvd (qvd);
+
+	store NFE into $(diretorioFinal)DeMG.qvd (qvd);
+
+	drop table NFE;
+
+	//Problemas em valores  'F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_26a29.txt'
+	//Retirado por enquanto
+	NFE:
+	load * from $(diretorioFinal)DeMG.qvd (qvd)
+	where arquivo <> '$(diretorioSaida)MG_EX_para_todas_122012_NCM_26a29.txt'
+	;
+
+	store NFE into $(diretorioFinal)DeMGFinal.qvd (qvd);
+
+	drop table NFE;
+
+end if
