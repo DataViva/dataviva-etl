@@ -1,9 +1,7 @@
 SET executarExtracao='N';
-
 SET executarTransformacao='N';
-
 SET executarLeitura='N';
-
+SET executarTeste='S';
 
 SET diretorioBaseDados='F:\Banco de dados\SEF\';
 
@@ -35,3 +33,6 @@ if '$(executarLeitura)'='S' then
 	NFE:
 	load * from $(diretorioFinal)DeMGFinal.qvd (qvd);
 end if
+
+DIRECTORY;
+$(Include=qvs\teste.qvs);
