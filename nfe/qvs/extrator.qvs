@@ -1,0 +1,132 @@
+
+if '$(executarExtracao)'='S' then
+
+	/*
+
+	ERROS:
+	2012: Dois arquivos com layout diferente
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_84.txt'
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_85.txt'
+	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_26a29.txt' 
+
+	2013
+	'2013-01\De MG para todas as UFs\MG_EX_para_todas_012013_NCM_30.txt.qvd' (qvd)
+		
+	*/
+
+	Directory $(diretorioSaida); 
+
+		For each Arquivo in filelist ('*.txt')
+		
+
+		trace 'Extraindo Arquivo $(Arquivo)';
+		LET vListqvdexists=isnull(QvdCreateTime('$(Arquivo).qvd'));
+		
+		if $(vListqvdexists) then 
+		
+			trace 'Extraindo Arquivo $(Arquivo)';
+			NFE:
+			LOAD 
+			 
+				 
+				//Código Sub Item NCM
+				[Cd Sub Item NCM], 
+
+				//Código CNAE Destinatário
+				[Cd Cnae 2.0 Destinatário], 
+
+				//Código CNAE Rementente
+				[Cd Cnae 2.0 Remetente], 
+
+				//Código Capítulo NCM
+				[Cd Capítulo NCM],
+
+				//Código Recolhimento Destinatário
+				[Código Recolhimento Destinatário], 
+
+				//Descrição Regime de Recolhimento Destinatário				 
+				[Ds Regime Recolhimento Destinatario], 
+
+				//Código Recolhimento Rementente
+				[Código Recolhimento Remetente], 
+
+				//Descrição Regime de Recolhimento Remetente
+				[Ds Regime Recolhimento Remetente], 
+
+				//Código CFOP
+				[Cd Cfop], 
+
+				//Código CST
+				[Cd Cst], 
+
+				//Descrição Tipo de Destinatário
+				[Ds tp destinatario], 
+
+				//Descrição Tipo de Remetente
+				[Ds tp remetente], 
+
+				//Localidade Destinatário
+				[Nm Localidade  Destinatário], 
+
+				//Localidade Remetente
+				[Nm Localidade Remetente], 
+
+				//Ano/mês
+				[Nr ano mes], 
+
+				//Sigla UF do Destinatário -  [Sigla UF  Destinatário], 
+				[Sigla Uf Destinatario], 
+
+				//Sigla UF do Remetente - [Sigla UF Remetente], 
+				[Sigla Uf Remetente], 
+
+
+				//Situação Destinatário
+				[Ds situacao Destinatario], 
+
+				//Situação Remetente
+				[Ds situacao Remetente], 
+
+				//Valor ICMS ST
+				[Vr ICMS ST SUM], 
+
+				//Valor ICMS ST RET
+				[Vr Icms St Ret SUM], 
+
+				//Valor ICMS
+				[Vr ICMS SUM], 
+
+				//Valor IPI
+				[Vr IPI SUM], 
+
+				//Valor PIS
+				[Vr PIS SUM], 
+
+				//Valor COFINS
+				[Vr Cofins SUM], 
+
+				//Valor II
+				[Vr II SUM], 
+
+				//Valor do Produto
+				[Vr Produto SUM], 
+
+				//Valor Despesa
+				[Vr Despesa SUM], 
+
+				//Valor ISSQN		    	     
+				[Vr ISSQN SUM], 
+			 
+				 '$(Arquivo)' as arquivo
+					FROM
+					$(Arquivo)
+					(txt, utf8, embedded labels, delimiter is '\t', msq);
+					
+				store NFE into '$(Arquivo).qvd' (qvd);
+				
+				drop table NFE;
+				
+		endif;
+	Next Arquivo;
+
+end if

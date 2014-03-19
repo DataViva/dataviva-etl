@@ -33,10 +33,10 @@ CURSO:
 	
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_PRESENCIAL.qvd]
+[qvd\2005\GRADUACAO_PRESENCIAL.qvd]
 (qvd);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
+store CURSO into 'qvd\2005\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
 
 drop table CURSO;
 
@@ -68,11 +68,11 @@ CURSO:
 	C2011 + C2012 + C2021 + C2022 as MATRICULADOS
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_DISTANCIA.qvd]
+[qvd\2005\GRADUACAO_DISTANCIA.qvd]
 (qvd);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_DISTANCIA_T.qvd]  (qvd);
+store CURSO into [qvd\2005\GRADUACAO_DISTANCIA_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -107,11 +107,11 @@ load
 	
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\FORME_PRESENCIAL.qvd]
+[qvd\2005\FORME_PRESENCIAL.qvd]
 (qvd);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\FORMACAO_ESP_PRESENCIAL_T.qvd]  (qvd);
+store CURSO into [qvd\2005\FORMACAO_ESP_PRESENCIAL_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -135,20 +135,20 @@ load
 	+ C33101 + C33102 + C33111 + C33112 + C33121 + C33122 + C33131 + C33132 + C33141 + C33142 + C33151 + C33152 + C33161 + C33162 + C33171 + C33172 + C33181
 	+ C33182 + C33191 + C33192 + C33201 + C33202 + C33211 + C33212 + C33221 + C33222   as INGRESSANTES,
 	
-	//CONCLUINTES,
-	C3511 + C3512 + C3521 + C3522 + C3611 + C3621 + C3631 + C3641 + C3651 as 	 CONCLUINTES,
+	//CONCLUINTES,3611
+	C3511 + C3512 + C3521 + C3522 + C + C3621 + C3631 + C3641 + C3651 as 	 CONCLUINTES,
 	
 	//MATRICULADOS,
 	C3411 + C3412 + C3421 + C3422 as 	MATRICULADOS
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\FORME_DISTANCIA.qvd]
+[qvd\2005\FORME_DISTANCIA.qvd]
 (qvd);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\FORMACAO_ESP_DISTANCIA_T.qvd]  (qvd);
+store CURSO into [qvd\2005\FORMACAO_ESP_DISTANCIA_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -179,10 +179,10 @@ load
 	C3811 + C3812 + C3813 + C3814 + C3821 + C3822 + C3823 + C3824  as MATRICULADOS
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\SECOMPLE_PRESENCIAL.qvd]
+[qvd\2005\SECOMPLE_PRESENCIAL.qvd]
 (qvd);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd]  (qvd);
+store CURSO into [qvd\2005\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd]  (qvd);
 
 drop table CURSO;

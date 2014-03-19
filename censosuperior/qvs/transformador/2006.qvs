@@ -31,10 +31,10 @@ CURSO:
 	
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_PRESENCIAL.qvd]
+[qvd\2006\GRADUACAO_PRESENCIAL.qvd]
 (qvd);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
+store CURSO into 'qvd\2006\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
 
 drop table CURSO;
 
@@ -65,11 +65,11 @@ CURSO:
 	C2011 + C2012 + C2021 + C2022 as MATRICULADOS
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_DISTANCIA.qvd]
+[qvd\2006\GRADUACAO_DISTANCIA.qvd]
 (qvd);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_DISTANCIA_T.qvd]  (qvd);
+store CURSO into [qvd\2006\GRADUACAO_DISTANCIA_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -103,11 +103,11 @@ load
 	
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\FORME_PRESENCIAL.qvd]
+[qvd\2006\FORME_PRESENCIAL.qvd]
 (qvd);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\FORMACAO_ESP_PRESENCIAL_T.qvd]  (qvd);
+store CURSO into [qvd\2006\FORMACAO_ESP_PRESENCIAL_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -140,12 +140,12 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\FORME_DISTANCIA.qvd]
+[qvd\2006\FORME_DISTANCIA.qvd]
 (qvd);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\FORMACAO_ESP_DISTANCIA_T.qvd]  (qvd);
+store CURSO into [qvd\2006\FORMACAO_ESP_DISTANCIA_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -176,11 +176,11 @@ load
 	C3811 + C3812 + C3813 + C3814 + C3821 + C3822 + C3823 + C3824  as MATRICULADOS
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_PRESENCIAL.qvd]
+[qvd\2006\SECOMPLE_PRESENCIAL.qvd]
 (qvd);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd]  (qvd);
+store CURSO into [qvd\2006\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -212,9 +212,9 @@ load
 	C4111 + C4112 + C4121 + C4122  as MATRICULADOS
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_DISTANCIA.qvd]
+[qvd\2006\SECOMPLE_DISTANCIA.qvd]
 (qvd);
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd]  (qvd);
+store CURSO into [qvd\2006\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd]  (qvd);
 
 drop table CURSO;

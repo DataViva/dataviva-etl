@@ -136,10 +136,10 @@ CURSO:
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_PRESENCIAL.txt]
+[txt\2007\GRADUACAO_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_PRESENCIAL.qvd' (qvd);
+store CURSO into 'qvd\2007\GRADUACAO_PRESENCIAL.qvd' (qvd);
 
 drop table CURSO;
 
@@ -263,11 +263,11 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_DISTANCIA.txt]
+[txt\2007\GRADUACAO_DISTANCIA.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2007\GRADUACAO_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -410,11 +410,11 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\FORME_PRESENCIAL.txt]
+[txt\2007\FORME_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2007\FORME_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2007\FORME_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -534,12 +534,12 @@ load
 	
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\FORME_DISTANCIA.txt]
+[txt\2007\FORME_DISTANCIA.txt]
 (fix, codepage is 1252);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2007\FORME_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2007\FORME_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -669,11 +669,11 @@ load
 	
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_PRESENCIAL.txt]
+[txt\2007\SECOMPLE_PRESENCIAL.txt]
 (fix, codepage is 1252);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2007\SECOMPLE_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -790,9 +790,9 @@ load
 	@1722:1729  as C189022
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_DISTANCIA.txt]
+[txt\2007\SECOMPLE_DISTANCIA.txt]
 (fix, codepage is 1252);
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2007\SECOMPLE_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
