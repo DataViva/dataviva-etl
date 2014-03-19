@@ -140,10 +140,10 @@ text(@272:281) as AREACURSO,
 
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_PRESENCIAL.txt]
+[txt\2006\GRADUACAO_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_PRESENCIAL.qvd' (qvd);
+store CURSO into 'qvd\2006\GRADUACAO_PRESENCIAL.qvd' (qvd);
 
 drop table CURSO;
 
@@ -268,10 +268,10 @@ text(@272:281) as AREACURSO,
 
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_DISTANCIA.txt]
+[txt\2006\GRADUACAO_DISTANCIA.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2006\GRADUACAO_DISTANCIA.qvd' (qvd);
+store CURSO into 'qvd\2006\GRADUACAO_DISTANCIA.qvd' (qvd);
 
 drop table CURSO;
 
@@ -417,11 +417,11 @@ text(@272:281) as AREACURSO,
 	
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\FORME_PRESENCIAL.txt]
+[txt\2006\FORME_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\FORME_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2006\FORME_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -541,12 +541,12 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\FORME_DISTANCIA.txt]
+[txt\2006\FORME_DISTANCIA.txt]
 (fix, codepage is 1252);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\FORME_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2006\FORME_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -677,11 +677,11 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_PRESENCIAL.txt]
+[txt\2006\SECOMPLE_PRESENCIAL.txt]
 (fix, codepage is 1252);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2006\SECOMPLE_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -800,10 +800,10 @@ text(@272:281)  as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_DISTANCIA.txt]
+[txt\2006\SECOMPLE_DISTANCIA.txt]
 (fix, codepage is 1252);
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2006\SECOMPLE_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2006\SECOMPLE_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 

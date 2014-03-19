@@ -68,10 +68,10 @@ load
 	'2012' as ANO
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2012\CURSO.txt]
+[txt\2012\CURSO.txt]
 (fix, codepage is 1252);
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2012\CURSO.qvd];
+store CURSO into [qvd\2012\CURSO.qvd];
 
 drop table CURSO;
 
@@ -151,11 +151,11 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2011\CURSO.txt]
+[txt\2011\CURSO.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2011\CURSO.qvd];
+store CURSO into [qvd\2011\CURSO.qvd];
 
 drop table CURSO;
 
@@ -244,11 +244,11 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2010\CURSO.txt]
+[txt\2010\CURSO.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2010\CURSO.qvd];
+store CURSO into [qvd\2010\CURSO.qvd];
 
 drop table CURSO;
 
@@ -346,11 +346,11 @@ load
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2009\CURSO.txt]
+[txt\2009\CURSO.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2009\CURSO.qvd];
+store CURSO into [qvd\2009\CURSO.qvd];
 
 drop table CURSO;
 
@@ -374,10 +374,10 @@ LOAD
  @579:586  as QT_INSCRITOS_ANO_EAD
  
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2009\VAGAS_INSCRITOS_EAD.txt]
+[txt\2009\VAGAS_INSCRITOS_EAD.txt]
 (fix, codepage is 1252);
 
 
-store CURSO_EAD into [F:\Banco de dados\Censo Ensino Superior\2009\CURSO_EAD.qvd];
+store CURSO_EAD into [qvd\2009\CURSO_EAD.qvd];
 
 drop table CURSO_EAD;

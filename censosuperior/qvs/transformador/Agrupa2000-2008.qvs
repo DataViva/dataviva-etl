@@ -17,7 +17,7 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 1 as CO_NIVEL_ACADEMICO
 	
-	 from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\GRADUACAO_PRESENCIAL_T.qvd] (qvd);
+	 from 	[qvd\$(anoProcessa)\GRADUACAO_PRESENCIAL_T.qvd] (qvd);
 
 Concatenate
 
@@ -32,7 +32,7 @@ load
 	//Filtros
 	2 as CO_MODALIDADE_ENSINO 	, 1 as CO_NIVEL_ACADEMICO
 	
- from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\Graduacao_Distancia_T.qvd] (qvd);
+ from 	[qvd\$(anoProcessa)\Graduacao_Distancia_T.qvd] (qvd);
 
 Concatenate
 
@@ -50,7 +50,7 @@ load
 	//Filtros
 	2 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
-from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\FORMACAO_ESP_PRESENCIAL_T.qvd] (qvd);
+from 	[qvd\$(anoProcessa)\FORMACAO_ESP_PRESENCIAL_T.qvd] (qvd);
 	
 Concatenate
 
@@ -66,7 +66,7 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 	
- from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\FORMACAO_ESP_DISTANCIA_T.qvd] (qvd);
+ from 	[qvd\$(anoProcessa)\FORMACAO_ESP_DISTANCIA_T.qvd] (qvd);
 
 Concatenate
 
@@ -83,7 +83,7 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
- from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd] (qvd);
+ from 	[qvd\$(anoProcessa)\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd] (qvd);
 
 
 IF '$(anoProcessa)'>='2006' then
@@ -106,14 +106,14 @@ Secomple_Distancia - Como faz?
 		//Filtros
 		1 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
-	 from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd] (qvd);
+	 from 	[qvd\$(anoProcessa)\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd] (qvd);
 
 end if
  
  
  
  
-store AnoAgrupa into [F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\$(anoProcessa).qvd] (qvd);
+store AnoAgrupa into [qvd\$(anoProcessa)\$(anoProcessa).qvd] (qvd);
 
 drop table AnoAgrupa;
 
@@ -193,10 +193,10 @@ load
 	CO_MODALIDADE_ENSINO, //nome antigo: NIVELCURSO
 	VAGAS,MATRICULADOS,CONCLUINTES,INGRESSANTES
 	from 
-	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\$(anoProcessa).qvd] (qvd);
+	[qvd\$(anoProcessa)\$(anoProcessa).qvd] (qvd);
 
 	
-store Transformada into [F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\$(anoProcessa)_T.qvd] (qvd);
+store Transformada into [qvd\$(anoProcessa)\$(anoProcessa)_T.qvd] (qvd);
 
 drop table Transformada; 
 

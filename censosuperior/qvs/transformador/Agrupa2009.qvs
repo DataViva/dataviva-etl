@@ -37,7 +37,7 @@
 		QT_INGRESSO_CURSO + QT_INGRESSO_PROCESSO_SELETIVO + QT_INGRESSO_OUTRA_FORMA as INGRESSANTES
 				
 		
-	from 	[F:\Banco de dados\Censo Ensino Superior\2009\CURSO.qvd] (qvd);
+	from 	[qvd\2009\CURSO.qvd] (qvd);
 	
 	
 	//concatenate
@@ -59,7 +59,7 @@
 		CO_NIVEL_ACADEMICO as NIVELCURSO,
 		NU_VAGAS_OFERECIDAS_EAD as VAGAS_EAD
 		
-	from 	[F:\Banco de dados\Censo Ensino Superior\2009\CURSO_EAD.qvd] (qvd);
+	from 	[qvd\2009\CURSO_EAD.qvd] (qvd);
 	
 	noconcatenate
 	
@@ -89,6 +89,6 @@
 		CONCLUINTES, 
 		INGRESSANTES resident Transformada;
 	
-store TransformadaFinal into [F:\Banco de dados\Censo Ensino Superior\2009\2009_T.qvd] (qvd);
+store TransformadaFinal into [qvd\2009\2009_T.qvd] (qvd);
 
 drop table Transformada,TransformadaFinal; 

@@ -10,7 +10,7 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 1 as CO_NIVEL_ACADEMICO
 	
-	 from 	[F:\Banco de dados\Censo Ensino Superior\2000\GRADUACAO_PRESENCIAL_T.qvd] (qvd);
+	 from 	[qvd\2000\GRADUACAO_PRESENCIAL_T.qvd] (qvd);
 
 Concatenate
 
@@ -25,7 +25,7 @@ load
 	//Filtros
 	2 as CO_MODALIDADE_ENSINO 	, 1 as CO_NIVEL_ACADEMICO
 	
- from 	[F:\Banco de dados\Censo Ensino Superior\2000\Graduacao_Distancia_T.qvd] (qvd);
+ from 	[qvd\2000\Graduacao_Distancia_T.qvd] (qvd);
 
 Concatenate
 
@@ -43,7 +43,7 @@ load
 	//Filtros
 	2 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
-from 	[F:\Banco de dados\Censo Ensino Superior\2000\FORMACAO_ESP_DISTANCIA_T.qvd] (qvd);
+from 	[qvd\2000\FORMACAO_ESP_DISTANCIA_T.qvd] (qvd);
 	
 Concatenate
 
@@ -60,7 +60,7 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 	
- from 	[F:\Banco de dados\Censo Ensino Superior\2000\FORMACAO_ESP_PRESENCIAL_T.qvd] (qvd);
+ from 	[qvd\2000\FORMACAO_ESP_PRESENCIAL_T.qvd] (qvd);
 
 Concatenate
 
@@ -77,7 +77,7 @@ load
 	//Filtros
 	2 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
- from 	[F:\Banco de dados\Censo Ensino Superior\2000\SEQUENCIAIS_COMPLE_DIS_T.qvd] (qvd);
+ from 	[qvd\2000\SEQUENCIAIS_COMPLE_DIS_T.qvd] (qvd);
 
 Concatenate
 
@@ -94,10 +94,10 @@ load
 	//Filtros
 	1 as CO_MODALIDADE_ENSINO 	, 2 as CO_NIVEL_ACADEMICO
 
- from 	[F:\Banco de dados\Censo Ensino Superior\2000\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd] (qvd);
+ from 	[qvd\2000\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd] (qvd);
 
 
-store Ano2000 into [F:\Banco de dados\Censo Ensino Superior\2000\2000.qvd] (qvd);
+store Ano2000 into [qvd\2000\2000.qvd] (qvd);
 
 drop table Ano2000;
 
@@ -176,9 +176,9 @@ load
 		) as CO_CATEGORIA_ADMINISTRATIVA,	
 	CO_NIVEL_ACADEMICO,CO_MODALIDADE_ENSINO //nome antigo: NIVELCURSO
 	from 
-	[F:\Banco de dados\Censo Ensino Superior\2000\2000.qvd] (qvd);
+	[qvd\2000\2000.qvd] (qvd);
 
 	
-store Transformada into [F:\Banco de dados\Censo Ensino Superior\2000\2000_T.qvd] (qvd);
+store Transformada into [qvd\2000\2000_T.qvd] (qvd);
 
 drop table Transformada; 

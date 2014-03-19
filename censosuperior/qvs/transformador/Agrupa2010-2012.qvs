@@ -36,9 +36,9 @@
 		QT_INGRESSO_CURSO + QT_INGRESSO_PROCESSO_SELETIVO + QT_INGRESSO_OUTRA_FORMA as INGRESSANTES
 				
 		
-	from 	[F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\CURSO.qvd] (qvd);
+	from 	[qvd\$(anoProcessa)\CURSO.qvd] (qvd);
 	
 	
-store Transformada into [F:\Banco de dados\Censo Ensino Superior\$(anoProcessa)\$(anoProcessa)_T.qvd] (qvd);
+store Transformada into [qvd\$(anoProcessa)\$(anoProcessa)_T.qvd] (qvd);
 
 drop table Transformada; 

@@ -23,9 +23,9 @@ load
 	C0421+C0422+C0423+C0424+C0431+C0432+C0433+C0434 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_PRESENCIAL.qvd] (qvd);
+ [qvd\2007\GRADUACAO_PRESENCIAL.qvd] (qvd);
  
-store GRADUACAO_PRESENCIAL into 'F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
+store GRADUACAO_PRESENCIAL into 'qvd\2007\GRADUACAO_PRESENCIAL_T.qvd' (qvd);
 
 drop table GRADUACAO_PRESENCIAL;
 
@@ -52,9 +52,9 @@ drop table GRADUACAO_PRESENCIAL;
 	C167011+C167012+C167021+C167022 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_DISTANCIA.qvd] (qvd);
+ [qvd\2007\GRADUACAO_DISTANCIA.qvd] (qvd);
   
-store GRADUACAO_DISTANCIA into 'F:\Banco de dados\Censo Ensino Superior\2007\GRADUACAO_DISTANCIA_T.qvd' (qvd);
+store GRADUACAO_DISTANCIA into 'qvd\2007\GRADUACAO_DISTANCIA_T.qvd' (qvd);
 
 drop table GRADUACAO_DISTANCIA;
 
@@ -81,10 +81,10 @@ drop table GRADUACAO_DISTANCIA;
 	C2811+C2812+C2813+C2814+C2821+C2822+C2823+C2824 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\FORME_PRESENCIAL.qvd] (qvd);
+ [qvd\2007\FORME_PRESENCIAL.qvd] (qvd);
  
  
-store FORME_PRESENCIAL into 'F:\Banco de dados\Censo Ensino Superior\2007\FORMACAO_ESP_PRESENCIAL_T.qvd' (qvd);
+store FORME_PRESENCIAL into 'qvd\2007\FORMACAO_ESP_PRESENCIAL_T.qvd' (qvd);
 
 drop table FORME_PRESENCIAL;
 
@@ -113,10 +113,10 @@ FORME_DISTANCIA:
 	C206011+C206012+C206021+C206022 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\FORME_DISTANCIA.qvd] (qvd);
+ [qvd\2007\FORME_DISTANCIA.qvd] (qvd);
  
  
-store FORME_DISTANCIA into 'F:\Banco de dados\Censo Ensino Superior\2007\FORMACAO_ESP_DISTANCIA_T.qvd' (qvd);
+store FORME_DISTANCIA into 'qvd\2007\FORMACAO_ESP_DISTANCIA_T.qvd' (qvd);
 
 drop table FORME_DISTANCIA;
 
@@ -146,10 +146,10 @@ SECOMPLE_PRESENCIAL:
 	C3811+C3812+C3813+C3814+C3821+C3822+C3823+C3824 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_PRESENCIAL.qvd] (qvd);
+ [qvd\2007\SECOMPLE_PRESENCIAL.qvd] (qvd);
  
   
-store SECOMPLE_PRESENCIAL into 'F:\Banco de dados\Censo Ensino Superior\2007\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd' (qvd);
+store SECOMPLE_PRESENCIAL into 'qvd\2007\SEQUENCIAIS_COMPLE_PRESENCIAL_T.qvd' (qvd);
 
 drop table SECOMPLE_PRESENCIAL;
 
@@ -179,10 +179,10 @@ SECOMPLE_DISTANCIA:
 	C189011+C189012+C189021+C189022 as MATRICULADOS
 
  from 
- [F:\Banco de dados\Censo Ensino Superior\2007\SECOMPLE_DISTANCIA.qvd] (qvd);
+ [qvd\2007\SECOMPLE_DISTANCIA.qvd] (qvd);
 
   
-store SECOMPLE_DISTANCIA into 'F:\Banco de dados\Censo Ensino Superior\2007\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd' (qvd);
+store SECOMPLE_DISTANCIA into 'qvd\2007\SEQUENCIAIS_COMPLE_DISTANCIA_T.qvd' (qvd);
 
 drop table SECOMPLE_DISTANCIA;
 
