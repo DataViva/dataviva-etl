@@ -8,18 +8,9 @@ The sources of Dataviva can be found at [Dataviva GitHub](https://github.com/ale
 
 Databases are released by Brazil government as raw data and there is some analysis to extract the information needed for the project.
 
-For each database we have a Wiki documentation that exaplain all the ETL process.
+For each database we have a Wiki documentation that explain all the ETL process.
 
-We used Qlikview as a BI tool to make this process and the folder has:
+We used Qlikview as a BI tool to make this process and we a Wiki containg all the information.
 
-
-1.	QVS
-	
-	Qliview Scripts, that has the ETL process itself 
-
-2.	Qlikview (QVW)
-
-    Helps to check data using dashboards and can run the QVS
-	
 
 See the [Wiki](https://github.com/mariohmol/datavivaetl/wiki) for more information.
