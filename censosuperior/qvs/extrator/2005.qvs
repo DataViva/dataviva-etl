@@ -135,10 +135,10 @@ CURSO:
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_PRESENCIAL_2005.txt]
+[txt\2005\GRADUACAO_PRESENCIAL_2005.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_PRESENCIAL.qvd' (qvd);
+store CURSO into 'qvd\2005\GRADUACAO_PRESENCIAL.qvd' (qvd);
 
 drop table CURSO;
 
@@ -264,10 +264,10 @@ load
 	
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_DISTANCIA.txt]
+[txt\2005\GRADUACAO_DISTANCIA.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2005\GRADUACAO_DISTANCIA.qvd' (qvd);
+store CURSO into 'qvd\2005\GRADUACAO_DISTANCIA.qvd' (qvd);
 
 drop table CURSO;
 
@@ -415,11 +415,11 @@ load
 		
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\FORME_PRESENCIAL.txt]
+[txt\2005\FORME_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\FORME_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2005\FORME_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -532,18 +532,19 @@ load
 		@1713:1720   as C3511,
 		@1721:1728   as C3512,
 		@1729:1736   as C3521,
-		@1737:1744   as C3522
+		@1737:1744   as C3522,
+		@1745:1752   as C3611
 		
 		
 		
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\FORME_DISTANCIA.txt]
+[txt\2005\FORME_DISTANCIA.txt]
 (fix, codepage is 1252);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\FORME_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2005\FORME_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -671,10 +672,10 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2005\SECOMPLE_PRESENCIAL.txt]
+[txt\2005\SECOMPLE_PRESENCIAL.txt]
 (fix, codepage is 1252);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2005\SECOMPLE_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2005\SECOMPLE_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;

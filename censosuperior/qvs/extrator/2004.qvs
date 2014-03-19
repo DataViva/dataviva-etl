@@ -136,10 +136,10 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2004\GRADUACAO_PRESENCIAL_2004.txt]
+[txt\2004\GRADUACAO_PRESENCIAL_2004.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2004\GRADUACAO_PRESENCIAL.qvd' (qvd);
+store CURSO into 'qvd\2004\GRADUACAO_PRESENCIAL.qvd' (qvd);
 
 drop table CURSO;
 
@@ -262,10 +262,10 @@ text(@272:281) as AREACURSO,
 
 	
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2004\GRADUACAO_DISTANCIA.txt]
+[txt\2004\GRADUACAO_DISTANCIA.txt]
 (fix, codepage is 1252);
 
-store CURSO into 'F:\Banco de dados\Censo Ensino Superior\2004\GRADUACAO_DISTANCIA.qvd' (qvd);
+store CURSO into 'qvd\2004\GRADUACAO_DISTANCIA.qvd' (qvd);
 
 drop table CURSO;
 
@@ -411,11 +411,11 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2004\FORMACAO_ESP_PRESENCIAL.txt]
+[txt\2004\FORMACAO_ESP_PRESENCIAL.txt]
 (fix, codepage is 1252);
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2004\FORMACAO_ESP_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2004\FORMACAO_ESP_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -533,12 +533,12 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2004\FORMACAO_ESP_DISTANCIA.txt]
+[txt\2004\FORMACAO_ESP_DISTANCIA.txt]
 (fix, codepage is 1252);
 
 
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2004\FORMACAO_ESP_DISTANCIA.qvd]  (qvd);
+store CURSO into [qvd\2004\FORMACAO_ESP_DISTANCIA.qvd]  (qvd);
 
 drop table CURSO;
 
@@ -664,10 +664,10 @@ text(@272:281) as AREACURSO,
 
 
 FROM
-[F:\Banco de dados\Censo Ensino Superior\2004\SEQUENCIAIS_COMPLE_PRESENCIAL.txt]
+[txt\2004\SEQUENCIAIS_COMPLE_PRESENCIAL.txt]
 (fix, codepage is 1252);
 	
 
-store CURSO into [F:\Banco de dados\Censo Ensino Superior\2004\SEQUENCIAIS_COMPLE_PRESENCIAL.qvd]  (qvd);
+store CURSO into [qvd\2004\SEQUENCIAIS_COMPLE_PRESENCIAL.qvd]  (qvd);
 
 drop table CURSO;

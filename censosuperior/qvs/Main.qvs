@@ -10,8 +10,8 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
  
-SET extracao='False';
-SET transformacao='False'; //True e False
+SET extracao='True';
+SET transformacao='True'; //True e False
 SET agruparAno='False'; //True e False
 SET agruparFinal='False'; //True e False
 SET ajustes='False'; //True e False
@@ -93,7 +93,7 @@ end if
 IF 'True' = '$(agruparFinal)' then	
 	Final:
 	load * from 
-	[F:\Banco de dados\Censo Ensino Superior\2000\2000_T.qvd] (qvd);
+	[qvd\2000\2000_T.qvd] (qvd);
 				
 	For ano = 2001 to 2012
 		TRACE 'ABRINDO BASES TRANSFORMADAS - $(ano)';	
@@ -101,11 +101,11 @@ IF 'True' = '$(agruparFinal)' then
 		Concatenate
 		
 		load * from 
-		[F:\Banco de dados\Censo Ensino Superior\$(ano)\$(ano)_T.qvd] (qvd);
+		[qvd\$(ano)\$(ano)_T.qvd] (qvd);
 		
 	Next ano  
 	
-	store Final into [F:\Banco de dados\Censo Ensino Superior\FinalAgrupado.qvd] (qvd);
+	store Final into [qvd\FinalAgrupado.qvd] (qvd);
 	drop table Final;
 end if
 
@@ -113,7 +113,7 @@ IF 'True' = '$(ajustes)' then
 
 	Final:
 	load * from 
-		[F:\Banco de dados\Censo Ensino Superior\FinalAgrupado.qvd] (qvd);
+		[qvd\FinalAgrupado.qvd] (qvd);
 
 	// Compatibilizar CO Organização apartir do DS -> Mudança no codigo de organização durante o tempo, 
 	// portanto fazendo a unificação por meio do nome
@@ -191,8 +191,8 @@ IF 'True' = '$(ajustes)' then
 	resident Final;
  
  
-	store FinalAjustesInicial into [F:\Banco de dados\Censo Ensino Superior\Final.qvd] (qvd);
-	store FinalAjustesInicial into [F:\Banco de dados\Censo Ensino Superior\Final.csv] (txt);
+	store FinalAjustesInicial into [qvd\Final.qvd] (qvd);
+	store FinalAjustesInicial into [qvd\Final.csv] (txt);
 
 	drop Table Final;
 	drop table FinalAjustesInicial;
