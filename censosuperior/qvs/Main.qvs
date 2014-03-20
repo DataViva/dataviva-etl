@@ -15,7 +15,7 @@ SET transformacao='True'; //True e False
 SET agruparAno='False'; //True e False
 SET agruparFinal='False'; //True e False
 SET ajustes='False'; //True e False
-set anoProcessa='2000';
+set anoProcessa='2004';
 
 
 
