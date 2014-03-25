@@ -22,5 +22,5 @@ FROM
 [E:\Censo escolar_microdados\micro_censo_escolar_2011\Microdados Censo Escolar 2011\DADOS\TS_TURMA.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2011\TS_TURMA_2011.qvd
+store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2011\TS_TURMA_2011.qvd] (qvd)
 

@@ -23,4 +23,4 @@ FROM
 [E:\Censo escolar_microdados\micro_censo_escolar_2009\Microdados da Educação Básica 2009\DADOS\TS_TURMA.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2009\TS_TURMA_2009.qvd
+store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2009\TS_TURMA_2009.qvd] (qvd)
