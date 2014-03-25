@@ -7,6 +7,7 @@ LOAD
 	@105:106 as FK_COD_MOD_ENSINO,
 	@107:109 as FK_COD_ETAPA_ENSINO,
 	@110:117 as FK_COD_CURSO_PROF,
+	@118:119 as FK_COD_TIPO_TURMA,
 	@145:151 as PK_COD_ENTIDADE,
 	@152:153 as FK_COD_ESTADO,
 	@154:155 as SIGLA,
@@ -16,7 +17,7 @@ LOAD
 	@165:165 as DESC_CATEGORIA_ESCOLA_PRIVADA
 
 FROM
-[F:\Banco de dados\Censo escolar\2007\TS_MATRICULA_*.TXT]
+[F:\Banco de dados\Censo escolar\2007\TS_TURMA_*.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [F:\Banco de dados\Censo escolar\2007\TS_MATRICULA.qvd] (qvd);
+store MATRICULA into [F:\Banco de dados\Censo escolar\2007\TS_TURMA.qvd] (qvd);

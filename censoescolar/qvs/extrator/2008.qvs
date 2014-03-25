@@ -8,16 +8,17 @@ LOAD
 	@117:120 as FK_COD_MOD_ENSINO,
 	@121:124 as FK_COD_ETAPA_ENSINO,
 	@125:133 as FK_COD_CURSO_PROF,
+	@134:137 as FK_COD_TIPO_TURMA,
 	@195:204 as PK_COD_ENTIDADE,
 	@205:208 as FK_COD_ESTADO,
-	@209:210	 as SIGLA,
-	@211:224	 as FK_COD_MUNICIPIO,
+	@209:210 as SIGLA,
+	@211:224 as FK_COD_MUNICIPIO,
 	@225:225 as ID_LOCALIZACAO,
 	@226:226 as ID_DEPENDENCIA_ADM,
 	@227:227 as DESC_CATEGORIA_ESCOLA_PRIVADA
 
 FROM
-[F:\Banco de dados\Censo escolar\2008\TS_MATRICULA_*.TXT]
+[E:\Censo escolar_microdados\micro_censo_escolar_2008\Microdados da Educação Básica de 2008\DADOS\TS_TURMA.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [F:\Banco de dados\Censo escolar\2008\TS_MATRICULA.qvd] (qvd);
+store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2008\TS_TURMA_2008.qvd] (qvd);
