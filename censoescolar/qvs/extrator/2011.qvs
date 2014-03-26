@@ -1,6 +1,7 @@
 MATRICULA:
 LOAD      
 
+					
 	@1:5 as ANO_CENSO,
 	@6:16 as PK_COD_TURMA,
 	@17:96	 as NO_TURMA,
@@ -8,17 +9,18 @@ LOAD
 	@112:114 as FK_COD_MOD_ENSINO,
 	@115:118 as FK_COD_ETAPA_ENSINO,
 	@119:127 as FK_COD_CURSO_PROF,
-	@204:212	 as PK_COD_ENTIDADE,
+	@128:130 as FK_COD_TIPO_TURMA,
+	@204:212 as PK_COD_ENTIDADE,
 	@213:215 as FK_COD_ESTADO,
 	@216:217 as SIGLA,
 	@218:225 as FK_COD_MUNICIPIO,
 	@234:234 as ID_LOCALIZACAO,
-	@235:235	 as ID_DEPENDENCIA_ADM,
-	@236:236	 as DESC_CATEGORIA_ESCOLA_PRIVADA
-
-
+	@235:235 as ID_DEPENDENCIA_ADM,
+	@236:236 as DESC_CATEGORIA_ESCOLA_PRIVADA
+	
 FROM
-[F:\Banco de dados\Censo escolar\2011\TS_MATRICULA_*.TXT]
+[E:\Censo escolar_microdados\micro_censo_escolar_2011\Microdados Censo Escolar 2011\DADOS\TS_TURMA.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [F:\Banco de dados\Censo escolar\2011\TS_MATRICULA.qvd] (qvd);
+store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2011\TS_TURMA_2011.qvd] (qvd)
+

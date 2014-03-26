@@ -18,8 +18,8 @@ LOAD
 	@247:247 as DESC_CATEGORIA_ESCOLA_PRIVADA
 	
 FROM
-[E:\Censo escolar_microdados\micro_censo_escolar_2012\DADOS\TS_TURMA.TXT]
+[E:\Censo escolar_microdados\micro_censo_escolar_2013\Microdados do Censo da Educação Básica - 2013\DADOS\TS_TURMA.TXT]
 (fix, codepage is 1252);
 
-store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2012\TS_TURMA_2012.qvd] (qvd)
+store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2013\TS_TURMA_2013.qvd] (qvd)
 
