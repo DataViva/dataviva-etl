@@ -1,20 +1,73 @@
 if '$(executarTransformacao)'='S' then
 	NFE:
-	load * from $(diretorioSaida)*.qvd (qvd);
+	LOAD 
+	
+		
+		left(MapSubString('MapCaracteresEstranhos',trim(CD_CNAE_DESTINATARIO)),7) as CD_CNAE_DESTINATARIO,
+		left(MapSubString('MapCaracteresEstranhos',trim(CD_CNAE_REMETENTE)),7) as CD_CNAE_REMETENTE,
+		CD_CAPITULO_NCM, 
+		ApplyMap('MAP_NCM',CD_SUBITEM_NCM, 'X'&CD_SUBITEM_NCM) as CD_SUBITEM_NCM,
+		CD_RECO_DESTINATARIO, 
+		DS_REGIME_RECO_DESTINATARIO, 
+		CD_RECO_REMETENTE, 
+		DS_REGIME_RECO_REMETENTE, 
+		CD_CFOP, 
+		CD_CST, 
+		DS_TP_DESTINATARIO, 
+		DS_TP_REMETENTE, 
+		NM_LOCALIDADE_DESTINATARIO, 
+		NM_LOCALIDADE_REMETENTE, 
+		NR_ANO, 
+		NR_MES, 
 
-	store NFE into $(diretorioFinal)DeMG.qvd (qvd);
+		ApplyMap('MAP_IBGE',SIGLA_UF_DESTINATARIO&NM_LOCALIDADE_DESTINATARIO,'X'&SIGLA_UF_DESTINATARIO&NM_LOCALIDADE_DESTINATARIO) 
+			as DESTINATARIO_IBGE,
+		ApplyMap('MAP_IBGE',SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE,'X'&SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE) 
+			as REMETENTE_IBGE,
 
+		ApplyMap('MAP_CFOP',CD_CFOP,'X'&CD_CFOP) as CHECK_CFOP,
+		ApplyMap('MAP_GRUPO_CFOP',CD_CFOP,'X'&CD_CFOP) as GRUPO_CFOP,
+		ApplyMap('MAP_FLUXO_CFOP',CD_CFOP,'X'&CD_CFOP) as FLUXO_CFOP,
+		     
+		SIGLA_UF_DESTINATARIO&NM_LOCALIDADE_DESTINATARIO as UFCIDADE_DESTINO,
+		SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE as UFCIDADE_REMETENTE,
+
+		SIGLA_UF_DESTINATARIO, 
+		SIGLA_UF_REMETENTE, 
+		DS_SITUACAO_DESTINATARIO, 
+		DS_SITUACAO_REMETENTE, 
+		VR_DESPESA, 
+		VR_ICMS_ST, 
+		VR_ICMS_ST_RET, 
+		VR_ICMS, 
+		VR_IPI, 
+		VR_PIS, 
+		VR_COFINS, 
+		VR_II, 
+		VR_PRODUTO, 
+		ORIGEM, 
+		arquivo
+	FROM
+	[dados\2013-01\*.qvd]
+	(qvd)
+	WHERE NOT ISNULL(DS_SITUACAO_DESTINATARIO) and NOT ISNULL(CD_CFOP) and CD_CFOP<>'';
+	
+	Noconcatenate
+	
+	NFETransformada:
+	load 
+		* ,
+		 ApplyMap('MAP_CNAE',CD_CNAE_DESTINATARIO,'X'&CD_CNAE_DESTINATARIO) as CNAE_DESTINATARIO,
+		 ApplyMap('MAP_CNAE',CD_CNAE_REMETENTE,'X'&CD_CNAE_REMETENTE) as CNAE_REMETENTE
+		
+	resident NFE;
+	
 	drop table NFE;
 
-	//Problemas em valores  'F:\Banco de dados\SEF\NFE _NCM\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_26a29.txt'
-	//Retirado por enquanto
-	NFE:
-	load * from $(diretorioFinal)DeMG.qvd (qvd)
-	where arquivo <> '$(diretorioSaida)MG_EX_para_todas_122012_NCM_26a29.txt'
-	;
 
-	store NFE into $(diretorioFinal)DeMGFinal.qvd (qvd);
 
-	drop table NFE;
+	store NFETransformada into [dados\2013-01.qvd] (qvd);
+
+	drop table NFETransformada;
 
 end if

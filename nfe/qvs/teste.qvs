@@ -22,14 +22,21 @@ select * from rais_ybi r, attrs_bra a
 
 where r.isic_id like '%3030' and  r.num_est is not null and r.year = 2012
 and r.bra_id = a.id and r.bra_id like 'mg%' order by a.name_pt
-*/
-	
+
+load [Cd Cnae 2.0 Destinatário],[Nm Localidade  Destinatário],sum([Vr Produto SUM]) from $(diretorioBaseDados)*DeMG.qvd (qvd) 
+where left([Cd Cfop],1)<=3 
+group by [Cd Cnae 2.0 Destinatário],[Nm Localidade  Destinatário];
+
+exit script;
+	*/
+	//and [Nm Localidade  Destinatário]='OURO PRETO'
+	// and [Nm Localidade Remetente]='OURO PRETO'
 	load * from $(diretorioBaseDados)*DeMG.qvd (qvd)
 		where 
 	(
-		([Cd Cnae 2.0 Destinatário] like '0710%' and left([Cd Cfop],1)<=3 and [Nm Localidade  Destinatário]='OURO BRANCO')  
+		([Cd Cnae 2.0 Destinatário] like '%1011%' and left([Cd Cfop],1)<=3 and [Nm Localidade  Destinatário]='CAMPINA VERDE')  
 		or
-		([Cd Cnae 2.0 Remetente] like '0710%' and left([Cd Cfop],1)>3  and [Nm Localidade Remetente]='OURO BRANCO') 
+		([Cd Cnae 2.0 Remetente] like '%1011%' and left([Cd Cfop],1)>3 and [Nm Localidade Remetente]='CAMPINA VERDE') 
 
 	);
 	

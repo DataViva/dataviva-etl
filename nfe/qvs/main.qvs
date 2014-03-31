@@ -1,9 +1,10 @@
 SET executarExtracao='N';
-SET executarTransformacao='N';
+SET executarTransformacao='S';
+SET executarExportar='N';
 SET executarLeitura='N';
-SET executarTeste='S';
+SET executarTeste='N';
 
-SET diretorioBaseDados='F:\Banco de dados\SEF\';
+SET diretorioBaseDados='F:\Projetos\datavivaetl\nfe\dados\';
 
 
 //2013-01
@@ -12,11 +13,11 @@ SET anomesProcessa='2013-01';
 
 set diretorioFinal=$(diretorioBaseDados)$(anomesProcessa);
 
-set diretorioSaida=$(diretorioFinal)\De MG para todas as UFs\;
-set diretorioEntrada=$(diretorioFinal)\Para MG\;
+trace $(diretorioFinal);
 
-trace $(diretorioSaida);
 
+DIRECTORY;
+$(Include=qvs\localtreemap.qvs);
 
 DIRECTORY;
 $(Include=qvs\extrator.qvs);
@@ -25,13 +26,54 @@ $(Include=qvs\extrator.qvs);
 DIRECTORY;
 $(Include=qvs\transformador.qvs);
 
+if '$(executarLeitura)'='S' then
+	Exportar:
+	LOAD CD_CNAE_DESTINATARIO, 
+	     CD_CNAE_REMETENTE,
+	     CD_SUBITEM_NCM, 
+	     CD_RECO_DESTINATARIO, 
+	     CD_RECO_REMETENTE, 
+	     CD_CFOP, 
+	     CD_CST, 
+	     DS_TP_DESTINATARIO, 
+	     DS_TP_REMETENTE, 
+	     NR_ANO, 
+	     NR_MES, 
+	     DESTINATARIO_IBGE, 
+	     REMETENTE_IBGE, 
+	     CHECK_CFOP, 
+	     GRUPO_CFOP, 
+	     FLUXO_CFOP, 
+	     DS_SITUACAO_DESTINATARIO, 
+	     DS_SITUACAO_REMETENTE, 
+	     VR_DESPESA, 
+	     VR_ICMS_ST, 
+	     VR_ICMS_ST_RET, 
+	     VR_ICMS, 
+	     VR_IPI, 
+	     VR_PIS, 
+	     VR_COFINS, 
+	     VR_II, 
+	     VR_PRODUTO, 
+	     ORIGEM, 
+	     arquivo
 
-DIRECTORY;
-$(Include=qvs\localtreemap.qvs);
+	FROM [dados\2013-01.qvd](qvd) ;
 
+	store Exportar into [dados\testes.csv] (txt);
+	
+	drop table Exportar;
+
+	/*
+	 CD_RECO_DESTINATARIO, 
+	     DS_REGIME_RECO_DESTINATARIO, 
+	     
+		  CNAE_DESTINATARIO, 
+	     CNAE_REMETENTE
+	*/
 if '$(executarLeitura)'='S' then
 	NFE:
-	load * from $(diretorioFinal)DeMGFinal.qvd (qvd);
+	load * from $(diretorioFinal)*.qvd (qvd);
 end if
 
 DIRECTORY;

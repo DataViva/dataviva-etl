@@ -1,89 +1,167 @@
-/*
-ProdutoFinal:
-load 
+ChrMap:
+MAPPING LOAD * INLINE [
 
-	sum([Vr Produto SUM]),
-	sum([Vr ICMS SUM]),
-	[Nm Localidade  Destinatário], 
-		     [Sigla UF  Destinatário]
-      from F:\Banco de dados\SEF\NFE _NCM\DeMGFinal.qvd (qvd)
-	where [Nm Localidade Remetente]='SAO JOAO DEL REI' and [Sigla UF Remetente]='MG'
-//'SAO JOAO DEL REY'
-//'ITAJUBA'
-	group by [Nm Localidade  Destinatário], 
-		     [Sigla UF  Destinatário]
-;
+    From,           To
 
+    á,                     a
 
+    â,                     a
 
-store ProdutoFinal into F:\Banco de dados\SEF\NFE _NCM\UFSJDR.qvd (qvd);
+    ã,                    a
 
-drop table ProdutoFinal;
+    é,                     e
 
-exit script;
+    ê,                     e
 
+    í,                     i
 
+    ó,                     o
 
+    ô,                     o
 
+    õ,                    o
 
-Produto:
-load 
+    ú,                     u
 
-	sum([Vr Produto SUM]),
-	sum([Vr ICMS SUM]),
-	[Nm Localidade Remetente], 		   
-	  [Sigla UF Remetente],	 
-	  //left([Cd Capítulo NCM],  Len([Cd Capítulo NCM])-2) as NCM2007,
-	 Num#( trim([Cd Capítulo NCM]) ) as NCM2007,
-	   [Ds Capítulo NCM]  
-	//  left([Cd Sub Item NCM],  Len([Cd Sub Item NCM])-2)  as NCM2007, 		     [Ds Sub Item NCM] 
-      from F:\Banco de dados\SEF\NFE _NCM\DeMGFinal.qvd (qvd)
-	where [Nm Localidade Remetente]='SAO JOAO DEL REI' and [Sigla UF Remetente]='MG'
-//SAO JOAO DEL REY
-//'ITAJUBA'
-	group by [Nm Localidade Remetente], 		     [Sigla UF Remetente],  
-	[Cd Capítulo NCM],[Ds Capítulo NCM]
-//	 [Cd Sub Item NCM],      [Ds Sub Item NCM]
-;
+    Á,                     A
 
+    Â,                     A
 
+    Ã,                    A
 
+    É,                     E
 
-//SELECT *,SUBSTRING(id FROM 3) FROM ps2.attrs_hs  where length(id)=4 limit 0 , 10000
-left join(Produto)
-LOAD A as id, 
-     B as NomeEn, 
-     C as DescEn, 
-     D, 
-     E as NomePt, 
-     F as DescPt, 
-     G, 
-     H, 
-     I, 
-     J, 
-     K, 
-    Num#( trim(L) ) as NCM2007
-FROM
-[F:\Banco de dados\Correspondências das Classificações\HS\HSNomeclaturaCapitulo2007.xlsx]
-(ooxml, no labels, table is Plan1);
+    Ê,                     E
+
+    Í,                     I
+
+    Ó,                     O
+
+    Ô,                     O
+
+    Õ,                    O
+
+    Ú,                     U
+
+    ç,                    c
+
+    Ç,                    c
+
+];
 
 
-NoConcatenate
+MapCaracteresEstranhos:
+Mapping LOAD * inline [
+'Caracter', 'Sobrescrever'
+'.',''
+'-',''
+'/',''
+' ',''
+];
 
+trace 'LENDO MAP IBGE';
 
+//Municipios e UF - 
+IBGE:
+	LOAD State_ShortName, 
+	     State_ID, 
+	     Municipality_IBGE, 
+	     Municipality_ID,
+	     Municipality_FAZENDA
+	FROM
+	docs\IBGE.xls
+	(biff, embedded labels, table is [Municipality$]);
 
-ProdutoFinal:
-load * 
-	resident Produto where not isnull(NomePt) ;
+MAP_IBGE:	
+	MAPPING LOAD  
+		State_ShortName & upper(mapsubstring('ChrMap', Municipality_FAZENDA)) as UF_MUNICIPIO,
+		Municipality_ID AS COD_IBGE 
+	RESIDENT IBGE;
+
+DROP TABLE IBGE;
+
+trace 'LENDO MAP CFOP';
+CFOP:
+	LOAD Cod, 
+	     CFOP, 
+	     DESCRIÇÃO, 
+	     ATENÇÃO, 
+	     DAPI, 
+	     Reclassificação, 
+	     DESCRIÇÃO1
+	FROM
+	docs\CFOP.xlsx
+	(ooxml, embedded labels, table is De_para_CFOP);
+
+MAP_CFOP:
+	MAPPING load 
+		CFOP,
+		DESCRIÇÃO AS DESCRICAO_CFOP 
+	RESIDENT CFOP;
+
 	
-drop table Produto;
+MAP_GRUPO_CFOP:
+	MAPPING load 
+		CFOP,
+		Reclassificação AS GRUPO_CFOP 
+	RESIDENT CFOP;
 
-store ProdutoFinal into F:\Banco de dados\SEF\NFE _NCM\ProdutoSJDR.qvd (qvd);
-//ProdutoItajuba
+//11 a 21 ou 44 a 54	Estado	
+//22 a 32 ou 55 a 65	Outros Estados	
+//33 a 43 ou 66 a 76	Exterior	
 
-drop table ProdutoFinal;
+MAP_FLUXO_CFOP:
+	MAPPING load 
+		CFOP,
+		IF( (Reclassificação>=11 AND Reclassificação<=21) OR (Reclassificação>=44 AND Reclassificação<=54),'Estado',
+			IF( (Reclassificação>=22 AND Reclassificação<=32) OR (Reclassificação>=55 AND Reclassificação<=65),'Outros Estado',
+				IF( (Reclassificação>=33 AND Reclassificação<=43) OR (Reclassificação>=66 AND Reclassificação<=76),'Exterior','')
+			)
+		)		AS FLUXO_CFOP 
+	RESIDENT CFOP;
+	
+DROP TABLE CFOP;
 
-exit script;
+trace 'LENDO MAP CNAE';
+CNAE:
+	LOAD @1 as Secao,	//a 
+	     @2 as Divisao, 	//01
+	     @3 as Grupo, 	//01.1
+	     @4 as Classe, 	//01.11-3
+	     MapSubString('MapCaracteresEstranhos',trim(@5)) as Subclasse,  //0111-3/03
+	     @6 as Denominacao //Cultivo de Arroz
+	FROM
+	F:\Projetos\datavivaetl\nfe\docs\CNAE.xls
+	(biff, no labels, table is [Est. Detalhada CNAE 2.1 - subcl$]);
 
 
-*/
+	
+MAP_CNAE:
+	MAPPING load 
+		Subclasse  AS CNAE,
+		Denominacao AS DESCRICAO_CNAE 
+	RESIDENT CNAE WHERE not isnull(Subclasse) and Subclasse<>'' and (len(Subclasse)=7  or  Subclasse='1' or Subclasse='2');
+
+DROP TABLE CNAE;
+
+
+NCM:
+	LOAD NCM, 
+	     DESCRIÇÃO
+	FROM
+	F:\Projetos\datavivaetl\nfe\docs\NCM.xlsx
+	(ooxml, embedded labels, table is [NCM-TEC 2012]) WHERE len(NCM)=10 ;
+
+MAP_NCM_DESCRICAO:
+	MAPPING LOAD
+		MapSubString('MapCaracteresEstranhos',trim(NCM)) as NCM,
+		DESCRIÇÃO as DESCRICAO_NCM
+	RESIDENT NCM;
+	
+MAP_NCM:
+	MAPPING LOAD
+		MapSubString('MapCaracteresEstranhos',trim(NCM)) as NCM,
+		MapSubString('MapCaracteresEstranhos',trim(NCM)) as NCM_DESTINO
+	RESIDENT NCM;
+
+DROP TABLE NCM;

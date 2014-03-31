@@ -1,20 +1,8 @@
 
 if '$(executarExtracao)'='S' then
 
-	/*
-
-	ERROS:
-	2012: Dois arquivos com layout diferente
-	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_84.txt'
-	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_85.txt'
-	'2012-12\De MG para todas as UFs\MG_EX_para_todas_122012_NCM_26a29.txt' 
-
-	2013
-	'2013-01\De MG para todas as UFs\MG_EX_para_todas_012013_NCM_30.txt.qvd' (qvd)
-		
-	*/
-
-	Directory $(diretorioSaida); 
+	trace 'Extraindo arquivos TXT do diretorio $(diretorioFinal)';
+	Directory $(diretorioFinal)\; 
 
 		For each Arquivo in filelist ('*.txt')
 		
@@ -26,102 +14,76 @@ if '$(executarExtracao)'='S' then
 		
 			trace 'Extraindo Arquivo $(Arquivo)';
 			NFE:
-			LOAD 
-			 
-				 
-				//Código Sub Item NCM
-				[Cd Sub Item NCM], 
 
-				//Código CNAE Destinatário
-				[Cd Cnae 2.0 Destinatário], 
+				LOAD 
+				
+					//Código Sub Item NCM
+					@1 as CD_SUBITEM_NCM, 
+					//Código CNAE Destinatário
+				     @2 as CD_CNAE_DESTINATARIO, 
+				     //Código CNAE Rementente
+				     @3 as CD_CNAE_REMETENTE, 
+				     //Código Capítulo NCM
+				     @4 as CD_CAPITULO_NCM, 
+				     //Código Recolhimento Destinatário
+				     @5 as CD_RECO_DESTINATARIO, 
+				     //Descrição Regime de Recolhimento Destinatário	
+				     @6 as DS_REGIME_RECO_DESTINATARIO, 
+				     //Código Recolhimento Rementente
+				     @7 as CD_RECO_REMETENTE, 
+				     //Descrição Regime de Recolhimento Remetente
+				     @8 as DS_REGIME_RECO_REMETENTE, 
+				     //Código CFOP
+				     @9 as CD_CFOP, 
+				     //Código CST
+				     @10 as CD_CST, 
+				     //Descrição Tipo de Destinatário
+				     @11 as DS_TP_DESTINATARIO, 
+				     //Descrição Tipo de Remetente
+				     @12 as DS_TP_REMETENTE, 
+				     //Localidade Destinatário
+				     @13 as NM_LOCALIDADE_DESTINATARIO, 
+				     //Localidade Remetente
+				     @14 as NM_LOCALIDADE_REMETENTE, 
+				     //Ano
+				     @15 as NR_ANO, 
+				     //mês
+				     @16 as NR_MES, 
+				     //Sigla UF do Destinatário -  [Sigla UF  Destinatário], 
+				     @17 as SIGLA_UF_DESTINATARIO, 
+				     //Sigla UF do Remetente - [Sigla UF Remetente], 
+				     @18 as SIGLA_UF_REMETENTE, 
+				     //Situação Destinatário
+				     @19 as DS_SITUACAO_DESTINATARIO, 
+				     //Situação Remetente
+				     @20 as DS_SITUACAO_REMETENTE, 
+				     //Valor Despesa
+				     @21 as VR_DESPESA, 
+				     //Valor ICMS ST
+				     @22 as VR_ICMS_ST, 
+				     //Valor ICMS ST RET
+				     @23 as VR_ICMS_ST_RET, 
+				     //Valor ICMS
+				     @24 as VR_ICMS, 
+				     //Valor IPI
+				     @25 as VR_IPI, 
+				     //Valor PIS
+				     @26 as VR_PIS, 
+				     //Valor COFINS
+				     @27 as VR_COFINS, 
+				     //Valor II
+				     @28 as VR_II, 
+				     //Valor do Produto
+				     @29 as VR_PRODUTO,
+					//ORIGEM -> De Fora pra Minas (T) ou de Minas pra Fora (M) ou E para Exterior
+				     @30 as ORIGEM,
+				     '$(Arquivo)' as arquivo
+				     
+				     //Valor ISSQN	 - ? 
+				FROM
+				$(Arquivo)
+				(txt , codepage is 1252 , no labels , delimiter is ';' , no quotes , header is 34 lines);
 
-				//Código CNAE Rementente
-				[Cd Cnae 2.0 Remetente], 
-
-				//Código Capítulo NCM
-				[Cd Capítulo NCM],
-
-				//Código Recolhimento Destinatário
-				[Código Recolhimento Destinatário], 
-
-				//Descrição Regime de Recolhimento Destinatário				 
-				[Ds Regime Recolhimento Destinatario], 
-
-				//Código Recolhimento Rementente
-				[Código Recolhimento Remetente], 
-
-				//Descrição Regime de Recolhimento Remetente
-				[Ds Regime Recolhimento Remetente], 
-
-				//Código CFOP
-				[Cd Cfop], 
-
-				//Código CST
-				[Cd Cst], 
-
-				//Descrição Tipo de Destinatário
-				[Ds tp destinatario], 
-
-				//Descrição Tipo de Remetente
-				[Ds tp remetente], 
-
-				//Localidade Destinatário
-				[Nm Localidade  Destinatário], 
-
-				//Localidade Remetente
-				[Nm Localidade Remetente], 
-
-				//Ano/mês
-				[Nr ano mes], 
-
-				//Sigla UF do Destinatário -  [Sigla UF  Destinatário], 
-				[Sigla Uf Destinatario], 
-
-				//Sigla UF do Remetente - [Sigla UF Remetente], 
-				[Sigla Uf Remetente], 
-
-
-				//Situação Destinatário
-				[Ds situacao Destinatario], 
-
-				//Situação Remetente
-				[Ds situacao Remetente], 
-
-				//Valor ICMS ST
-				[Vr ICMS ST SUM], 
-
-				//Valor ICMS ST RET
-				[Vr Icms St Ret SUM], 
-
-				//Valor ICMS
-				[Vr ICMS SUM], 
-
-				//Valor IPI
-				[Vr IPI SUM], 
-
-				//Valor PIS
-				[Vr PIS SUM], 
-
-				//Valor COFINS
-				[Vr Cofins SUM], 
-
-				//Valor II
-				[Vr II SUM], 
-
-				//Valor do Produto
-				[Vr Produto SUM], 
-
-				//Valor Despesa
-				[Vr Despesa SUM], 
-
-				//Valor ISSQN		    	     
-				[Vr ISSQN SUM], 
-			 
-				 '$(Arquivo)' as arquivo
-					FROM
-					$(Arquivo)
-					(txt, utf8, embedded labels, delimiter is '\t', msq);
-					
 				store NFE into '$(Arquivo).qvd' (qvd);
 				
 				drop table NFE;
