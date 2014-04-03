@@ -6,12 +6,16 @@ if '$(executarTransformacao)'='S' then
 		left(MapSubString('MapCaracteresEstranhos',trim(CD_CNAE_DESTINATARIO)),7) as CD_CNAE_DESTINATARIO,
 		left(MapSubString('MapCaracteresEstranhos',trim(CD_CNAE_REMETENTE)),7) as CD_CNAE_REMETENTE,
 		CD_CAPITULO_NCM, 
-		ApplyMap('MAP_NCM',CD_SUBITEM_NCM, 'X'&CD_SUBITEM_NCM) as CD_SUBITEM_NCM,
+		ApplyMap('MAP_NCM_CORRECAO',CD_SUBITEM_NCM)	as PRE_SUBITEM_NCM,		
 		CD_RECO_DESTINATARIO, 
 		DS_REGIME_RECO_DESTINATARIO, 
 		CD_RECO_REMETENTE, 
 		DS_REGIME_RECO_REMETENTE, 
-		CD_CFOP, 
+		CD_CFOP,
+		 ApplyMap('MAP_GRUPO_CFOP',CD_CFOP,'X'&CD_CFOP) as GRUPO_CFOP,
+		 ApplyMap('MAP_FLUXO_CFOP',CD_CFOP,'X'&CD_CFOP) as FLUXO_CFOP,
+		 
+		 
 		CD_CST, 
 		DS_TP_DESTINATARIO, 
 		DS_TP_REMETENTE, 
@@ -25,10 +29,6 @@ if '$(executarTransformacao)'='S' then
 		ApplyMap('MAP_IBGE',SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE,'X'&SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE) 
 			as REMETENTE_IBGE,
 
-		ApplyMap('MAP_CFOP',CD_CFOP,'X'&CD_CFOP) as CHECK_CFOP,
-		ApplyMap('MAP_GRUPO_CFOP',CD_CFOP,'X'&CD_CFOP) as GRUPO_CFOP,
-		ApplyMap('MAP_FLUXO_CFOP',CD_CFOP,'X'&CD_CFOP) as FLUXO_CFOP,
-		     
 		SIGLA_UF_DESTINATARIO&NM_LOCALIDADE_DESTINATARIO as UFCIDADE_DESTINO,
 		SIGLA_UF_REMETENTE&NM_LOCALIDADE_REMETENTE as UFCIDADE_REMETENTE,
 
@@ -48,7 +48,7 @@ if '$(executarTransformacao)'='S' then
 		ORIGEM, 
 		arquivo
 	FROM
-	[dados\2013-01\*.qvd]
+	[dados\$(anomesProcessa)\*.qvd]
 	(qvd)
 	WHERE NOT ISNULL(DS_SITUACAO_DESTINATARIO) and NOT ISNULL(CD_CFOP) and CD_CFOP<>'';
 	
@@ -58,7 +58,13 @@ if '$(executarTransformacao)'='S' then
 	load 
 		* ,
 		 ApplyMap('MAP_CNAE',CD_CNAE_DESTINATARIO,'X'&CD_CNAE_DESTINATARIO) as CNAE_DESTINATARIO,
-		 ApplyMap('MAP_CNAE',CD_CNAE_REMETENTE,'X'&CD_CNAE_REMETENTE) as CNAE_REMETENTE
+		 ApplyMap('MAP_CNAE',CD_CNAE_REMETENTE,'X'&CD_CNAE_REMETENTE) as CNAE_REMETENTE,
+		 ApplyMap('MAP_NCM',PRE_SUBITEM_NCM, 'X'&PRE_SUBITEM_NCM) as CD_SUBITEM_NCM,
+		 ApplyMap('MAP_GRUPO_NOME_CFOP',GRUPO_CFOP, 'X'&GRUPO_CFOP) as GRUPO_NOME_CFOP,
+		 left(CD_CFOP,1) as CD_PRIMEIRODIGITO_CFOP,
+		 ApplyMap('MAP_DAPI_CFOP',CD_CFOP,'X'&CD_CFOP) as DAPI_CFOP
+		 
+		 
 		
 	resident NFE;
 	
@@ -66,7 +72,7 @@ if '$(executarTransformacao)'='S' then
 
 
 
-	store NFETransformada into [dados\2013-01.qvd] (qvd);
+	store NFETransformada into [dados\$(anomesProcessa).qvd] (qvd);
 
 	drop table NFETransformada;
 

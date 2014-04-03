@@ -99,11 +99,28 @@ MAP_CFOP:
 		DESCRIÇÃO AS DESCRICAO_CFOP 
 	RESIDENT CFOP;
 
+MAP_CHECKCFOP:
+	MAPPING load 
+		CFOP,
+		CFOP AS CHECK_CFOP 
+	RESIDENT CFOP;
 	
 MAP_GRUPO_CFOP:
 	MAPPING load 
 		CFOP,
 		Reclassificação AS GRUPO_CFOP 
+	RESIDENT CFOP;
+	
+MAP_DAPI_CFOP:
+	MAPPING load 
+		CFOP,
+		DAPI AS DAPI_CFOP 
+	RESIDENT CFOP WHERE DAPI<>'';
+	
+MAP_GRUPO_NOME_CFOP:
+	MAPPING load 
+		Reclassificação,
+		DESCRIÇÃO1 AS GRUPO_NOME_CFOP 
 	RESIDENT CFOP;
 
 //11 a 21 ou 44 a 54	Estado	
@@ -165,3 +182,18 @@ MAP_NCM:
 	RESIDENT NCM;
 
 DROP TABLE NCM;
+
+NCM_CORRECAO:
+	LOAD NCM_fazenda, 
+	     NCM_2012
+	FROM
+	F:\Projetos\datavivaetl\nfe\docs\NCMCorrecao.xlsx
+	(ooxml, embedded labels, table is De_para_final);
+	
+MAP_NCM_CORRECAO:
+	MAPPING LOAD
+		NCM_fazenda as NCM_DE,
+		NCM_2012 as NCM_PARA
+	RESIDENT NCM_CORRECAO;	
+	
+DROP TABLE NCM_CORRECAO;
