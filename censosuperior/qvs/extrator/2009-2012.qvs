@@ -8,7 +8,7 @@ load
 
  @1:8  as CO_IES,
  @209:216 as  CO_CATEGORIA_ADMINISTRATIVA,
- @317:324  as CO_ORGANIZACAO_ACADEMICA,
+ @317:324 as CO_ORGANIZACAO_ACADEMICA,
  
  @425:432 as CO_MUNICIPIO_CURSO,
  text(@839:850) as CO_OCDE,
@@ -145,16 +145,6 @@ FROM
 store CURSO into [qvd\2010\CURSO.qvd];
 
 drop table CURSO;
-
-
-
-
-
-
-
-
-
-
 
 //2009
 
