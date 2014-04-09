@@ -10,8 +10,8 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
  
-SET extracao='False';
-SET transformacao='False'; //True e False
+SET extracao='True';
+SET transformacao='True'; //True e False
 SET agruparAno='True'; //True e False
 SET agruparFinal='True'; //True e False
 SET ajustes='True'; //True e False
@@ -128,8 +128,8 @@ IF 'True' = '$(ajustes)' then
 	NomeOrganizacaoConvertCodigo:
 	MAPPING LOAD * INLINE [
 		Nome, Codigo                                     
-		'Centro de Educação Tecnológica','7'				
-		'Centro Federal de Educação Tecnológica','5'
+		'Centro de Educação Tecnológica','4'				
+		'Centro Federal de Educação Tecnológica','4'
 		'CENTRO UNIVERSITARIO','2'
 		'Centro Universitário','2'
 		'Centro Universitário Especializado','2'
@@ -140,7 +140,7 @@ IF 'True' = '$(ajustes)' then
 		'Faculdades Integradas','3'
 		'INSTITUTO FEDERAL DE EDUCACAO CIENCIA E TECNOLOGIA','4'
 		'Instituto Federal de Educação, Ciência e Tecnologia','4'
-		'Instituto Superior ou Escola Superior','6'
+		'Instituto Superior ou Escola Superior','4'
 		'UNIVERSIDADE','1'
 		'Universidade','1'
 		'Universidade Especializada','1'
@@ -158,7 +158,7 @@ IF 'True' = '$(ajustes)' then
 
 	FinalAjustesInicial:
 	load 
-		ApplyMap('NomeOrganizacaoConvertCodigo',trim(NOMEORGACAD),0) as CO_ORGANIZACAO_ACADEMICA,
+		ApplyMap('NomeOrganizacaoConvertCodigo',trim(NOMEORGACAD),'X'&trim(NOMEORGACAD)) as CO_ORGANIZACAO_ACADEMICA,
 		
 		// Cortar o municipio pegando os 2 primeiros e os ultimos 5 
 		// O codigo do municipio contempla também Meso e Micro regioes, portanto cortando apenas para cod IBGE
