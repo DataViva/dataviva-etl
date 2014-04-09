@@ -1,0 +1,67 @@
+﻿///$tab Main
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='R$ #.##0,00;-R$ #.##0,00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
+SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
+
+
+/Carregando 
+MATRICULAS:
+LOAD ANO_CENSO, 
+     PK_COD_TURMA, 
+     NO_TURMA, 
+     NUM_MATRICULAS, 
+     FK_COD_MOD_ENSINO, 
+     FK_COD_ETAPA_ENSINO, 
+     FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
+     PK_COD_ENTIDADE, 
+     FK_COD_ESTADO, 
+     SIGLA, 
+     FK_COD_MUNICIPIO, 
+     ID_LOCALIZACAO, 
+     ID_DEPENDENCIA_ADM, 
+     DESC_CATEGORIA_ESCOLA_PRIVADA
+FROM
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2007.qvd]
+(qvd);
+
+MAPA:
+Mapping
+LOAD A as de, 
+     C as para
+FROM
+C:\Rafael\Qlikview\Mapa_curso_profissionalizante.xlsx
+(ooxml, no labels, header is 1 lines, table is Plan1);
+
+NoConcatenate
+
+RESULTADO:
+LOAD
+	ANO_CENSO, 
+     PK_COD_TURMA, 
+     NO_TURMA, 
+     NUM_MATRICULAS, 
+     FK_COD_MOD_ENSINO, 
+     FK_COD_ETAPA_ENSINO, 
+     Applymap('MAPA',FK_COD_CURSO_PROF,'x'&FK_COD_CURSO_PROF) as FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
+     PK_COD_ENTIDADE, 
+     FK_COD_ESTADO, 
+     SIGLA, 
+     FK_COD_MUNICIPIO, 
+     ID_LOCALIZACAO, 
+     ID_DEPENDENCIA_ADM, 
+     DESC_CATEGORIA_ESCOLA_PRIVADA
+     
+    Resident MATRICULAS;
+
+DROP Table MATRICULAS;
+
+store RESULTADO into [C:\Rafael\Qlikview\Censo Escolar\QVD\2007.qvd] (qvd);

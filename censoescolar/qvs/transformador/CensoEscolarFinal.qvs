@@ -10,37 +10,7 @@ SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
 SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
-MATRICULA:
-LOAD      
-				
-	@1:5 as ANO_CENSO,
-	@6:16 as PK_COD_TURMA,
-	@17:96 as NO_TURMA,
-	@107:112 as NUM_MATRICULAS,
-	@113:115 as FK_COD_MOD_ENSINO,
-	@116:119 as FK_COD_ETAPA_ENSINO,
-	@120:128 as FK_COD_CURSO_PROF,
-	@129:131 as FK_COD_TIPO_TURMA,
-	@213:221 as PK_COD_ENTIDADE,
-	@222:224 as FK_COD_ESTADO,
-	@225:226 as SIGLA,
-	@227:235 as FK_COD_MUNICIPIO,
-	@245:245 as ID_LOCALIZACAO,
-	@246:246 as ID_DEPENDENCIA_ADM,
-	@247:247 as DESC_CATEGORIA_ESCOLA_PRIVADA
-	
-FROM
-[E:\Censo escolar_microdados\micro_censo_escolar_2013\Microdados do Censo da Educação Básica - 2013\DADOS\TS_TURMA.TXT]
-(fix, codepage is 1252);
-
-store MATRICULA into [E:\Censo escolar_microdados\micro_censo_escolar_2013\TS_TURMA_2013.qvd
-
-///$tab Agrupando bancos
-
-
-// Agrupando os bancos
-
-AnoAgrupa:
+MATRICULAS:
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -49,6 +19,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -57,10 +28,10 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\MicrodCenso Escolar2007\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2007.qvd]
 (qvd);
 
-Concatenate
+CONCATENATE
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -69,6 +40,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -77,10 +49,10 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\Microdados da Educação Básica de 2008\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2008.qvd]
 (qvd);
 
-Concatenate
+CONCATENATE
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -89,6 +61,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -97,10 +70,10 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\Microdados da Educação Básica 2009\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2009.qvd]
 (qvd);
 
-Concatenate
+CONCATENATE
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -109,6 +82,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -117,10 +91,10 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\Microdados Censo Escolar 2010\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2010.qvd]
 (qvd);
 
-Concatenate
+CONCATENATE
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -129,6 +103,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -137,10 +112,10 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\Microdados Censo Escolar 2011\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2011.qvd]
 (qvd);
 
-Concatenate
+CONCATENATE
 
 LOAD ANO_CENSO, 
      PK_COD_TURMA, 
@@ -149,6 +124,7 @@ LOAD ANO_CENSO,
      FK_COD_MOD_ENSINO, 
      FK_COD_ETAPA_ENSINO, 
      FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
      PK_COD_ENTIDADE, 
      FK_COD_ESTADO, 
      SIGLA, 
@@ -157,5 +133,47 @@ LOAD ANO_CENSO,
      ID_DEPENDENCIA_ADM, 
      DESC_CATEGORIA_ESCOLA_PRIVADA
 FROM
-[C:\Rafael\Qlikview\Microdados Censo Escolar 2012\TS_MATRICULA.qvd]
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2012.qvd]
 (qvd);
+
+CONCATENATE
+
+LOAD ANO_CENSO, 
+     PK_COD_TURMA, 
+     NO_TURMA, 
+     NUM_MATRICULAS, 
+     FK_COD_MOD_ENSINO, 
+     FK_COD_ETAPA_ENSINO, 
+     FK_COD_CURSO_PROF, 
+     FK_COD_TIPO_TURMA, 
+     PK_COD_ENTIDADE, 
+     FK_COD_ESTADO, 
+     SIGLA, 
+     FK_COD_MUNICIPIO, 
+     ID_LOCALIZACAO, 
+     ID_DEPENDENCIA_ADM, 
+     DESC_CATEGORIA_ESCOLA_PRIVADA
+FROM
+[C:\Rafael\Qlikview\Censo Escolar\TS_TURMA\TS_TURMA_2013.qvd]
+(qvd);
+
+RESULTADO:
+LOAD ANO_CENSO AS YEAR, 
+     PK_COD_TURMA AS ID_CLASS, 
+     //NO_TURMA, 
+     NUM_MATRICULAS AS QTY_ENROLL, 
+     FK_COD_MOD_ENSINO AS ID_EDUCATION_MODE, 
+     FK_COD_ETAPA_ENSINO AS ID_EDUCATION_LEVEL, 
+     FK_COD_CURSO_PROF AS ID_COURSE, 
+     PK_COD_ENTIDADE AS ID_SCHOOL, 
+     //FK_COD_ESTADO, 
+     //SIGLA, 
+     FK_COD_MUNICIPIO AS ID_MUNICIPALITY, 
+     ID_LOCALIZACAO AS ID_LOCATION, 
+     ID_DEPENDENCIA_ADM AS ID_ADM_DEPENDENCY
+     //DESC_CATEGORIA_ESCOLA_PRIVADA
+Resident MATRICULAS;
+
+DROP Table MATRICULAS;
+
+store RESULTADO into [C:\Rafael\Qlikview\CensoEscolarFINAL.qvd] (qvd);
