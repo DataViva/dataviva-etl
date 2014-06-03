@@ -9,136 +9,53 @@ Mapping load * inline
      'CBO',''      
 ];
 
+/*
 
+CNAE10 x CAEN20
 
-/**
+*/
 
-CNAE ISIC
-
-**/
-
-CNAExISIC:
-LOAD CNAE2.0_SUBCLASSE, 
-     ISIC
+CNAE10xCAEN20Tabela:
+LOAD trim([CNAE 10]) as CNAE10xCNAE20_Origem, 
+     MinString(trim([CNAE 20])) as CNAE10xCNAE20_Destino
 FROM
-[F:\Banco de dados\MTE\Support Table_MTE.xls]
-(biff, embedded labels, table is [Economic Activity_CNAE-ISIC$]);
-
-
-MapCNAExISIC:
-mapping 
-	Load 
-	MapSubString('MapRetiraTextosLixo',CNAE2.0_SUBCLASSE) as CNAE2.0_SUBCLASSE, 
-	MapSubString('MapRetiraTextosLixo',ISIC) as ISIC 
-resident CNAExISIC;
-
-drop table CNAExISIC;
-
-
-
-
-
-
-/**
-
-CNAE x ISIC - Utilizando Classes e fazendo relacionamento de Classe CNAE com apenas 1 ISIC
-
-**/
-
-CNAExISIC:
-LOAD 
-	if (Len(CNAE2.0_SUBCLASSE)<7,'0'&CNAE2.0_SUBCLASSE,CNAE2.0_SUBCLASSE) as CNAE2.0_SUBCLASSE
-	,     ISIC
-FROM
-[F:\Banco de dados\MTE\Support Table_MTE.xls]
-(biff, embedded labels, table is [Economic Activity_CNAE-ISIC$]);
-
-
-
-CNAExISIC2:
-LOAD 
-
-	
-	left(CNAE2.0_SUBCLASSE,5) as CNAE, 
-     ISIC,count(1) as Total
-Resident CNAExISIC
-Group by left(CNAE2.0_SUBCLASSE,5),ISIC;
-
-NoConcatenate
-
-CNAExISIC3:
-load CNAE,Concat(ISIC,';') as ISIC,count(1) as TotalISIC 
-	Resident CNAExISIC2
-	Group by CNAE;
-
-NoConcatenate
-
-CNAExISIC4:
-load CNAE,ISIC
-	Resident CNAExISIC3
-	where TotalISIC<2	;
-
-LOAD CNAE, 
-     ISIC
-FROM
-[F:\Banco de dados\MTE\CNAExISIC-ClassesRepetidas.xls]
-(biff, embedded labels, table is [Sheet1$]);
-
-
-MapCNAEClassxISIC:
-mapping 
-	Load 
-	left(MapSubString('MapRetiraTextosLixo',CNAE),5) as CNAE, 
-	Max(MapSubString('MapRetiraTextosLixo',ISIC)) as ISIC 
-resident CNAExISIC4
-Group by left(MapSubString('MapRetiraTextosLixo',CNAE),5)
+[E:\Bancos de Dados\Correspondências das Classificações\CNAE\CNAE20_Correspondencia10x20.xlsx]
+(ooxml, embedded labels, table is [CNAE10xCNAE20])
+group by trim([CNAE 10])
 ;
 
+CNAE10xCAEN20:
+mapping 
+load * resident CNAE10xCAEN20Tabela;
 
-drop table CNAExISIC;
-drop table CNAExISIC2;
-drop table CNAExISIC3;
-drop table CNAExISIC4;
-
-
+drop table CNAE10xCAEN20Tabela;
 
 
-//CBO 94 to 2002
+
+/*
+
+CBO 94 to 2002
+
+*/
+
+CBO94x2002Tabela:
+LOAD trim([CBO94]) as CBO94x2002_Origem, 
+     MinString(trim([CBO2002])) as CBO94x2002_Destino
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\CBO\Conversion_CBO94_CBO2002.xlsx]
+(ooxml, embedded labels, table is [CBO94xCBO2002])
+group by trim([CBO94])
+;
+
 CBO94x2002:
-LOAD A as CBO94_CODE, 
-     C as CBO2002
-FROM
-[F:\Product Space\Demais Dados\CBO\Compatibilização_Felipe\Conversão_DEFINITIVA.xlsx]
-(ooxml, no labels, header is 1 lines, table is DEFINITIVA);
+mapping 
+load * resident CBO94x2002Tabela;
 
-MapCBO94x2002:
-mapping Load 
-	MapSubString('MapRetiraTextosLixo',CBO94_CODE) as CBO94_CODE, 
-	MapSubString('MapRetiraTextosLixo',CBO2002) as CBO2002 
-	resident CBO94x2002;
-
-drop table CBO94x2002;
+drop table CBO94x2002Tabela;
 
 
-//CNAE 95 x 2.0
-CNAE95x20:
-LOAD 
-		 @1 as CNAE95,
-		 @3 as CNAE20
-FROM
-[F:\Product Space\Demais Dados\CNAE_ISIC\RAIS_MERGE_CNAE95.xls]
-(biff, no labels, header is 1 lines, table is [RAIS_MERGE_CNAE95$]);
 
-
-MapCNAE95x20:
-mapping Load 
-	MapSubString('MapRetiraTextosLixo',CNAE95) as CNAE95,
-	MapSubString('MapRetiraTextosLixo',CNAE20) as CNAE20 
-	
-resident CNAE95x20;
-	
-drop table CNAE95x20;
-
+/*
 
 Correcoes2007:
 mapping
@@ -159,3 +76,6 @@ FROM
 		'Code','Classname'
 		',','.'      
 	];
+
+	
+*/

@@ -7,7 +7,7 @@ if '$(executarExtracao)'='S' then
 	LOAD      
 	@1:4 as ANO,
 	@5:6 as MES,
-	@7:14 as NCM,
+	left(@7:14,4) as HS,
 	@15:17 as PAIS,
 	@18:19 as UF,
 	@20:23 as PORTO,
@@ -18,46 +18,55 @@ if '$(executarExtracao)'='S' then
 	@63:n as VALORFOB
 	
 	FROM
-	[F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20*.txt]
+	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BREX20*.txt]
 	(fix, codepage is 1252);
 	
 	Concatenate
 	
 	LOAD CO_ANO as ANO, 
 		     CO_MES as MES, 
-		     CO_NCM as NCM, 
+		     left(CO_NCM,4) as HS, 
 		     CO_PAIS  as PAIS,
 		     CO_UF as UF, 
 		     CO_MUN_GEO as MUNICÍPIO, 
-		     CO_PORTO as PORTO, 
+		     CO_PORTO as PORTO,
 		     CO_UNID as UNIDADE, 
 		     [SUM(MES.QT_ESTAT)]  as QUANTIDADE, 
 		     [SUM(MES.KG_LIQUIDO)] as KGLIQUIDO, 
 		     [SUM(MES.VL_FOB)] as VALORFOB
 	
 	FROM
-	[F:\Banco de dados\MDIC\Dados originais\Exportacao_2012.txt]
+	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\Exportacao_2012.txt]
 	(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
 	
+	Concatenate
 	
+	LOAD CO_ANO as ANO, 
+		     CO_MES as MES, 
+		     CO_NCM_POS as HS, 
+		     CO_PAIS  as PAIS,
+		     CO_UF as UF, 
+		     CO_MUN_GEO as MUNICÍPIO, 
+		     CO_PORTO as PORTO,
+		     CO_UNID as UNIDADE, 
+		     QT_ESTAT  as QUANTIDADE, 
+		     KG_LIQUIDO as KGLIQUIDO, 
+		     VL_FOB as VALORFOB
 	
+	FROM
+	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_*.txt]
+	(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
 	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	store SECEX into 
-	F:\Banco de dados\MDIC\Dados originais\EPEMG_BREX20.qvd (qvd);
+	E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BREX20.qvd (qvd);
 	
 	drop table SECEX;
 	
 	
 	
-	
+	/*
 	//Dados Enviados
 	
 	SECEX:
@@ -77,7 +86,7 @@ if '$(executarExtracao)'='S' then
 
 	drop table SECEX;
 	
-	
+	*/
 	
 	
 	

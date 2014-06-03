@@ -4,47 +4,32 @@ if '$(executarExtracao)'='S' then
 	if anoProcessamento='2002' then 
 	
 		RAIS:
-		LOAD  
-		  MUNICIPIO_Fonte as [Municipality_ID],
-		 
-		  ApplyMap('MapCNAExISIC',
-			  
-			  trim(ApplyMap('MapCNAE95x20',
-			  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
-			  	//Casos de CNAE95x20 Nao encontrados
-			  	,-trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
-			  	))
-			  	
-			 	//Casos de CNAE20xISIC Nao encontrados
-			  	,- ApplyMap('MapCNAE95x20',
-				  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
-				  ,-[CLAS CNAE 95])
-			 	)		 	 
-			 as [EconomicAtivity_ID_ISIC] ,
-			 
-		  
-			  ApplyMap('MapCNAE95x20',
-			  	trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
-			  	 //Casos de CNAE95x20 Nao encontrados
-			  	,-trim(MapSubString('MapRetiraTextosLixo',[CLAS CNAE 95]))
-			  )		  as [EconomicActivity_ID_CNAE],
-		  
-		  ApplyMap('MapCBO94x2002',
-		  	trim(MapSubString('MapRetiraTextosLixo',[OCUPACAO]))
-		  	//Casos de CBO94x2002 Nao encontrados
-		  	,-trim([OCUPACAO])+'1'
-		  ) as [BrazilianOcupation_ID], 
-		     
-		  [REM MED (R$)] as AverageMonthlyWage , 
-		  [REM DEZ (R$)] as WageReceived ,
-		  PIS as Employee_ID, 
-		  IDENTIFICAD as Establishment_ID, 
-		  $(anoProcessamento) as Year	     
+		LOAD
+			OCUPACAO as [BrazilianOcupation_ID], 
+			[CLAS CNAE 95], 
+			[CLAS CNAE 95_Fonte], 
+			[GRAU INSTR], 
+			[GRAU INSTR_Fonte], 
+			[HORAS CONTR], 
+			IDADE, 
+			IDENTIFICAD, 
+			[IND SIMPLES], 
+			[IND SIMPLES_Fonte], 
+			MUNICIPIO_Fonte as Municipality_ID, 
+			PIS, 
+			[RACA_COR OR], 
+			[RACA_COR OR_Fonte], 
+			[REM DEZ (R$)], 
+			[REM MED (R$)], 
+			SEXO, 
+			SEXO_Fonte, 
+			TAMESTAB, 
+			TAMESTAB_Fonte 
 		FROM
-		[$(caminhoArquivos)\$(anoProcessamento)\*.TXT] 
-		(txt, codepage is 1252, embedded labels, delimiter is '|', msq)	;
+		[E:\Bancos de Dados\MTE\RAIS_COMPLETA\2002\RAIS2002TOTAL.TXT]
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
 	
-	
+		
 	elseif anoProcessamento>2002 and anoProcessamento<2006 then 
 	
 		RAIS:

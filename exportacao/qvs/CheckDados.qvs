@@ -67,44 +67,42 @@ if '$(executarCheckDados)'='S' then
 	
 	
 		
-	/*
+	
 	TRACE 'CHECK DADOS ORIGINAL x ENVIADOS';
 	
 		
 	SECEX_ORIGINAL_ENVIADOS:
 	load 
 		ANO,
-	 	left(NCM2007,6) as NCM2007,
+	 	HS2007,
 		MUNICÍPIO as MunIDMDIC,
 		sum( num(replace(ltrim(replace(VALORFOB,0,' ')),' ',0))) as valorOriginal 
 	 from	 
-	[F:\Banco de dados\MDIC\Dados finais MDIC\MDIC.qvd] (qvd)
-	where ANO >= 2002 
-	group by ANO, left(NCM2007,6), MUNICÍPIO;
+	[E:\Bancos de Dados\MDIC\Exportação\Dados finais\MDIC.qvd] (qvd)
+	where ANO=$(anoProcessamento)
+	group by ANO, HS2007, MUNICÍPIO;
 	
 	
 	left join (SECEX_ORIGINAL_ENVIADOS)
 	
 	LOAD 	
-		ANO, 
-		MunIDMDIC,
-		left(NCM2007,6) as NCM2007,
-		sum(VALORFOB) as valorEnviado	     
-	FROM	
-		F:\Product Space\Dados Enviados para GV\2012_07_09_SECEX\MDIC_ypb.qvd (qvd)
-
-	where ANO >= 2002 	
-	group by ANO, left(NCM2007,6), MunIDMDIC;
+		Year as ANO, 
+		Municipality_ID as MunIDMDIC,
+		TransactedProduct_ID_HS as HS2007,
+		sum( num(replace(ltrim(replace(TransactionAmount_US$_FOB,0,' ')),' ',0))) as valorEnviado	     
+	FROM
+	[E:\Bancos de Dados\MDIC\Exportação\Dados finais\MDIC_$(anoProcessamento).csv]
+	(txt, utf8, embedded labels, delimiter is '|', msq)
+	group by Year, TransactedProduct_ID_HS, Municipality_ID;
 	;
-	
 	
 
 	
 	SECEX_ORIGINAL_ENVIADOS_Final:
-	load *,(valorOriginal -valorEnviado) as valorDiff
+	load *,(valorOriginal - valorEnviado) as valorDiff
 	Resident SECEX_ORIGINAL_ENVIADOS;
 	
 	drop table SECEX_ORIGINAL_ENVIADOS;
-	*/
+	
 	
 end if
