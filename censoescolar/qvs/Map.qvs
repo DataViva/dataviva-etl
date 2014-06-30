@@ -1,0 +1,38 @@
+/*
+
+Mapa de cursos profissionalizantes
+
+*/
+
+Curso_Tecnico_Tabela:
+LOAD trim([Cod_2007_2008]) as Curso_cod_Origem, 
+     MinString(trim([Cod_2009_2012])) as Curso_cod_Destino
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\Ensino Técnico\Mapa_curso_profissionalizante.xlsx]
+(ooxml, embedded labels, table is [cursos])
+group by trim([Cod_2007_2008])
+;
+
+Curso_Tecnico:
+mapping 
+load * resident Curso_Tecnico_Tabela;
+
+drop table Curso_Tecnico_Tabela;
+
+
+MapGenero:
+Mapping load * inline 
+[
+	'descripion','code'
+	'M','1'    
+	'F','0'
+];
+
+
+
+MapRes_Loc:
+Mapping load * inline 
+[
+	'descripion','code'
+	'0','2'    
+];

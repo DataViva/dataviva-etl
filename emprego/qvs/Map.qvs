@@ -3,10 +3,11 @@ Mapping load * inline
 [
 	'Code','Classname'
 	'CLAS CNAE',''    
-     'CLASSE',''
-     'CLASS',''
-     'CLAS',''
-     'CBO',''      
+    'CLASSE',''
+    'CLASS',''
+    'CLAS',''
+    'CBO',''
+	'0000-1','-1'
 ];
 
 MapGenero:
@@ -15,7 +16,9 @@ Mapping load * inline
 	'descripion','code'
 	'MASCULINO','1'    
 	'FEMININO','0'
-	'2','0' 	
+	'2','0'
+	'02,'0'
+	'01','1'
 ];
 
 MapCor:
@@ -34,6 +37,13 @@ Mapping load * inline
 	'11','9'  
 ];
 
+
+MapIgnorado:
+Mapping load * inline 
+[
+	'descripion','code'
+	'IGNORADO','-1'
+];
 
 
 /*
@@ -79,3 +89,44 @@ mapping
 load * resident CBO94x2002Tabela;
 
 drop table CBO94x2002Tabela;
+
+/*
+
+CBO: Militares e Profissionais do Sexo classificados como Outros
+
+*/
+
+MapRetiraMilitares:
+Mapping load * inline 
+[	
+	'descripion','code'
+	'010105','-1'
+	'010110','-1'
+	'010115','-1'
+	'010205','-1'
+	'010210','-1'
+	'010215','-1'
+	'010305','-1'
+	'010315','-1'
+	'010310','-1'
+	'020105','-1'
+	'020115','-1'
+	'020110','-1'
+	'020205','-1'
+	'020305','-1'
+	'020310','-1'
+	'021110','-1'
+	'021105','-1'
+	'021205','-1'
+	'021210','-1'
+	'030110','-1'
+	'030105','-1'
+	'030115','-1'
+	'030205','-1'
+	'030305','-1'
+	'031105','-1'
+	'031110','-1'
+	'031205','-1'
+	'031210','-1'
+	'519805','-1'
+];

@@ -1,197 +1,165 @@
 
 if '$(executarCheckDados)'='S' then
 	
-	TRACE 'CHECK DADOS';
 	
-	LET rowsRAIS=noOfRows('RAIS');
-	if '$(rowsRAIS)'='' then
+	/* Check para empregados, estabelecimentos e massa salarial por UF */
 	
+	
+	ValoresTotaisMteUF:
+	LOAD 
+		 Count(Distinct Establishment_ID) as Establishment_uf_dv, 
+		 left(Municipality_ID,2) as UF, 
+		 Count(Employee_ID) as Employee_uf_dv,
+		 Sum(AverageMonthlyWage) as Wage_uf_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(Municipality_ID,2), Year;
+	 
+	left join (ValoresTotaisMteUF)
+	
+	LOAD 
+		 Ano as Year, 
+		 UF,
+		 Salarios as Wage_uf_mte,
+		 Empregados as Employee_uf_mte, 
+		 Estabelecimentos as Establishment_uf_mte
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_emprego_uf])
+	where Ano = $(anoProcessamento);
 		
+	ValoresTotaisDvFinaisUf:
+	load *,(Employee_uf_mte - Employee_uf_dv) as valor_emp_uf_Diff, (Establishment_uf_mte - Establishment_uf_dv) as valor_est_uf_Diff, (Wage_uf_mte - Wage_uf_dv) as valor_wage_uf_Diff
+	Resident ValoresTotaisMteUF;
+	
+	drop table ValoresTotaisMteUF;
+	
+	NoConcatenate
+	
+	
+	
+	/* Check para empregados, estabelecimentos e massa salarial por Município */
+	
+	
+	ValoresTotaisMteMun:
+	LOAD 
+		 Count(Distinct Establishment_ID) as Establishment_Mun_dv, 
+		 Municipality_ID as Municipality, 
+		 Count(Employee_ID) as Employee_Mun_dv,
+		 Sum(AverageMonthlyWage) as Wage_Mun_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by Municipality_ID, Year;
+	 
+	left join (ValoresTotaisMteMun)
+	
+	LOAD 
+		 Ano as Year, 
+		 Municipio as Municipality,
+		 Salarios as Wage_Mun_mte,
+		 Empregados as Employee_Mun_mte, 
+		 Estabelecimentos as Establishment_Mun_mte
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_emprego_mun])
+	where Ano = $(anoProcessamento);
 		
-		if '$(anoProcessamento)'='2002' then
+	ValoresTotaisDvFinaisMun:
+	load *,(Employee_Mun_mte - Employee_Mun_dv) as valor_emp_Mun_Diff, (Establishment_Mun_mte - Establishment_Mun_dv) as valor_est_Mun_Diff, (Wage_Mun_mte - Wage_Mun_dv) as valor_wage_Mun_Diff
+	Resident ValoresTotaisMteMun;
+	
+	drop table ValoresTotaisMteMun;
 		
-		NoConcatenate
-		
-			RAIS:
-			load  *, EconmicAtivity_ID_ISIC as EconomicAtivity_ID_ISIC
-			 from F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv (txt);
+	NoConcatenate
+	
+	
+	
+	/* Check para empregados e massa salarial por CBO */
+	
+	
+	ValoresTotaisMteCBO:
+	LOAD 
+		 left(BrazilianOcupation_ID,4) as occupation, 
+		 Count(Employee_ID) as Employee_cbo_dv,
+		 Sum(AverageMonthlyWage) as Wage_cbo_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(BrazilianOcupation_ID,4), Year;
+	 
+	left join (ValoresTotaisMteCBO)
+	
+	LOAD 
+		 Ano as Year, 
+		 CBO_2002 as occupation,
+		 Salarios as Wage_cbo_mte,
+		 Empregados as Employee_cbo_mte 
 		 
-		 
-		else
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_cbo])
+	where Ano = $(anoProcessamento);
 		
+	ValoresTotaisDvFinaisCBO:
+	load *,(Employee_cbo_mte - Employee_cbo_dv) as valor_emp_cbo_Diff, (Wage_cbo_mte - Wage_cbo_dv) as valor_wage_cbo_Diff
+	Resident ValoresTotaisMteCBO;
+	
+	drop table ValoresTotaisMteCBO;
 		
-			RAIS:
-			load *
-			 from F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)_$(padraoNomeArquivo).csv (txt);
+	
+			
+	/* Check para empregados e massa salarial por CNAE */
+	
+	
+	ValoresTotaisMteCNAE:
+	LOAD 
+		 EconomicAtivity_ID_CNAE as EconomicAtivity, 
+		 Count(Employee_ID) as Employee_cnae_dv,
+		 Sum(AverageMonthlyWage) as Wage_cnae_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by EconomicAtivity_ID_CNAE, Year;
+	 
+	if anoProcessamento<'2006' then 
+	
+		left join (ValoresTotaisMteCNAE)
+		
+		LOAD 
+			 Ano as Year, 
+			 ApplyMap('CNAE10xCAEN20',trim([CNAE_10]),'X'&trim([CNAE_10])) as EconomicAtivity,
+			 Sum(Salarios) as Wage_cnae_mte,
+			 Sum(Empregados) as Employee_cnae_mte 
 			 
-		end if
-		
-		TRACE 'CHECK DADOS/: Load Rais';
-
-	endif
-	
-	
-	
-	NoConcatenate
- 	
-	 	
-	 	
-	 	
-	ValoresTotaisInicialCBO:
-	load 
-		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
-		sum(WageReceived) as WageReceivedTotal,
-		count(1) as Total	,
-		left(BrazilianOcupation_ID,4)
-		resident RAIS
-	 group by left(BrazilianOcupation_ID,4) order by BrazilianOcupation_ID;
-	 
-	 	store ValoresTotaisInicialCBO into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCBO$(anoProcessamento).csv (txt);
-	 	
-	 	
-	drop table ValoresTotaisInicialCNAE;
-	drop Table ValoresTotaisInicialCBO;
-
-	NoConcatenate
-	
-	ValoresTotaisISIC:
-	load 
-		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
-		sum(WageReceived) as WageReceivedTotal,
-		count(1) as Total	,
-		EconomicAtivity_ID_ISIC
-		resident RAIS
-	 group by EconomicAtivity_ID_ISIC order by EconomicAtivity_ID_ISIC;
-	
-	store ValoresTotaisISIC into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisISIC$(anoProcessamento).csv (txt);
-	
-	NoConcatenate
-	
-	ValoresTotaisCNAE:
-	load 
-		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
-		sum(WageReceived) as WageReceivedTotal,
-		count(1) as Total	,
-		EconomicActivity_ID_CNAE
-		resident RAIS
-	 group by EconomicActivity_ID_CNAE order by EconomicActivity_ID_CNAE;
-	 
-	 	store ValoresTotaisCNAE into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCNAE$(anoProcessamento).csv (txt);
-	 	
-	
-	
-	 	
-	 	NoConcatenate
-	
-	ValoresTotaisCNAEClasse:
-	load 
-		sum(AverageMonthlyWage) as AverageMonthlyWageTotal,
-		sum(WageReceived) as WageReceivedTotal,
-		count(1) as Total	,
-		left(EconomicActivity_ID_CNAE,5) as EconomicActivity_ID_CNAE
-		resident RAIS
-	 group by left(EconomicActivity_ID_CNAE,5) order by EconomicActivity_ID_CNAE;
-	 
-	 	store ValoresTotaisCNAEClasse into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisCNAEClasse$(anoProcessamento).csv (txt);
-	 	
-	 	
-	 	NoConcatenate
-	
-	ValoresTotais:
-	load 
-		count(1) as Total	
-		resident RAIS;
-	 
-	 	store ValoresTotais into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotais$(anoProcessamento).csv (txt);
-	
-	drop table RAIS;
-	drop table ValoresTotaisISIC;
-	drop table ValoresTotaisCNAE;
-	drop table ValoresTotais;
-	
-	
-	if '$(anoProcessamento)'='2002' then
-		RAIS:
-		load Municipality_ID, 
-	     EconmicAtivity_ID_ISIC,     
-	     sum(AverageMonthlyWage),
-	     count(1) as total ,
-	     Year 
-	     from 
-	     F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)*.csv 
-	     (txt, utf8, embedded labels, delimiter is ',', msq)
-	     
-	     group by Municipality_ID,      EconmicAtivity_ID_ISIC,Year;
-	ELSE
-	
-		RAIS:
-		load Municipality_ID, 
-	     EconomicAtivity_ID_ISIC,     
-	     sum(AverageMonthlyWage),
-	     count(1) as total ,
-	     Year 
-	     from 
-	     F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais$(anoProcessamento)*.csv 
-	     (txt, utf8, embedded labels, delimiter is ',', msq)
-	     
-	     group by Municipality_ID,      EconomicAtivity_ID_ISIC,Year;
-	     
-	end if 
-	
-		store RAIS  into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\ValoresTotaisMunicipioISIC$(anoProcessamento).csv (txt);
-		 
-		drop table RAIS;
-		
-	
-	if '$(anoProcessamento)'='2002' then
-
-		
-		RAIS:
-		load
-			*
-		
 		FROM
-				[C:\Users\m1165564\Documents\Projetos\product-space\bd\2002\*.TXT] 
-				(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
+		[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+		(ooxml, embedded labels, table is [rais_cnae_2])
+		where Ano = $(anoProcessamento)
+		group by ApplyMap('CNAE10xCAEN20',trim([CNAE_10]),'X'&trim([CNAE_10])), Ano;
 		
-		OCUPACOES:
-		load
-			[OCUPACAO], count(1) as totalOCUPACAO		
-			Resident RAIS		Group by [OCUPACAO];
-			
-			
-		CNAE:
-		load
-			[CLAS CNAE 95], count(1) as totalCNAE		
-			Resident RAIS		Group by [CLAS CNAE 95];
+	elseif anoProcessamento>2005 then 
+				
+		left join (ValoresTotaisMteCNAE)
 		
-		store CNAE into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\CNAE$(anoProcessamento).csv (txt);
-		store OCUPACOES into F:\Banco de dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\OCUPACOES$(anoProcessamento).csv (txt);
-		
-		drop table RAIS;
+		LOAD 
+			 Ano as Year, 
+			 CNAE_20 as EconomicAtivity,
+			 Salarios as Wage_cnae_mte,
+			 Empregados as Employee_cnae_mte 
+			 
+		FROM
+		[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+		(ooxml, embedded labels, table is [rais_cnae_1])
+		where Ano = $(anoProcessamento);
+	
 	end if
 	
+	ValoresTotaisDvFinaisCNAE:
+	load *,(Employee_cnae_mte - Employee_cnae_dv) as valor_emp_cnae_Diff, (Wage_cnae_mte - Wage_cnae_dv) as valor_wage_cnae_Diff
+	Resident ValoresTotaisMteCNAE;
 	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	
-
-		LOAD 
-		     id_ibge,isic_id, left( id_ibge,6) ,count(1) as total
-		    
-			FROM
-			[F:\Banco de dados\MTE\RAIS_COMPLETA\testRaisISIC.txt]
-			(txt, codepage is 1252, embedded labels, delimiter is '\t', msq)
-		
-				group by left( id_ibge,6),isic_id,id_ibge, year
-		;
-
-*/
+	drop table ValoresTotaisMteCNAE;
 	
 end if
