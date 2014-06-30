@@ -7,18 +7,18 @@ SET TimeFormat='hh:mm:ss';
 SET DateFormat='DD/MM/YYYY';
 SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
 SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
-SET DayNames='seg;ter;qua;qui;sex;s·b;dom';
+SET DayNames='seg;ter;qua;qui;sex;s√°b;dom';
 
 
 SET anoProcessamento='2007';
 SET padraoNomeArquivo='';
 
 //Caminho
-SET caminhoArquivos='E:\Bancos de Dados\MTE\RAIS_COMPLETA';
-	
-SET executarExtracao='S';
+SET caminhoArquivos='E:\Bancos de Dados\Censo Escolar';
 
-SET executarAgrupar='N';
+SET executarExtracao='N';
+
+SET executarAgrupar='S';
 
 SET executarTransformacao='N';
 
@@ -56,3 +56,4 @@ $(Include=qvs\Homologacao.qvs);
 		
 
 exit script;
+

@@ -1,0 +1,16 @@
+﻿ 
+if '$(executarAgrupar)'='S' then
+		
+	MATRICULA_$(anoProcessamento):
+	LOAD
+		*
+	FROM
+	[E:\Bancos de Dados\Censo Escolar\$(anoProcessamento)\DADOS\*.qvd]
+	(qvd);
+		
+	store MATRICULA_$(anoProcessamento) into
+	E:\Bancos de Dados\Censo Escolar\MATRICULA_$(anoProcessamento).qvd (qvd);
+
+	drop table MATRICULA_$(anoProcessamento);
+	
+end if	
