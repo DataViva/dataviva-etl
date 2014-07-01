@@ -7,7 +7,7 @@ if '$(executarAgrupar)'='S' then
 		LOAD
 			*
 		FROM
-		[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\*.qvd]
+		[E:\Bancos de Dados\.txt]
 		(qvd);
 		
 		store RAIS_$(anoProcessamento) into
