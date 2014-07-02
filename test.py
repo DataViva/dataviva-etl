@@ -8,10 +8,9 @@ from helpers import fixed_to_csv,read_from_csv,df_to_csv
 
 
 #python -m censoescolar.step_1_extract
-def main(year,filename):
-    print "Starting extract of file "+filename
-    dirFile = DATA_DIR + "censoescolar/" + year+"/"+filename
-    dirCSV = DATA_DIR + "censoescolar/" + year+"/"+filename+'.csv'
+def main(YEAR,filename):
+    dirFile = DATA_DIR + "censoescolar/" + YEAR+"/"+'TS_MATRICULA_AC.txt'
+    dirCSV = DATA_DIR + "censoescolar/" + YEAR+"/"+'TS_MATRICULA_AC.txt.csv'
     
     #
     if year=='2013':
@@ -105,21 +104,30 @@ def main(year,filename):
                    (119,121),(121,123),(123,130),(130,131),(131,132))
 
     
+    
+    
+    
     fixed_to_csv(dirFile,columns,dirCSV,headers)
     
+    #df = read_from_csv(dirCSV)
+    #df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
 
+    #df_to_csv(df,dirCSV)
+
+    #mapping = {'set': 1, 'test': 2}
+
+    #df.replace({'set': mapping, 'tesst': mapping})
            
 if __name__ == "__main__":
     start = time.time()
     YEAR="2012"
     
-    print "Running STEP 1 - Extract : Censo Escolar : Year: "+YEAR    
     diretorioBase=os.path.abspath( DATA_DIR + "censoescolar/" + YEAR+"\\" )
     print diretorioBase
     for file in os.listdir(diretorioBase):
         if file.endswith(".txt"):
-            main(YEAR,file)
-    
+            print file
+    #main(YEAR)
     
     total_run_time = (time.time() - start) / 60
     print; print;
