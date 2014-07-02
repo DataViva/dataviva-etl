@@ -154,7 +154,7 @@ if '$(executarExtracao)'='S' then
 				 $(anoProcessamento) as Year	     
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			(txt, utf8, embedded labels, delimiter is ';', msq, no eof)
 			where [EMP EM 31/12] = '1';
 			
 			store RAIS_$(anoProcessamento) into	$(CSVFile).qvd (qvd);;

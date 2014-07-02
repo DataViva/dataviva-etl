@@ -16,13 +16,13 @@ SET padraoNomeArquivo='';
 //Caminho
 SET caminhoArquivos='E:\Bancos de Dados\MTE\RAIS_COMPLETA';
 	
-SET executarExtracao='S';
+SET executarExtracao='N';
 
 SET executarAgrupar='N';
 
 SET executarTransformacao='N';
 
-SET executarCheckDados='N';
+SET executarCheckDados='S';
 
 SET executarCorrecoes='N';
 
