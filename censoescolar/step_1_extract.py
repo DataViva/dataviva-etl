@@ -9,7 +9,7 @@ import click
 
 
 
-#python -m censoescolar.step_1_extract
+#python -m censoescolar.step_1_extract --year=2007
 
 def runextract(year,filename):
     print "Starting extract of file "+filename
@@ -116,7 +116,7 @@ def runextract(year,filename):
 def runcommand(year):
 
     start = time.time()
-    
+    year=str(year)
     print "Running STEP 1 - Extract : Censo Escolar : Year: "+year    
     diretorioBase=os.path.abspath( DATA_DIR + "censoescolar/" + year+"\\" )
     print diretorioBase
