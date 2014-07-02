@@ -5,10 +5,13 @@ from os.path import splitext, basename, exists
 from config import DATA_DIR
 import pandas as pd
 from helpers import fixed_to_csv,read_from_csv,df_to_csv
+import click
+
 
 
 #python -m censoescolar.step_1_extract
-def main(year,filename):
+
+def runextract(year,filename):
     print "Starting extract of file "+filename
     dirFile = DATA_DIR + "censoescolar/" + year+"/"+filename
     dirCSV = DATA_DIR + "censoescolar/" + year+"/"+filename+'.csv'
@@ -108,17 +111,18 @@ def main(year,filename):
     fixed_to_csv(dirFile,columns,dirCSV,headers)
     
 
-           
-if __name__ == "__main__":
+@click.command()
+@click.option('--year', default=2012, help='Data year to be extracted.')
+def runcommand(year):
+
     start = time.time()
-    YEAR="2012"
     
-    print "Running STEP 1 - Extract : Censo Escolar : Year: "+YEAR    
-    diretorioBase=os.path.abspath( DATA_DIR + "censoescolar/" + YEAR+"\\" )
+    print "Running STEP 1 - Extract : Censo Escolar : Year: "+year    
+    diretorioBase=os.path.abspath( DATA_DIR + "censoescolar/" + year+"\\" )
     print diretorioBase
     for file in os.listdir(diretorioBase):
         if file.endswith(".txt"):
-            main(YEAR,file)
+            runextract(year,file)
     
     
     total_run_time = (time.time() - start) / 60
@@ -126,3 +130,7 @@ if __name__ == "__main__":
     print "Total runtime: {0} minutes".format(int(total_run_time))
     print; print;
     
+    
+           
+if __name__ == "__main__":
+    runcommand()
