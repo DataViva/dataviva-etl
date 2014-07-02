@@ -3,7 +3,7 @@ from collections import defaultdict
 from os import environ
 from config import DATA_DIR
 import pandas as pd
-from helpers import fixed_to_csv
+from helpers import fixed_to_csv,read_from_csv,df_to_csv
 
 
 #python -m censoescolar.step_1_extract
@@ -25,13 +25,15 @@ def main(year):
     
     fixed_to_csv(dirFile,columns,dirCSV,headers)
     
-    
-def slices(s, *args):
-    position = 0
-    for length in args:
-        yield s[position:position + length]
-        position += length
-        
+    df = read_from_csv(dirCSV)
+    df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
+
+    df_to_csv(df,dirCSV)
+
+    #mapping = {'set': 1, 'test': 2}
+
+    #df.replace({'set': mapping, 'tesst': mapping})
+           
 if __name__ == "__main__":
     start = time.time()
     YEAR="2012"
@@ -41,3 +43,4 @@ if __name__ == "__main__":
     print; print;
     print "Total runtime: {0} minutes".format(int(total_run_time))
     print; print;
+    

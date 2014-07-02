@@ -19,4 +19,66 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     with open(csvfile, "w") as f:
         #dw.writerow(headers)
         data.to_csv(f, header=headers)
+
+def read_from_csv(file):
+    df = pd.read_csv(file, index_col=False, header=0);  
+    return df
+
+def df_to_csv(data , file,headers=None):
     
+    with open(file, "w") as f:
+        #dw.writerow(headers)
+        data.to_csv(f, header=headers)
+
+
+
+'''
+    SIMPLE COMPUTED COLUMNS
+    
+    df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
+    
+'''
+
+
+'''
+    COMPLEX COMPUTED COLUMNS
+    Day that you need to create a new column that the value is a calc using others values in the same row, you can  use as above.
+    In this example we are converting string F and M for sex type and puting a number in place
+    
+    First you need to declare the transform function:
+    def sexo_to_number(entrada):
+        x = entrada["TP_SEXO"]
+        if x=="F":
+            return 1
+        else:
+            return 2        
+    
+    Then you apply in the Dataframe:
+    df["NOVOANO"] = df.apply(sexo_to_number,axis=1)
+
+
+'''
+
+
+'''
+    MAP COMPUTED COLUMNS
+    When you need to create a new column as a map, like a key value, you can use:
+    
+    
+    df["A1"], df["A2"] = zip(*df["ANO_CENSO"].map(calculate))
+
+    def calculate(x):
+        return x*2, x*3
+
+'''
+
+
+'''
+   MERGE
+   If you have 2 dataframes and wants to make a join, you can:
+   df2.merge(df1)
+   
+   Example: 
+   * http://stackoverflow.com/questions/17450857/using-python-pandas-lookup-another-dataframe-and-return-corresponding-values
+   
+'''
