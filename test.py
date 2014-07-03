@@ -30,19 +30,30 @@ def main():
     df = read_from_csv(dirCSV)
     
     
-    df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
     
-    df["NOVOANO"] = df.apply(sexo_to_number,axis=1)
+    #SIMPLE COMPUTED COLUMNS
+    df["SIMPLE_COMPUTED_COLUMNS"]=df["ANO_CENSO"] + df["NUM_IDADE"]
+    
+    #COMPLEX COMPUTED COLUMNS
+    df["COMPLEX_COMPUTED_COLUMNS"] = df.apply(sexo_to_number,axis=1)
+    
+    #REPLACE PART COLUMN
+    df['REPLACE_PART_COLUMN'] = df['SIMPLE_COMPUTED_COLUMNS'].str.replace('20', 'XX')
     
     
+    df2 = read_from_csv(dirCSV)
+ 
+    #MAP COMPUTED COLUMNS
+    df2 = read_from_csv(dirCSV)
+    
+    print df
+    print df2
+    #MERGE
+    df3 = df.merge(df2)
+    print df3
+    
+    df_to_csv(df3 , dirCSV)
 
-    #df_to_csv(df,dirCSV)
-
-    #mapping = {'set': 1, 'test': 2}
-
-    #df.replace({'set': mapping, 'tesst': mapping})
-    
-    df_to_csv(df , dirCSV)
 
 def sexo_to_number(entrada):
     x = entrada["TP_SEXO"]

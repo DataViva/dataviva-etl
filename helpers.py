@@ -5,14 +5,6 @@ from config import DATA_DIR
 import pandas as pd
 
 
-#python -m censoescolar.step_1_extract
-#raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '../', filename))
-#columns = ((0,10),(11,14),(15,18),(19,22),(23,29),(30,35),(36,44),(45,45),(46,49),(50,55),(56,61),(62,67),(68,73),(74,79),(80,80),(81,86),(87,87),(88,108))
-#raw_file = get_file(raw_file_path)
-#w['female'] = w['female'].map({'female': 1, 'male': 0})
-    #raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '', filefixed)) 
-
-
 def fixed_to_csv(filefixed,columns,csvfile,headers):
     """Convert a file containg data in Fixed Register format to a CSV format.
 
@@ -29,7 +21,7 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
 
-def read_from_csv(file):
+def read_from_csv(file,header=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
@@ -38,20 +30,23 @@ def read_from_csv(file):
     Return:
     dataframe -- python object containing data from the CSV file
     """
-    
-    df = pd.read_csv(file, index_col=False, header=0);  
+    if not header:
+        header=0
+    df = pd.read_csv(file, index_col=False);  #, header=header
     return df
 
-def df_to_csv(data , file,headers=None):
+def df_to_csv(data , file,header=None):
     """Convert a dataframe object containing data to a CSV file.
 
     Keyword arguments:
     data -- dataframe came from a CSV ( read_from_csv ), Fixed or others 
     file -- path of a CSV file that will be written using information in dataframe argument. ex.: filefixed='/fixedregister.csv'
     """   
+    if not header:
+        header=True
     with open(file, "w") as f:
         #dw.writerow(headers)
-        data.to_csv(f, header=headers)
+        data.to_csv(f, header=header)
 
 
 
@@ -82,6 +77,12 @@ def df_to_csv(data , file,headers=None):
 
 '''
 
+'''
+    REPLACE PART COLUMN
+    
+    If you want to replace just a part of a string in a column, use:
+    misc['product_desc'] = misc['product_desc'].str.replace('\n', '')
+'''
 
 '''
     MAP COMPUTED COLUMNS
@@ -105,3 +106,12 @@ def df_to_csv(data , file,headers=None):
    * http://stackoverflow.com/questions/17450857/using-python-pandas-lookup-another-dataframe-and-return-corresponding-values
    
 '''
+
+#python -m censoescolar.step_1_extract
+#raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '../', filename))
+#columns = ((0,10),(11,14),(15,18),(19,22),(23,29),(30,35),(36,44),(45,45),(46,49),(50,55),(56,61),(62,67),(68,73),(74,79),(80,80),(81,86),(87,87),(88,108))
+#raw_file = get_file(raw_file_path)
+#w['female'] = w['female'].map({'female': 1, 'male': 0})
+#raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '', filefixed)) 
+#mapping = {'set': 1, 'test': 2}
+#df.replace({'set': mapping, 'tesst': mapping})
