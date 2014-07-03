@@ -9,7 +9,7 @@ import click
 
 
 
-#python -m censoescolar.step_1_extract
+#python -m censoescolar.step_1_extract --year=2007
 
 def runextract(year,filename):
     print "Starting extract of file "+filename
@@ -41,11 +41,7 @@ def runextract(year,filename):
                    (66,67),(86,89),(89,91),(91,100),(100,101), \
                    (129,132),(132,136),(136,147),(147,156),(161,170), \
                    (170,173),(173,175),(175,184),(184,193),(193,194))
-    
-    
-    
-    
-    
+        
     
     elif year=='2011':
         headers = ('ANO_CENSO','PK_COD_MATRICULA','FK_COD_ALUNO','NUM_IDADE', 'TP_SEXO', \
@@ -116,7 +112,7 @@ def runextract(year,filename):
 def runcommand(year):
 
     start = time.time()
-    
+    year=str(year)
     print "Running STEP 1 - Extract : Censo Escolar : Year: "+year    
     diretorioBase=os.path.abspath( DATA_DIR + "censoescolar/" + year+"\\" )
     print diretorioBase

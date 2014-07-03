@@ -246,6 +246,7 @@ if '$(executarExtracao)'='S' then
 				 [CNAE 2.0 Classe] as EconomicAtivity_ID_CNAE, 
 				 ApplyMap('MapInstrucao',trim([Escolaridade após 2005]),trim([Escolaridade após 2005])) as Literacy, 
 				 [Vínculo Ativo 31/12],
+				 Idade as Age,
 				 [CNPJ / CEI] as Establishment_ID, 
 				 [Ind Simples] as Simple, 
 				 Município as Municipality_ID, 
