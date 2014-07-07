@@ -139,20 +139,21 @@ if '$(executarCheckDados)'='S' then
 		where Ano = $(anoProcessamento)
 		group by ApplyMap('CNAE10xCAEN20',trim([CNAE_10]),'X'&trim([CNAE_10])), Ano;
 		
-	elseif anoProcessamento>2005 then 
+	elseif anoProcessamento>'2005' then 
 				
 		left join (ValoresTotaisMteCNAE)
 		
 		LOAD 
 			 Ano as Year, 
 			 CNAE_20 as EconomicAtivity,
-			 Salarios as Wage_cnae_mte,
-			 Empregados as Employee_cnae_mte 
+			 Sum(Salarios) as Wage_cnae_mte,
+			 Sum(Empregados) as Employee_cnae_mte 
 			 
 		FROM
 		[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
 		(ooxml, embedded labels, table is [rais_cnae_1])
-		where Ano = $(anoProcessamento);
+		where Ano = $(anoProcessamento)
+		group by CNAE_20, Ano;
 	
 	end if
 	
@@ -161,5 +162,43 @@ if '$(executarCheckDados)'='S' then
 	Resident ValoresTotaisMteCNAE;
 	
 	drop table ValoresTotaisMteCNAE;
+	
+	
+	
+	
+			
+	/* Check para empregados por CBO e UF em 2012 */
+	
+	
+	ValoresTotaisMteCBO_UF:
+	LOAD 
+		 left(BrazilianOcupation_ID,4) as occupation,
+		 left(Municipality_ID,2) as UF,		 
+		 Count(Employee_ID) as Employee_CBO_UF_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(BrazilianOcupation_ID,4), left(Municipality_ID,2), Year;
+	 
+	left join (ValoresTotaisMteCBO_UF)
+	
+	LOAD 
+		 2012 as Year, 
+		 CBO_2002 as occupation,
+		 UF,
+		 Empregados as Employee_CBO_UF_mte 
+		 
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [2012_cbo_uf])
+	;
+	
+	
+	ValoresTotaisDvFinaisCNAE:
+	load *,(Employee_CBO_UF_mte - Employee_CBO_UF_dv) as valor_emp_CBO_UF_Diff
+	Resident ValoresTotaisMteCBO_UF;
+	
+	drop table ValoresTotaisMteCBO_UF;
+	
 	
 end if

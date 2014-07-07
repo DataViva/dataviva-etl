@@ -6,7 +6,8 @@ if '$(executarAgrupar)'='S' then
 		*
 	FROM
 	[E:\Bancos de Dados\Censo Escolar\$(anoProcessamento)\DADOS\*.qvd]
-	(qvd);
+	(qvd)
+	;
 		
 	store MATRICULA_$(anoProcessamento) into
 	E:\Bancos de Dados\Censo Escolar\MATRICULA_$(anoProcessamento).qvd (qvd);

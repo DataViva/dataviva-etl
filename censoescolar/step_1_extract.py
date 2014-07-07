@@ -103,7 +103,7 @@ def runextract(year,filename):
                    (86,87),(87,90),(90,100),(100,108),(111,119), \
                    (119,121),(121,123),(123,130),(130,131),(131,132))
 
-    
+
     fixed_to_csv(dirFile,columns,dirCSV,headers)
     
 

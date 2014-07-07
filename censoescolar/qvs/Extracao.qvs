@@ -4,72 +4,72 @@ if '$(executarExtracao)'='S' then
 	if anoProcessamento='2007' then 
 		
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:4 as ANO_CENSO,
-				@5:16 as PK_COD_MATRICULA,
-				@17:29 as FK_COD_ALUNO,
-				@38:40 as NUM_IDADE,
-				Applymap('MapGenero',@41:41,'x'&@41:41) as TP_SEXO,
-				@42:42 as TP_COR_RACA,
-				@58:59 as FK_COD_ESTADO_END,
-				@60:61 as SIGLA_END,
-				@62:68 as FK_COD_MUNICIPIO_END,
-				Applymap('MapRes_Loc',@69:69,'x'&@69:69) as ID_ZONA_RESIDENCIAL,
-				@86:87 as FK_COD_MOD_ENSINO,
-				@88:90 as FK_COD_ETAPA_ENSINO,
-				@91:100 as PK_COD_TURMA,
-				Applymap('Curso_Tecnico',@101:108,'x'&@101:108) as FK_COD_CURSO_PROF,
-				@112:119 as PK_COD_ENTIDADE,
-				@120:121 as FK_COD_ESTADO_ESCOLA,
-				@122:123 as SIGLA_ESCOLA,
-				@124:130 as COD_MUNICIPIO_ESCOLA,
-				@131:131 as ID_LOCALIZACAO_ESC,
-				@132:132 as ID_DEPENDENCIA_ADM_ESC,
-				'$(CSVFile)' as ARQUIVO	
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 Applymap('Curso_Tecnico',FK_COD_CURSO_PROF,'x'&FK_COD_CURSO_PROF) as FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC
+				
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 852)
-			where @86:87 = 1 and @88:90 <> 1 and @88:90 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
 		Next CSVFile;
-	
 	
 	elseif anoProcessamento='2008' then 
-	
+		
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.CSV')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:8 as ANO_CENSO,
-				@9:24 as PK_COD_MATRICULA,
-				@25:40 as FK_COD_ALUNO,
-				@61:68 as NUM_IDADE,
-				Applymap('MapGenero',@69:69,'x'&@69:69) as TP_SEXO,
-				@70:70 as TP_COR_RACA,
-				@103:108 as FK_COD_ESTADO_END,
-				@109:110 as SIGLA_END,
-				@111:126 as FK_COD_MUNICIPIO_END,
-				@127:127 as ID_ZONA_RESIDENCIAL,
-				@144:149 as FK_COD_MOD_ENSINO,
-				@150:155 as FK_COD_ETAPA_ENSINO,
-				@156:169 as PK_COD_TURMA,
-				Applymap('Curso_Tecnico',@170:179,'x'&@170:179) as FK_COD_CURSO_PROF,
-				@198:209 as PK_COD_ENTIDADE,
-				@210:215 as FK_COD_ESTADO_ESCOLA,
-				@216:217 as SIGLA_ESCOLA,
-				@218:233 as COD_MUNICIPIO_ESCOLA,
-				@234:234 as ID_LOCALIZACAO_ESC,
-				@235:235 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 Applymap('Curso_Tecnico',FK_COD_CURSO_PROF,'x'&FK_COD_CURSO_PROF) as FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC
+				
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @144:149 = 1 and @150:155 <> 1 and @150:155 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
@@ -77,36 +77,37 @@ if '$(executarExtracao)'='S' then
 						
 		Next CSVFile;
 	
+			
 	elseif anoProcessamento='2009' then 
 
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:5 as ANO_CENSO,
-				@6:18 as PK_COD_MATRICULA,
-				@19:32 as FK_COD_ALUNO,
-				@44:48 as NUM_IDADE,
-				Applymap('MapGenero',@49:49,'x'&@49:49) as TP_SEXO,
-				@50:50 as TP_COR_RACA,
-				@69:71 as FK_COD_ESTADO_END,
-				@72:73 as SIGLA_END,
-				@74:81 as FK_COD_MUNICIPIO_END,
-				@82:82 as ID_ZONA_RESIDENCIAL,
-				@100:102 as FK_COD_MOD_ENSINO,
-				@103:106 as FK_COD_ETAPA_ENSINO,
-				@107:117 as PK_COD_TURMA,
-				@118:126 as FK_COD_CURSO_PROF,
-				@132:140 as PK_COD_ENTIDADE,
-				@141:143 as FK_COD_ESTADO_ESCOLA,
-				@144:145 as SIGLA_ESCOLA,
-				@146:153 as COD_MUNICIPIO_ESCOLA,
-				@154:154 as ID_LOCALIZACAO_ESC,
-				@155:155 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC  
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @100:102 = 1 and @103:106 <> 1 and @103:106 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
@@ -117,33 +118,33 @@ if '$(executarExtracao)'='S' then
 	elseif anoProcessamento='2010' then 		
 
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:5 as ANO_CENSO,
-				@6:18 as PK_COD_MATRICULA,
-				@19:32 as FK_COD_ALUNO,
-				@44:48 as NUM_IDADE,
-				Applymap('MapGenero',@49:49,'x'&@49:49) as TP_SEXO,
-				@50:50 as TP_COR_RACA,
-				@69:71 as FK_COD_ESTADO_END,
-				@72:73 as SIGLA_END,
-				@74:81 as FK_COD_MUNICIPIO_END,
-				@82:82 as ID_ZONA_RESIDENCIAL,
-				@100:102 as FK_COD_MOD_ENSINO,
-				@103:106 as FK_COD_ETAPA_ENSINO,
-				@107:117 as PK_COD_TURMA,
-				@118:126 as FK_COD_CURSO_PROF,
-				@132:140 as PK_COD_ENTIDADE,
-				@141:143 as FK_COD_ESTADO_ESCOLA,
-				@144:145 as SIGLA_ESCOLA,
-				@146:153 as COD_MUNICIPIO_ESCOLA,
-				@154:154 as ID_LOCALIZACAO_ESC,
-				@155:155 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @100:102 = 1 and @103:106 <> 1 and @103:106 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
@@ -154,33 +155,33 @@ if '$(executarExtracao)'='S' then
 	elseif anoProcessamento='2011' then		
 
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:5 as ANO_CENSO,
-				@6:18 as PK_COD_MATRICULA,
-				@19:32 as FK_COD_ALUNO,
-				@44:48 as NUM_IDADE,
-				Applymap('MapGenero',@58:58,'x'&@58:58) as TP_SEXO,
-				@59:59 as TP_COR_RACA,
-				@78:80 as FK_COD_ESTADO_END,
-				@81:82 as SIGLA_END,
-				@83:90 as FK_COD_MUNICIPIO_END,
-				@91:91 as ID_ZONA_RESIDENCIAL,
-				@109:111 as FK_COD_MOD_ENSINO,
-				@112:115 as FK_COD_ETAPA_ENSINO,
-				@116:126 as PK_COD_TURMA,
-				@127:134 as FK_COD_CURSO_PROF,
-				@141:149 as PK_COD_ENTIDADE,
-				@150:152 as FK_COD_ESTADO_ESCOLA,
-				@153:154 as SIGLA_ESCOLA,
-				@155:162 as COD_MUNICIPIO_ESCOLA,
-				@171:171 as ID_LOCALIZACAO_ESC,
-				@172:172 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @109:111 = 1 and @112:115 <> 1 and @112:115 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
@@ -191,33 +192,33 @@ if '$(executarExtracao)'='S' then
 	elseif anoProcessamento='2012' then		
 
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:5 as ANO_CENSO,
-				@6:18 as PK_COD_MATRICULA,
-				@19:32 as FK_COD_ALUNO,
-				@44:47 as NUM_IDADE,
-				Applymap('MapGenero',@66:66,'x'&@66:66) as TP_SEXO,
-				@67:67 as TP_COR_RACA,
-				@87:89 as FK_COD_ESTADO_END,
-				@90:91 as SIGLA_END,
-				@92:100 as FK_COD_MUNICIPIO_END,
-				@101:101 as ID_ZONA_RESIDENCIAL,
-				@130:132 as FK_COD_MOD_ENSINO,
-				@133:136 as FK_COD_ETAPA_ENSINO,
-				@137:147 as PK_COD_TURMA,
-				@148:156 as FK_COD_CURSO_PROF,
-				@162:170 as PK_COD_ENTIDADE,
-				@171:173 as FK_COD_ESTADO_ESCOLA,
-				@174:175 as SIGLA_ESCOLA,
-				@176:184 as COD_MUNICIPIO_ESCOLA,
-				@185:193 as ID_LOCALIZACAO_ESC,
-				@194:194 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @130:132 = 1 and @133:136 <> 1 and @133:136 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
@@ -228,33 +229,33 @@ if '$(executarExtracao)'='S' then
 	elseif anoProcessamento='2013' then		
 
 		Directory $(caminhoArquivos)\$(anoProcessamento)\DADOS\;
-		For each CSVFile in filelist ('*.TXT')
+		For each CSVFile in filelist ('*.csv')
 			MATRICULA_$(anoProcessamento):
 			LOAD      
-				@1:5 as ANO_CENSO,
-				@6:18 as PK_COD_MATRICULA,
-				@19:32 as FK_COD_ALUNO,
-				@49:52 as NUM_IDADE,
-				Applymap('MapGenero',@71:71,'x'&@71:71) as TP_SEXO,
-				@72:72 as TP_COR_RACA,
-				@92:94 as FK_COD_ESTADO_END,
-				@95:96 as SIGLA_END,
-				@97:105 as FK_COD_MUNICIPIO_END,
-				@106:106 as ID_ZONA_RESIDENCIAL,
-				@146:148 as FK_COD_MOD_ENSINO,
-				@149:152 as FK_COD_ETAPA_ENSINO,
-				@153:163 as PK_COD_TURMA,
-				@164:172 as FK_COD_CURSO_PROF,
-				@178:186 as PK_COD_ENTIDADE,
-				@187:189 as FK_COD_ESTADO_ESCOLA,
-				@190:191 as SIGLA_ESCOLA,
-				@192:200 as COD_MUNICIPIO_ESCOLA,
-				@210:210 as ID_LOCALIZACAO_ESC,
-				@211:211 as ID_DEPENDENCIA_ADM_ESC     
+				 ANO_CENSO, 
+				 PK_COD_MATRICULA, 
+				 FK_COD_ALUNO, 
+				 NUM_IDADE, 
+				 Applymap('MapGenero',TP_SEXO,'x'&TP_SEXO) as TP_SEXO, 
+				 TP_COR_RACA, 
+				 FK_COD_ESTADO_END, 
+				 SIGLA_END, 
+				 FK_COD_MUNICIPIO_END, 
+				 ID_ZONA_RESIDENCIAL, 
+				 FK_COD_MOD_ENSINO, 
+				 FK_COD_ETAPA_ENSINO, 
+				 PK_COD_TURMA, 
+				 FK_COD_CURSO_PROF, 
+				 PK_COD_ENTIDADE, 
+				 FK_COD_ESTADO_ESCOLA, 
+				 SIGLA_ESCOLA, 
+				 COD_MUNICIPIO_ESCOLA, 
+				 ID_LOCALIZACAO_ESC, 
+				 ID_DEPENDENCIA_ADM_ESC     
 			FROM
 			[$(CSVFile)] 
-			(fix, codepage is 1252)
-			where @146:148 = 1 and @149:152 <> 1 and @149:152 <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
+			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
 			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
 			
