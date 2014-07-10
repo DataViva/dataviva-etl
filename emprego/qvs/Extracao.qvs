@@ -260,7 +260,7 @@ if '$(executarExtracao)'='S' then
 			FROM
 			[$(CSVFile)] 
 			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
-			Where [Vínculo Ativo 31/12]=1;			
+			Where [Vínculo Ativo 31/12] = 1;			
 			
 			store RAIS_$(anoProcessamento) into	$(CSVFile).qvd (qvd);;
 			
