@@ -4,6 +4,61 @@ from os import environ
 from config import DATA_DIR
 import pandas as pd
 
+''' Import statements '''
+import sys, bz2, gzip, zipfile, os
+from decimal import Decimal, ROUND_HALF_UP
+from os.path import splitext, basename, exists
+
+'''
+    Used for finding environment variables through configuration
+    if a default is not given, the site will raise an exception
+'''
+def get_env_variable(var_name, default=-1):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default != -1:
+            return default
+        error_msg = "Set the %s os.environment variable" % var_name
+        raise Exception(error_msg)
+
+def d(x):
+  return Decimal(x).quantize(Decimal(".01"), rounding=ROUND_HALF_UP)
+
+def get_file(file_path):
+    file_name = basename(file_path)
+    file_path, file_ext = splitext(file_path)
+    extensions = [
+        {'ext': file_ext+'.bz2', 'io':bz2.BZ2File},
+        {'ext': file_ext+'.gz', 'io':gzip.open},
+        {'ext': file_ext+'.zip', 'io':zipfile.ZipFile},
+        {'ext': file_ext, 'io':open}
+    ]
+    for e in extensions:
+        file_path_w_ext = file_path + e["ext"]
+        if exists(file_path_w_ext):
+            file = e["io"](file_path_w_ext)
+            if '.zip' in e["ext"]:
+                file = zipfile.ZipFile.open(file, file_name)
+            print "Reading from file", file_path_w_ext
+            return file
+    print "ERROR: unable to find file named {0}[.zip, .bz2, .gz] " \
+            "in directory specified.".format(file_name)
+    return None
+
+def format_runtime(x):
+    # convert to hours, minutes, seconds
+    m, s = divmod(x, 60)
+    h, m = divmod(m, 60)
+    if h:
+        return "{0} hours and {1} minutes".format(int(h), int(m))
+    if m:
+        return "{0} minutes and {1} seconds".format(int(m), int(s))
+    if s < 1:
+        return "< 1 second"
+    return "{0} seconds".format(int(s))
+        
+        
 
 def fixed_to_csv(filefixed,columns,csvfile,headers):
     """Convert a file containg data in Fixed Register format to a CSV format.
