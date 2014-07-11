@@ -30,10 +30,10 @@ if '$(executarExtracao)'='S' then
 				
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq)
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
 			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -68,10 +68,10 @@ if '$(executarExtracao)'='S' then
 				
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -106,10 +106,10 @@ if '$(executarExtracao)'='S' then
 				 ID_DEPENDENCIA_ADM_ESC  
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -143,10 +143,10 @@ if '$(executarExtracao)'='S' then
 				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -180,10 +180,10 @@ if '$(executarExtracao)'='S' then
 				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -217,10 +217,10 @@ if '$(executarExtracao)'='S' then
 				 ID_DEPENDENCIA_ADM_ESC    
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
@@ -254,10 +254,10 @@ if '$(executarExtracao)'='S' then
 				 ID_DEPENDENCIA_ADM_ESC     
 			FROM
 			[$(CSVFile)] 
-			(txt, codepage is 1252, embedded labels, delimiter is ',', msq, no eof)
-			where FK_COD_MOD_ENSINO = 1.0 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			where FK_COD_MOD_ENSINO = 1 and FK_COD_ETAPA_ENSINO <> 1 and FK_COD_ETAPA_ENSINO <> 2;
 			
-			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);;
+			store MATRICULA_$(anoProcessamento) into $(CSVFile).qvd (qvd);
 			
 			drop table MATRICULA_$(anoProcessamento);
 						
