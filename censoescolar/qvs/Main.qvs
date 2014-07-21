@@ -10,25 +10,22 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
 
-SET anoProcessamento='2007';
+SET anoProcessamento='2013';
 SET padraoNomeArquivo='';
 
 //Caminho
 SET caminhoArquivos='E:\Bancos de Dados\Censo Escolar';
 
-SET executarExtracao='S';
+SET executarExtracao='N';
 
-SET executarAgrupar='S';
+SET executarAgrupar='N';
 
 SET executarTransformacao='N';
 
 SET executarCheckDados='N';
 
-SET executarCorrecoes='N';
+SET executarExportar='S';
 
-SET executarCheckMap='N';
-
-SET executarHomologacao='N';
 
 DIRECTORY;
 $(Include=qvs\Map.qvs);
@@ -46,13 +43,8 @@ DIRECTORY;
 $(Include=qvs\Transformacao.qvs);
 
 DIRECTORY;
-$(Include=qvs\Correcoes.qvs);
+$(Include=qvs\Exportar.qvs);
 
-DIRECTORY;
-$(Include=qvs\CheckMap.qvs);
-
-DIRECTORY;
-$(Include=qvs\Homologacao.qvs);
 		
 
 exit script;

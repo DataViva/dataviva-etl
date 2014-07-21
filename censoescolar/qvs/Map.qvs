@@ -20,6 +20,57 @@ load * resident Curso_Tecnico_Tabela;
 drop table Curso_Tecnico_Tabela;
 
 
+
+/*
+
+Reclassificação de Ensino - novo code
+
+*/
+
+Reclassificacao_Novo_code:
+LOAD trim([Education_Level]) as Code_censo_Origem, 
+     MinString(trim([Education_Level_New])) as Novo_code_Destino
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\Ensino Técnico\Reclassificação_ensino.xlsx]
+(ooxml, embedded labels, table is [reclassification])
+group by trim([Education_Level])
+;
+
+Reclassificacao_novo:
+mapping 
+load * resident Reclassificacao_Novo_code;
+
+drop table Reclassificacao_Novo_code;
+
+
+
+
+
+/*
+
+Reclassificação de Ensino - novo code
+
+*/
+
+Reclassificacao_Code_ensino:
+LOAD trim([Education_Level]) as Code_censo_Origem, 
+     MinString(trim([Education])) as Code_ensino_Destino
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\Ensino Técnico\Reclassificação_ensino.xlsx]
+(ooxml, embedded labels, table is [reclassification])
+group by trim([Education_Level])
+;
+
+Reclassificacao_Code_ensino:
+mapping 
+load * resident Reclassificacao_Code_ensino;
+
+drop table Reclassificacao_Code_ensino;
+
+
+
+
+
 MapGenero:
 Mapping load * inline 
 [

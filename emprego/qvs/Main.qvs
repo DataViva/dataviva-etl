@@ -16,7 +16,7 @@ SET padraoNomeArquivo='';
 //Caminho
 SET caminhoArquivos='E:\Bancos de Dados\MTE\RAIS_COMPLETA';
 	
-SET executarExtracao='S';
+SET executarExtracao='N';
 
 SET executarAgrupar='N';
 
@@ -24,11 +24,7 @@ SET executarTransformacao='N';
 
 SET executarCheckDados='N';
 
-SET executarCorrecoes='N';
-
-SET executarCheckMap='N';
-
-SET executarHomologacao='N';
+SET executarExportar='S';
 
 DIRECTORY;
 $(Include=qvs\Map.qvs);
@@ -46,13 +42,7 @@ DIRECTORY;
 $(Include=qvs\Transformacao.qvs);
 
 DIRECTORY;
-$(Include=qvs\Correcoes.qvs);
-
-DIRECTORY;
-$(Include=qvs\CheckMap.qvs);
-
-DIRECTORY;
-$(Include=qvs\Homologacao.qvs);
+$(Include=qvs\Exportar.qvs);
 		
 
 exit script;
