@@ -3,6 +3,7 @@ from collections import defaultdict
 from os import environ
 from config import DATA_DIR
 import pandas as pd
+import pandas.io.sql as psql
 
 ''' Import statements '''
 import sys, bz2, gzip, zipfile, os
@@ -76,7 +77,7 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
 
-def read_from_csv(file,header=None):
+def read_from_csv(file,header=None,delimiter=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
@@ -87,7 +88,7 @@ def read_from_csv(file,header=None):
     """
     if not header:
         header=0
-    df = pd.read_csv(file, index_col=False);  #, header=header
+    df = pd.read_csv(file, index_col=False,delimiter =delimiter );  #, header=header
     return df
 
 def df_to_csv(data , file,header=None):
@@ -104,6 +105,53 @@ def df_to_csv(data , file,header=None):
         data.to_csv(f, header=header)
 
 
+def sql_to_df(sql,db):
+    """Execute a query and with the results create a Dataframe .
+
+    Keyword arguments:
+    sql             -- SQL Query
+    db            -- Connection to the database 
+    
+
+    Example:
+    find_in_df(df,'id','2000_010101','val_usd')
+    """ 
+    df = psql.frame_query(sql, db)
+    return df
+
+def find_in_df(df,idlabel,idsearch,valuelabel):
+    """Find the value from a column searching for a id value.
+
+    Keyword arguments:
+    df             -- Dataframe
+    idlabel        -- name of the column that has the id that will be searched
+    idsearch       -- value to be found in id column
+    valuelabel     -- name of the column of the value that will be found 
+
+    Example:
+    find_in_df(df,'id','2000_010101','val_usd')
+    """ 
+    
+    d2 = df[(df[idlabel]==idsearch)]
+    if d2.empty==False and  valuelabel in d2:
+        return d2[valuelabel]
+
+
+def errorMessage(step, table, size):
+    global total_error
+    global msg_error
+    if size>0:          
+        msg="Found {0} Errors in {1} for {2}".format(size,step,table)
+        msg_error.append(msg)
+        print msg        
+        total_error=total_error+size
+
+def runCountQuery(step, table, sql,cursor):
+    print "---------------------------"
+    cursor.execute(sql)
+    values=cursor.fetchall()
+    size=len(values)
+    errorMessage(step, table, size)
 
 '''
     SIMPLE COMPUTED COLUMNS
