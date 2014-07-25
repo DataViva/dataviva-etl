@@ -62,7 +62,7 @@ def checkHS(year):
 
         valDV = dfDV[(dfDV['id']==hsid)]['val'].values[0]
         try: 
-            valCSV= dfGroup.get_group(hsint)[dfSent.columns[9]].sum()
+            valCSV= sum(dfGroup.get_group(hsint)[dfSent.columns[9]])
         except:
             print "Not found in CSV a value for "+str(hsint)+" / "+str(hsshort)+" - Exports of value  "+ str(valDV)+ " in the year "+str(year)
             continue

@@ -154,6 +154,27 @@ def runCountQuery(step, table, sql,cursor):
     errorMessage(step, table, size)
 
 '''
+
+df = left(df,'id',4)
+'''
+def left_df(df,column_entrada,size,column_saida=None):
+    if not column_saida:
+        column_saida=column_entrada
+        
+    def left_(s,size):        
+        try:
+            s=str(s)
+            s1 = s[0:size]
+            return s1
+        except ValueError:
+            print "erro"
+            return s
+    
+    df[column_saida] = df.apply(lambda f : left_(f[column_entrada],size) , axis = 1)
+    return df 
+
+
+'''
     SIMPLE COMPUTED COLUMNS
     
     df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
