@@ -136,21 +136,13 @@ def to_number(s):
 def checkCBO(year):
     print "Entering in checkCBO" 
 
-    #dfDV = sql_to_df("SELECT a.id as id,sum(wage) as val FROM rais_yo s,attrs_cbo a where length(a.id)=4 and  a.id=s.cbo_id and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT a.id as id,sum(wage) as val FROM rais_yo s,attrs_cbo a where length(a.id)=4 and  a.id=s.cbo_id and year="+str(year)+" group by 1;",db)
     dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=",")
     
     
     #TESTES CORTE
-    dfDV = read_from_csv("dados\emprego\sent\RaisBD"+str(year)+".csv",delimiter=",")
-    #dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+"Teste.csv",delimiter=",")
-    
-    
-    #dfSent['BrazilianOcupation_ID4'] = dfSent['BrazilianOcupation_ID'].str[:4]
-    #dfSent['BrazilianOcupation_ID-4'] = dfSent['BrazilianOcupation_ID'].str[-4:]
-    
-    # ('EconomicActivity_ID_CNAE','AverageMonthlyWage','Employee_ID','Establishment_ID','Year')
-    #(8,7,5,6,2)
-    #print dfSent.columns
+    #dfDV = read_from_csv("dados\emprego\sent\RaisBD"+str(year)+".csv",delimiter=",")
+
     for column in ('EconomicActivity_ID_CNAE','WageReceived','Employee_ID','Establishment_ID','Year'):
         dfSent = dfSent.drop(column, axis=1)
     
