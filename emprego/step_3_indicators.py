@@ -7,14 +7,15 @@
     
     Running one by one:
     
-    python -m emprego.step_3_indicators -m ECI > ECI.log
+    python -m emprego.step_3_indicators -m Importance > Importance.log
     python -m emprego.step_3_indicators -m Diversity > Diversity.log
     python -m emprego.step_3_indicators -m Growth > Growth.log
+    python -m emprego.step_3_indicators -m GrowthAnual > GrowthAnual.log    
     python -m emprego.step_3_indicators -m RCA > RCA.log
     python -m emprego.step_3_indicators -m Distance > Distance.log
     python -m emprego.step_3_indicators -m Opportunity > Opportunity.log
-    python -m emprego.step_3_indicators -m PCI > PCI.log
-    python -m emprego.step_3_indicators -m ValUSD > ValUSD.log
+    python -m emprego.step_3_indicators -m Required > Required.log
+    python -m emprego.step_3_indicators -m Wage > Wage.log
     
     YBPW - Is the only table that is not in this check script. We need to find a viable way to do this check in this hude table
     References about this check in https://github.com/DataViva/datavivaetl/wiki/emprego#indicators
@@ -41,195 +42,180 @@ cursor = db.cursor()
 
 
 #ECI: for all exports regions and all years
-def checkValUSD():
-    print "Entering in checkValUSD"
+def checkWage():
+    print "Entering in checkWage"
     
-    sql="select * from rais_yb where val_usd is null;"
-    runCountQuery('checkValUSD', 'rais_yb', sql,cursor) 
+    sql="select count(*) from rais_yb where wage is null;"
+    runCountQuery('checkWage', 'rais_yb', sql,cursor,count=True) 
     
-    sql="select * from rais_ybp where val_usd is null;"
-    runCountQuery('checkValUSD', 'rais_ybp', sql,cursor) 
+    sql="select count(*) from rais_ybi where wage is null;"
+    runCountQuery('checkWage', 'rais_ybi', sql,cursor,count=True) 
     
-    sql="select * from rais_ybpw where val_usd is null;"
-    runCountQuery('checkValUSD', 'rais_ybpw', sql,cursor) 
+    sql="select count(*) from rais_ybio where wage is null;"
+    runCountQuery('checkWage', 'rais_ybio', sql,cursor,count=True) 
     
-    sql="select * from rais_ybw where val_usd is null;"
-    runCountQuery('checkValUSD', 'rais_ybw', sql,cursor) 
+    sql="select count(*) from rais_ybo where wage is null;"
+    runCountQuery('checkWage', 'rais_ybo', sql,cursor,count=True) 
     
-    sql="select * from rais_yp where val_usd is null;"
-    runCountQuery('checkValUSD', 'rais_yp', sql,cursor) 
+    sql="select count(*) from rais_yi where wage is null;"
+    runCountQuery('checkWage', 'rais_yi', sql,cursor,count=True) 
 
+    sql="select count(*) from rais_yo where wage is null;"
+    runCountQuery('checkWage', 'rais_yo', sql,cursor,count=True) 
     
 #ECI: for all exports regions and all years
-def checkECI():
-    print "Entering in checkECI"
+def checkImportance():
+    print "Entering in checkImportance"
          
-    sql="select * from rais_yb b where (b.eci is null or b.eci < -3.1 or b.eci > 3.1) \
-        and b.val_usd >0 and b.bra_id in (select bra_id from rais_ybp where rca>=1 and year=b.year group by bra_id) "  
-    runCountQuery('checkECI', 'rais_yb', sql,cursor)
-    
-        
-    sql="select * from rais_yw where (eci is null or eci < -3.1 or eci > 3.1) and val_usd >0"  
-    runCountQuery('checkECI', 'rais_yw', sql,cursor)
+    sql="select count(*) from rais_yio where (importance < 0 or importance > 1 ) \
+    or ( importance is null  and num_emp>0) or (   importance is not null  and num_emp=0 ) "  
+    runCountQuery('checkImportance', 'rais_yio', sql,cursor,count=True)
 
 
 #Diversity (HS / WLD / BRA): too for Ocupations (CBO) and ISIC
 def checkDiversity():  
     print "Entering in checkDiversity"
 
-    sql="select * from rais_yb where \
-            (hs_diversity is null or hs_diversity <0 or \
-            hs_diversity_eff is null or hs_diversity_eff<0 or \
-            wld_diversity is null or wld_diversity<0 or \
-            wld_diversity_eff is null or wld_diversity_eff<0) ;"
-    runCountQuery('checkDiversity', 'rais_yb', sql,cursor)
-    
+    sql="SELECT count(*) FROM rais_yi where num_emp >0 and not (cbo_diversity >0 and cbo_diversity_eff >0 and bra_diversity>0  and bra_diversity_eff>0 );"
+    runCountQuery('checkDiversity', 'rais_yi', sql,cursor,count=True)
 
-    sql="select * from rais_yp where \
-        bra_diversity is null or bra_diversity <0 or \
-        bra_diversity_eff is null or bra_diversity_eff<0 or \
-        wld_diversity is null or wld_diversity<0 or \
-        wld_diversity_eff is null or wld_diversity_eff<0;"
-    runCountQuery('checkDiversity', 'rais_yp', sql,cursor)
+    sql="SELECT count(*) FROM rais_yb where num_emp >0 and not (cbo_diversity >0 and cbo_diversity_eff >0 and isic_diversity>0  and isic_diversity_eff>0 );"
+    runCountQuery('checkDiversity', 'rais_yb', sql,cursor,count=True)
 
-
-    sql="select * from rais_yw where \
-            bra_diversity is null or bra_diversity<0 or \
-            bra_diversity_eff is null or bra_diversity_eff<0 or \
-            hs_diversity is null or hs_diversity<0 or \
-            hs_diversity_eff is null or hs_diversity_eff<0; "
-    runCountQuery('checkDiversity', 'rais_yw', sql,cursor)
+    sql="SELECT count(*) FROM rais_yo where num_emp >0 and not (bra_diversity >0 and bra_diversity_eff >0 and isic_diversity>0  and isic_diversity_eff>0 );"
+    runCountQuery('checkDiversity', 'rais_yo', sql,cursor,count=True)
    
 
     
-#Growth's: for val_usd, number of employes, wage
+#Growth's: for wage, number of employes, wage
 # How to calc considering year for 5 years growth and for 1 year gorwth ignore first year
-def checkGrowth():  
-    print "Entering in checkGrowth"
+def checkGrowthAnual():  
+    print "Entering in checkGrowthAnual"
     
     #Anual - Check 
-    aggsP = ["rais_yb","rais_ybp","rais_ybpw","rais_ybw","rais_yp","rais_yw"]
+    aggsP = ["rais_yb","rais_ybi","rais_ybio","rais_ybo","rais_yi","rais_yo"]
     for aggs in aggsP:    
-        sql="select * from "+aggs+" s where val_usd_growth_val is null and year > 2000"   
+        sql="select count(*) from "+aggs+" s where (wage_growth_val is null or num_emp_growth_val is null) and year > 2000"   
         #Check ir because all values that should be 0 is None  
-        #runCountQuery('checkGrowth_val', aggs, sql)
+        runCountQuery('checkGrowth_val', aggs, sql,cursor,count=True)
 
-
+    
+def checkGrowth():  
+    print "Entering in checkGrowth"
     #Anuaal
     years = [("5","_5"),("1","")]
     for vals in years:
         year=vals[0]
         label=vals[1]   
         #YB
-        sql="select * from rais_yb s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_yb interno where interno.year=s.year-"+year+"  and interno.bra_id = s.bra_id) >0 ) \
+        sql="select count(*) from rais_yb s where (  \
+            (s.wage_growth_pct"+label+" is null and (select wage from rais_yb interno where interno.year=s.year-"+year+"  and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000"     
-        runCountQuery('checkGrowth_pct', "rais_yb", sql,cursor)
+        runCountQuery('checkGrowth_pct', "rais_yb", sql,cursor,count=True)
     
         #YW
-        sql="select * from rais_yw s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_yw interno where interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id) >0 ) \
+        sql="select count(*) from rais_yo s where (  \
+            (s.wage_growth_pct"+label+" is null and (select wage from rais_yo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id) >0 ) \
             ) and year > 2000"     
-        runCountQuery('checkGrowth', "rais_yw", sql,cursor)
+        runCountQuery('checkGrowth', "rais_yo", sql,cursor,count=True)
         
         #YP
-        sql="select * from rais_yp s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_yp interno where interno.year=s.year-"+year+"  and interno.hs_id = s.hs_id) >0 ) \
+        sql="select count(*) from rais_yi s where (  \
+            (s.wage_growth_pct"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id) >0 ) \
              ) and year > 2000" 
-        runCountQuery('checkGrowth', "rais_yp", sql,cursor)
+        runCountQuery('checkGrowth', "rais_yi", sql,cursor,count=True)
      
     
         #YBP
-        sql="select * from rais_ybp s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_ybp interno where interno.year=s.year-"+year+"  and interno.hs_id = s.hs_id and interno.bra_id = s.bra_id) >0 ) \
+        sql="select count(*) from rais_ybi s where (  (  (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+           and (select wage from rais_ybi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
-        runCountQuery('checkGrowth', "rais_ybp", sql,cursor)    
+        runCountQuery('checkGrowth', "rais_ybi", sql,cursor,count=True)    
         
         
         #YBW
-        sql="select * from rais_ybw s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_ybw interno where interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id and interno.bra_id = s.bra_id) >0 ) \
+        sql="select count(*) from rais_ybo s where ( ( (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+            and (select wage from rais_ybo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.bra_id = s.bra_id) >0 ) \
              ) and year > 2000" 
-        runCountQuery('checkGrowth', "rais_ybw", sql,cursor)      
+        runCountQuery('checkGrowth', "rais_ybo", sql,cursor,count=True)      
     
         #YBPW
-        sql="select * from rais_ybpw s where (  \
-            (s.val_usd_growth_pct"+label+" is null and (select val_usd from rais_ybpw interno where interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id and interno.hs_id = s.hs_id and interno.bra_id = s.bra_id) >0 ) \
+        sql="select count(*) from rais_ybio s where (   (   (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+           and (select wage from rais_ybio interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
-        runCountQuery('checkGrowth', "rais_ybw", sql,cursor)     
+        runCountQuery('checkGrowth', "rais_ybio", sql,cursor,count=True)     
     
 
 #RCA: For all HS and all locations     
-#Comparar com val_usd > 0 ?       
+#Comparar com wage > 0 ?       
 def checkRCA():  
     print "Entering in checkRCA"  
      
-    sql="select * from rais_ybp where (val_usd > 0 and (rca is null or rca<=0 or rca_wld is null or rca_wld<=0) ) \
-         or (val_usd =0 and ( rca_wld is not null or rca is not null ) ) ;"
-    runCountQuery('checkRCA', 'rais_ybp', sql,cursor)
+    sql="SELECT count(*) FROM rais_ybi where (num_emp > 0 and (rca is null or rca<=0) ) or (num_emp =0 and  rca is not null  );"
+    runCountQuery('checkRCA', 'rais_ybi', sql,cursor,count=True)
 
-        
-    sql="select * from rais_yp where (val_usd > 0 and (rca_wld is null or rca_wld<=0) ) or (val_usd =0 and rca_wld is not null);"
-    runCountQuery('checkRCA', 'rais_yp', sql,cursor)
-    
         
 
 #Distance: For all HS and all locations 
-#Comparar com val_usd > 0 ?        
+#Comparar com wage > 0 ?        
 def checkDistance():  
     print "Entering in checkDistance"    
 
-    sql="select * from rais_ybp where (distance_wld<0 or distance_wld>1 or distance<0 or distance>1 ) \
-        or ( (distance_wld is null or distance is null)  and length(hs_id)=6) or ( (distance_wld is not null or distance is not  null)  and length(hs_id)<>6);" 
-    runCountQuery('checkDistance', 'rais_ybp', sql,cursor)
+    sql="select count(*) from rais_ybi where (distance<0 or distance>1 ) \
+        or ( distance is null  and length(isic_id)=5) or ( distance is not  null  and length(isic_id)<>5);" 
+    runCountQuery('checkDistance', 'rais_ybi', sql,cursor,count=True)
 
 
 #Opportunity: For all HS and all locations        
 def checkOpportunity():  
     print "Entering in checkOpportunity"
     
-    sql="select * from rais_ybp where (opp_gain < -3.1 or opp_gain > 3.1 or opp_gain_wld < -3.1 or opp_gain_wld > 3.1 ) \
-                               or ( (opp_gain is null or opp_gain_wld is null) and length(hs_id)=6) or (  ( opp_gain_wld is not null or opp_gain is not null)  and length(hs_id)<>6 ) "
-    runCountQuery('checkOpportunity', 'rais_ybp', sql,cursor)
+    sql="select count(*) from rais_ybi where (opp_gain < -3.1 or opp_gain > 3.1 ) \
+    or ( opp_gain is null  and length(isic_id)=4) or (   opp_gain is not null  and length(isic_id)<>6 ) "
+    runCountQuery('checkOpportunity', 'rais_ybi', sql,cursor,count=True)
 
 
 #PCI: For all HS    
-def checkPCI():  
-    print "Entering in checkPCI"
+def checkRequired():  
+    print "Entering in checkRequired"
     
-    sql="select * from rais_yp where (pci is null and length(hs_id)=6) or (pci is not null and length(hs_id)<>6) or (pci < -3.1 or pci > 3.1) ;"
-    runCountQuery('checkPCI', 'rais_yp', sql,cursor)
+    sql="select count(*) from rais_ybio r where (required < 0 ) or ( required is null  and num_emp>0 and \
+    (select importance from rais_yio where isic_id=r.isic_id and cbo_id=r.cbo_id)>=0.2) ;"
+    runCountQuery('checkRequired', 'rais_ybio', sql,cursor,count=True)
    
         
 @click.command()
-@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: ECI,Diversity,Growth,RCA,Distance,Opportunity,PCI,ValUSD ',required=False)
+@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: Importance,Diversity,Growth,GrowthAnual,RCA,Distance,Opportunity,Required,Wage ',required=False)
 #@click.argument('method', type=click.Path(exists=True))
 def main(method):
     if not method or method=='all':
-        checkValUSD()
-        checkECI()
+        checkWage()
+        checkImportance()
         checkDiversity()    
         checkGrowth()
+        checkGrowthAnual()
         checkRCA()
         checkDistance()
         checkOpportunity()
-        checkPCI()
-    elif method=="ValUSD":
-        checkValUSD()        
-    elif method=="ECI":
-        checkECI()
+        checkRequired()
+    elif method=="Wage":
+        checkWage()        
+    elif method=="Importance":
+        checkImportance()
     elif method=="Diversity":
         checkDiversity()
     elif method=="Growth":
         checkGrowth()
+    elif method=="GrowthAnual":
+        checkGrowthAnual()
     elif method=="RCA":
         checkRCA()
     elif method=="Distance":
         checkDistance()
     elif method=="Opportunity":
         checkOpportunity()
-    elif method=="PCI":
-        checkPCI()
+    elif method=="Required":
+        checkRequired()
                                 
 if __name__ == "__main__":
     start = time.time()

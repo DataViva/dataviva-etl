@@ -10,6 +10,8 @@ import sys, bz2, gzip, zipfile, os
 from decimal import Decimal, ROUND_HALF_UP
 from os.path import splitext, basename, exists
 
+total_error=0
+
 '''
     Used for finding environment variables through configuration
     if a default is not given, the site will raise an exception
@@ -142,15 +144,18 @@ def errorMessage(step, table, size):
     global msg_error
     if size>0:          
         msg="Found {0} Errors in {1} for {2}".format(size,step,table)
-        msg_error.append(msg)
         print msg        
         total_error=total_error+size
 
-def runCountQuery(step, table, sql,cursor):
+def runCountQuery(step, table, sql,cursor,count=None):
+    print step + " : "+table
     print "---------------------------"
     cursor.execute(sql)
     values=cursor.fetchall()
-    size=len(values)
+    if count is None:        
+        size=len(values)
+    else:
+        size=values[0][0]
     errorMessage(step, table, size)
 
 '''
@@ -173,6 +178,36 @@ def left_df(df,column_entrada,size,column_saida=None):
     df[column_saida] = df.apply(lambda f : left_(f[column_entrada],size) , axis = 1)
     return df 
 
+
+
+def to_int(s):
+    if s is None:
+        return False
+    try: 
+        ret=int(s)
+        return ret
+    except ValueError:
+        print "Erro to_int"+str(s)
+        return False
+
+def to_number(s):
+    try:
+        s=str(s)
+        s=s.replace(',', '.')
+        s1 = float(s)
+        return s1
+    except ValueError:
+        print "Erro to_number"+str(s)
+        return 0
+    
+def fill_zeros(s):
+    try:
+        s1 =s.zfill(3)
+        return s1
+    except ValueError:
+        print "Error fill_zeros"+str(s)
+        return 0
+    
 
 '''
     SIMPLE COMPUTED COLUMNS
