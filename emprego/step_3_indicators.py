@@ -113,33 +113,33 @@ def checkGrowth():
             ) and year > 2000"     
         runCountQuery('checkGrowth_pct', "rais_yb", sql,cursor,count=True)
     
-        #YW
+        #YO
         sql="select count(*) from rais_yo s where (  \
             (s.wage_growth_pct"+label+" is null and (select wage from rais_yo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id) >0 ) \
             ) and year > 2000"     
         runCountQuery('checkGrowth', "rais_yo", sql,cursor,count=True)
         
-        #YP
+        #YI
         sql="select count(*) from rais_yi s where (  \
             (s.wage_growth_pct"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id) >0 ) \
              ) and year > 2000" 
         runCountQuery('checkGrowth', "rais_yi", sql,cursor,count=True)
      
     
-        #YBP
+        #YBI
         sql="select count(*) from rais_ybi s where (  (  (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
            and (select wage from rais_ybi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
         runCountQuery('checkGrowth', "rais_ybi", sql,cursor,count=True)    
         
         
-        #YBW
+        #YBO
         sql="select count(*) from rais_ybo s where ( ( (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
             and (select wage from rais_ybo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.bra_id = s.bra_id) >0 ) \
              ) and year > 2000" 
         runCountQuery('checkGrowth', "rais_ybo", sql,cursor,count=True)      
     
-        #YBPW
+        #YBIO
         sql="select count(*) from rais_ybio s where (   (   (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
            and (select wage from rais_ybio interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
