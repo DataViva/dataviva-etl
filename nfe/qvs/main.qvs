@@ -10,7 +10,7 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
 SET anoProcessamento='2013';
-SET mesProcessamento='01';
+SET mesProcessamento='03';
 SET padraoNomeArquivo='';
 
 
@@ -31,7 +31,7 @@ DIRECTORY;
 $(Include=qvs\Extracao.qvs);
 
 DIRECTORY;
-//$(Include=qvs\Transformador.qvs);
+$(Include=qvs\Transformacao.qvs);
 
 DIRECTORY;
 $(Include=qvs\Exportar.qvs);
