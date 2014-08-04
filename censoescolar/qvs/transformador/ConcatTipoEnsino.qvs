@@ -1,0 +1,54 @@
+﻿///$tab Main
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='R$ #.##0,00;-R$ #.##0,00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
+SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
+
+Matriculas:
+LOAD YEAR, 
+     ID_CLASS, 
+     QTY_ENROLL, 
+     ID_EDUCATION_MODE, 
+     ID_EDUCATION_LEVEL, 
+     ID_COURSE, 
+     ID_SCHOOL, 
+     ID_MUNICIPALITY, 
+     ID_LOCATION, 
+     ID_ADM_DEPENDENCY
+FROM
+C:\Rafael\Qlikview\CensoEscolarFINAL.qvd
+(qvd);
+
+Mapa:
+Mapping
+LOAD A, 
+     B
+FROM
+C:\Rafael\Qlikview\mapa_tipo_ensino.xlsx
+(ooxml, no labels, table is Plan1);
+
+
+NoConcatenate
+
+Resultado:
+LOAD YEAR, 
+     ID_CLASS, 
+     QTY_ENROLL, 
+     ID_EDUCATION_MODE, 
+     ApplyMap('Mapa', ID_EDUCATION_LEVEL, 'x'&ID_EDUCATION_LEVEL) as ID_EDUCATION_LEVEL, 
+     ID_COURSE, 
+     ID_SCHOOL, 
+     ID_MUNICIPALITY, 
+     ID_LOCATION, 
+     ID_ADM_DEPENDENCY
+Resident Matriculas;
+
+DROP Table Matriculas;
+
+store RESULTADO into [C:\Rafael\Qlikview\CensoEscolarFINAL.csv] (txt);

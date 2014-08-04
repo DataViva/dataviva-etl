@@ -1,0 +1,46 @@
+
+if '$(executarExtracao)'='S' then
+
+	NFE:
+	LOAD 
+		@1 as CD_SUBITEM_NCM, 
+		@2 as CD_CNAE_DESTINATARIO, 
+		@3 as CD_CNAE_REMETENTE, 
+		@4 as CD_CAPITULO_NCM, 
+		@5 as CD_RECO_DESTINATARIO, 
+		@6 as DS_REGIME_RECO_DESTINATARIO, 
+		@7 as CD_RECO_REMETENTE, 
+		@8 as DS_REGIME_RECO_REMETENTE, 
+		@9 as CD_CFOP, 
+		@10 as CD_CST, 
+		@11 as DS_TP_DESTINATARIO, 
+		@12 as DS_TP_REMETENTE,
+		@13 as NM_LOCALIDADE_DESTINATARIO,
+		@14 as NM_LOCALIDADE_REMETENTE, 
+		@15 as NR_ANO, 
+		@16 as NR_MES, 
+		@17 as SIGLA_UF_DESTINATARIO, 
+		@18 as SIGLA_UF_REMETENTE, 
+		@19 as DS_SITUACAO_DESTINATARIO, 
+		@20 as DS_SITUACAO_REMETENTE, 
+		@21 as VR_DESPESA, 
+		@22 as VR_ICMS_ST, 
+		@23 as VR_ICMS_ST_RET, 
+		@24 as VR_ICMS, 
+		@25 as VR_IPI, 
+		@26 as VR_PIS, 
+		@27 as VR_COFINS, 
+		@28 as VR_II, 
+		@29 as VR_PRODUTO, 
+		@30 as V_ISSQN, 
+		@31 as ORIGEM
+	FROM
+	[E:\Bancos de Dados\FAZENDA\NFe\Dados_Escritorio_$(anoProcessamento)$(mesProcessamento).csv]
+	(txt, codepage is 1252, no labels, delimiter is ';', msq)
+	where @14<>'';
+
+	store NFE into E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento).qvd (qvd);
+	
+	//drop table NFE;
+
+end if

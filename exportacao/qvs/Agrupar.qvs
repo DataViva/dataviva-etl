@@ -1,0 +1,16 @@
+
+if '$(executarAgrupar)'='S' then
+	
+	SECEX:
+	LOAD
+		*
+	FROM
+	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_*.qvd]
+	(qvd);
+	
+	store SECEX into
+	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BREX20.qvd] (qvd);
+
+	drop table SECEX;
+			
+end if	

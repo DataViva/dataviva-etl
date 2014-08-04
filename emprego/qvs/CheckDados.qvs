@@ -1,0 +1,204 @@
+
+if '$(executarCheckDados)'='S' then
+	
+	
+	/* Check para empregados, estabelecimentos e massa salarial por UF */
+	
+	
+	ValoresTotaisMteUF:
+	LOAD 
+		 Count(Distinct Establishment_ID) as Establishment_uf_dv, 
+		 left(Municipality_ID,2) as UF, 
+		 Count(Employee_ID) as Employee_uf_dv,
+		 Sum(AverageMonthlyWage) as Wage_uf_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(Municipality_ID,2), Year;
+	 
+	left join (ValoresTotaisMteUF)
+	
+	LOAD 
+		 Ano as Year, 
+		 UF,
+		 Salarios as Wage_uf_mte,
+		 Empregados as Employee_uf_mte, 
+		 Estabelecimentos as Establishment_uf_mte
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_emprego_uf])
+	where Ano = $(anoProcessamento);
+		
+	ValoresTotaisDvFinaisUf:
+	load *,(Employee_uf_mte - Employee_uf_dv) as valor_emp_uf_Diff, (Establishment_uf_mte - Establishment_uf_dv) as valor_est_uf_Diff, (Wage_uf_mte - Wage_uf_dv) as valor_wage_uf_Diff
+	Resident ValoresTotaisMteUF;
+	
+	drop table ValoresTotaisMteUF;
+	
+	NoConcatenate
+	
+	
+	
+	/* Check para empregados, estabelecimentos e massa salarial por Município */
+	
+	
+	ValoresTotaisMteMun:
+	LOAD 
+		 Count(Distinct Establishment_ID) as Establishment_Mun_dv, 
+		 Municipality_ID as Municipality, 
+		 Count(Employee_ID) as Employee_Mun_dv,
+		 Sum(AverageMonthlyWage) as Wage_Mun_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by Municipality_ID, Year;
+	 
+	left join (ValoresTotaisMteMun)
+	
+	LOAD 
+		 Ano as Year, 
+		 Municipio as Municipality,
+		 Salarios as Wage_Mun_mte,
+		 Empregados as Employee_Mun_mte, 
+		 Estabelecimentos as Establishment_Mun_mte
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_emprego_mun])
+	where Ano = $(anoProcessamento);
+		
+	ValoresTotaisDvFinaisMun:
+	load *,(Employee_Mun_mte - Employee_Mun_dv) as valor_emp_Mun_Diff, (Establishment_Mun_mte - Establishment_Mun_dv) as valor_est_Mun_Diff, (Wage_Mun_mte - Wage_Mun_dv) as valor_wage_Mun_Diff
+	Resident ValoresTotaisMteMun;
+	
+	drop table ValoresTotaisMteMun;
+		
+	NoConcatenate
+	
+	
+	
+	/* Check para empregados e massa salarial por CBO */
+	
+	
+	ValoresTotaisMteCBO:
+	LOAD 
+		 left(BrazilianOcupation_ID,4) as occupation, 
+		 Count(Employee_ID) as Employee_cbo_dv,
+		 Sum(AverageMonthlyWage) as Wage_cbo_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(BrazilianOcupation_ID,4), Year;
+	 
+	left join (ValoresTotaisMteCBO)
+	
+	LOAD 
+		 Ano as Year, 
+		 CBO_2002 as occupation,
+		 Salarios as Wage_cbo_mte,
+		 Empregados as Employee_cbo_mte 
+		 
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [rais_cbo])
+	where Ano = $(anoProcessamento);
+		
+	ValoresTotaisDvFinaisCBO:
+	load *,(Employee_cbo_mte - Employee_cbo_dv) as valor_emp_cbo_Diff, (Wage_cbo_mte - Wage_cbo_dv) as valor_wage_cbo_Diff
+	Resident ValoresTotaisMteCBO;
+	
+	drop table ValoresTotaisMteCBO;
+		
+	
+			
+	/* Check para empregados e massa salarial por CNAE */
+	
+	
+	ValoresTotaisMteCNAE:
+	LOAD 
+		 EconomicAtivity_ID_CNAE as EconomicAtivity, 
+		 Count(Employee_ID) as Employee_cnae_dv,
+		 Sum(AverageMonthlyWage) as Wage_cnae_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by EconomicAtivity_ID_CNAE, Year;
+	 
+	if anoProcessamento<'2006' then 
+	
+		left join (ValoresTotaisMteCNAE)
+		
+		LOAD 
+			 Ano as Year, 
+			 ApplyMap('CNAE10xCAEN20',trim([CNAE_10]),'X'&trim([CNAE_10])) as EconomicAtivity,
+			 Sum(Salarios) as Wage_cnae_mte,
+			 Sum(Empregados) as Employee_cnae_mte 
+			 
+		FROM
+		[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+		(ooxml, embedded labels, table is [rais_cnae_2])
+		where Ano = $(anoProcessamento)
+		group by ApplyMap('CNAE10xCAEN20',trim([CNAE_10]),'X'&trim([CNAE_10])), Ano;
+		
+	elseif anoProcessamento>'2005' then 
+				
+		left join (ValoresTotaisMteCNAE)
+		
+		LOAD 
+			 Ano as Year, 
+			 CNAE_20 as EconomicAtivity,
+			 Sum(Salarios) as Wage_cnae_mte,
+			 Sum(Empregados) as Employee_cnae_mte 
+			 
+		FROM
+		[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+		(ooxml, embedded labels, table is [rais_cnae_1])
+		where Ano = $(anoProcessamento)
+		group by CNAE_20, Ano;
+	
+	end if
+	
+	ValoresTotaisDvFinaisCNAE:
+	load *,(Employee_cnae_mte - Employee_cnae_dv) as valor_emp_cnae_Diff, (Wage_cnae_mte - Wage_cnae_dv) as valor_wage_cnae_Diff
+	Resident ValoresTotaisMteCNAE;
+	
+	drop table ValoresTotaisMteCNAE;
+	
+	
+	
+	
+			
+	/* Check para empregados por CBO e UF em 2012 */
+	
+	
+	ValoresTotaisMteCBO_UF:
+	LOAD 
+		 left(BrazilianOcupation_ID,4) as occupation,
+		 left(Municipality_ID,2) as UF,		 
+		 Count(Employee_ID) as Employee_CBO_UF_dv,
+		 Year
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]	(qvd)
+	group by left(BrazilianOcupation_ID,4), left(Municipality_ID,2), Year;
+	 
+	left join (ValoresTotaisMteCBO_UF)
+	
+	LOAD 
+		 2012 as Year, 
+		 CBO_2002 as occupation,
+		 UF,
+		 Empregados as Employee_CBO_UF_mte 
+		 
+	FROM
+	[E:\Bancos de Dados\MTE\MTE_homologacao.xlsx]
+	(ooxml, embedded labels, table is [2012_cbo_uf])
+	;
+	
+	
+	ValoresTotaisDvFinaisCNAE:
+	load *,(Employee_CBO_UF_mte - Employee_CBO_UF_dv) as valor_emp_CBO_UF_Diff
+	Resident ValoresTotaisMteCBO_UF;
+	
+	drop table ValoresTotaisMteCBO_UF;
+	
+	
+end if

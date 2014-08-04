@@ -1,0 +1,70 @@
+/*
+Retirar acentos dos nomes dos municípios
+*/
+
+MapAcentos:
+Mapping LOAD * inline 
+[
+	From,To
+	á,a
+	â,a
+	ã,a
+	é,e
+	ê,e
+	í,i
+	ó,o
+	ô,o
+	õ,o
+	ú,u
+	Á,A
+	Â,A
+	Ã,A
+	É,E
+	Ê,E
+	Í,I
+	Ó,O
+	Ô,O
+	Õ,O
+	Ú,U
+	ç,c
+	Ç,C
+];
+
+
+
+/*
+Retirar caracteres dos códigos CNAE e NCM
+*/
+
+MapCaracteres:
+Mapping LOAD * inline 
+[
+	'Caracter', 'Sobrescrever'
+	'.',''
+	'-',''
+	'/',''
+	' ',''
+];
+
+
+
+/*
+Retirar acentos dos nomes dos municípios
+*/
+
+
+IBGE:
+LOAD 
+	[Cod Município Completo], 
+	[Nome Município]     
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\NFe\IBGE.xlsx]
+(ooxml, embedded labels, table is [Cod_Mun]);
+
+MapMunicipiosCod:	
+Mapping LOAD  
+	ApplyMap('MapAcentos',[Nome Município],[Nome Município]) as NM_LOCALIDADE,
+	[Cod Município Completo] AS CD_LOCALIDADE_IBGE 
+RESIDENT IBGE;
+
+DROP TABLE IBGE;

@@ -1,0 +1,78 @@
+	
+if '$(executarExtracao)'='S' then
+
+	if anoProcessamento<'2012' then 
+				
+		SECEX_$(anoProcessamento):
+		LOAD      
+			@1:4 as ANO,
+			@5:6 as MES,
+			left(@7:14,4) as HS,
+			@15:17 as PAIS,
+			@18:19 as UF,
+			@20:23 as PORTO,
+			@24:30 as MUNICÍPIO,
+			@31:32 as UNIDADE,
+			@33:47 as QUANTIDADE,
+			@48:62 as KGLIQUIDO,
+			@63:n as VALORFOB
+		FROM
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BREX$(anoProcessamento)*.txt]
+		(fix, utf8);
+		
+		store SECEX_$(anoProcessamento) into
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_$(anoProcessamento).qvd] (qvd);
+		
+		drop table SECEX_$(anoProcessamento);
+		
+	elseif anoProcessamento=2012 then 
+	
+		SECEX_$(anoProcessamento):
+		LOAD 
+			CO_ANO as ANO, 
+			CO_MES as MES, 
+			left(CO_NCM,4) as HS, 
+			CO_PAIS  as PAIS,
+			CO_UF as UF, 
+			CO_MUN_GEO as MUNICÍPIO, 
+			CO_PORTO as PORTO,
+			CO_UNID as UNIDADE, 
+			[SUM(MES.QT_ESTAT)]  as QUANTIDADE, 
+			[SUM(MES.KG_LIQUIDO)] as KGLIQUIDO, 
+			[SUM(MES.VL_FOB)] as VALORFOB
+		FROM
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\Exportacao_2012.txt]
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
+		
+		store SECEX_$(anoProcessamento) into
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_$(anoProcessamento).qvd] (qvd);
+		
+		drop table SECEX_$(anoProcessamento);
+	
+	elseif anoProcessamento>2012 then 
+	
+		SECEX_$(anoProcessamento):
+		LOAD 
+			CO_ANO as ANO, 
+			CO_MES as MES, 
+			CO_NCM_POS as HS, 
+			CO_PAIS  as PAIS,
+			CO_UF as UF, 
+			CO_MUN_GEO as MUNICÍPIO, 
+			CO_PORTO as PORTO,
+			CO_UNID as UNIDADE, 
+			QT_ESTAT  as QUANTIDADE, 
+			KG_LIQUIDO as KGLIQUIDO, 
+			VL_FOB as VALORFOB
+		FROM
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_$(anoProcessamento).txt]
+		(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
+		
+		store SECEX_$(anoProcessamento) into
+		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_$(anoProcessamento).qvd] (qvd);
+		
+		drop table SECEX_$(anoProcessamento);
+		
+	end if	
+	
+end if	

@@ -1,0 +1,26 @@
+	
+if '$(executarExtracao)'='S' then
+	SECEX_$(anoProcessamento):
+	LOAD 
+		CO_ANO as ANO, 
+		CO_MES as MES, 
+		CO_NCM_POS as HS, 
+		CO_PAIS  as PAIS,
+		CO_UF as UF, 
+		CO_MUN_GEO as MUNICÍPIO, 
+		CO_PORTO as PORTO,
+		CO_UNID as UNIDADE, 
+		QT_ESTAT  as QUANTIDADE, 
+		KG_LIQUIDO as KGLIQUIDO, 
+		VL_FOB as VALORFOB
+	FROM
+	[E:\Bancos de Dados\MDIC\Importação\Dados Originais\IMP_$(anoProcessamento).txt]
+	(txt, codepage is 1252, embedded labels, delimiter is '|', msq);
+	
+	store SECEX_$(anoProcessamento) into
+	[E:\Bancos de Dados\MDIC\Importação\Dados Originais\IMP_$(anoProcessamento).qvd] (qvd);
+	
+	drop table SECEX_$(anoProcessamento);
+		
+	
+end if	

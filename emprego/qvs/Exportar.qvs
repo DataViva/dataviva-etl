@@ -1,0 +1,16 @@
+
+if '$(executarExportar)'='S' then
+
+	RAIS_$(anoProcessamento) :
+	LOAD
+		*
+	FROM
+	[E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento)_T.qvd]
+	(qvd);
+		
+	store RAIS_$(anoProcessamento) into
+	E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento).csv (txt, delimiter is ';');
+
+		
+	
+end if	

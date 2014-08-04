@@ -1,0 +1,34 @@
+﻿ 
+if '$(executarTransformacao)'='S' then
+		
+	MATRICULA_$(anoProcessamento):
+	LOAD
+		 ANO_CENSO, 
+		 PK_COD_MATRICULA, 
+		 FK_COD_ALUNO, 
+		 NUM_IDADE, 
+		 TP_SEXO, 
+		 TP_COR_RACA, 
+		 FK_COD_MOD_ENSINO, 
+		 FK_COD_ETAPA_ENSINO,
+		 Applymap('Reclassificacao_novo',FK_COD_ETAPA_ENSINO,FK_COD_ETAPA_ENSINO) as FK_COD_ETAPA_ENSINO_Novo,
+		 Applymap('Reclassificacao_Code_ensino',FK_COD_ETAPA_ENSINO,FK_COD_ETAPA_ENSINO) as FK_COD_ETAPA_ENSINO_Code_ensino,		 
+		 PK_COD_TURMA, 
+		 FK_COD_CURSO_PROF, 
+		 PK_COD_ENTIDADE, 
+		 FK_COD_ESTADO_ESCOLA, 
+		 SIGLA_ESCOLA, 
+		 COD_MUNICIPIO_ESCOLA, 
+		 ID_LOCALIZACAO_ESC, 
+		 ID_DEPENDENCIA_ADM_ESC
+	FROM
+	[E:\Bancos de Dados\Censo Escolar\MATRICULA_$(anoProcessamento).qvd]
+	(qvd)
+	;
+		
+	store MATRICULA_$(anoProcessamento) into
+	E:\Bancos de Dados\Censo Escolar\MATRICULA_$(anoProcessamento)_T.qvd (qvd);
+
+	drop table MATRICULA_$(anoProcessamento);
+	
+end if	

@@ -1,0 +1,37 @@
+
+if '$(executarExportar)'='S' then
+
+	NFE:
+	LOAD
+		CD_SUBITEM_NCM, 
+		CD_CNAE_DESTINATARIO, 
+		CD_CNAE_REMETENTE, 
+		CD_CFOP, 
+		DS_TP_DESTINATARIO, 
+		DS_TP_REMETENTE, 
+		CD_LOCALIDADE_DESTINATARIO, 
+		CD_LOCALIDADE_REMETENTE, 
+		NR_ANO, 
+		NR_MES, 
+		DS_SITUACAO_DESTINATARIO, 
+		DS_SITUACAO_REMETENTE, 
+		VR_DESPESA, 
+		VR_ICMS_ST, 
+		VR_ICMS_ST_RET, 
+		VR_ICMS, 
+		VR_IPI, 
+		VR_PIS, 
+		VR_COFINS, 
+		VR_II, 
+		VR_PRODUTO, 
+		V_ISSQN, 
+		ORIGEM
+	FROM
+	[E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento)_T.qvd]
+	(qvd);
+
+	store NFE into E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento).csv (txt, delimiter is ';');
+	
+	drop table NFE;
+
+end if
