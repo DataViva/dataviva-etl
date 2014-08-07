@@ -162,7 +162,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
 
 df = left(df,'id',4)
 '''
-def left_df(df,column_entrada,size,column_saida=None):
+def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
     if not column_saida:
         column_saida=column_entrada
         

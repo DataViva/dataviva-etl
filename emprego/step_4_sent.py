@@ -9,7 +9,9 @@
     Running a method for a yer:
     python -m emprego.step_4_sent -m ISIC -y 2012 > ISIC.log
     
-    
+    Running aall methods for a yer:
+    python -m emprego.step_4_sent -m all -y 2012 > ISIC2012.log
+        
     Running one by one for all years:
     
     python -m emprego.step_4_sent -m all -y all > step_4_sent.log
