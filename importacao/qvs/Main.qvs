@@ -17,17 +17,22 @@ SET padraoNomeArquivo='';
 
 SET executarExtracao='N';
 
+SET executarAgrupar='N';
+
 SET executarTransformacao='N';
 
-SET executarExportar='N';
+SET executarExportar='S';
 
-SET executarCheckDados='S';
+SET executarCheckDados='N';
 
 DIRECTORY;
 $(Include=qvs\Map.qvs);
 
 DIRECTORY;
 $(Include=qvs\Extracao.qvs);
+
+DIRECTORY;
+$(Include=qvs\Agrupar.qvs);
 
 DIRECTORY;
 $(Include=qvs\Transformacao.qvs);

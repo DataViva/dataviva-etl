@@ -8,8 +8,7 @@ if '$(executarTransformacao)'='S' then
 	LOAD      
 		ANO,
 		MES,		
-		ApplyMap('HS1996xHS2002',trim(HS),trim(HS)) as HS2002,	
-		HS as HS1996,	
+		ApplyMap('HS1996xHS2002',HS,HS) as HS2002,	
 		PAIS,
 		UF,
 		PORTO,
@@ -22,11 +21,10 @@ if '$(executarTransformacao)'='S' then
 	E:\Bancos de Dados\MDIC\Importação\Dados Originais\EPEMG_BRIM20.qvd (qvd) where ANO>=2000 and ANO<=2001;
 	
 	NoConcatenate
-	
-		
+			
 	SECEX2000_2001A:
 	load * ,
-		ApplyMap('HS2002xHS2007',trim(HS2002),trim(HS2002))  as HS2007			
+		ApplyMap('HS2002xHS2007',HS2002,HS2002)  as HS2007			
 	resident SECEX2000_2001;
 		
 	NoConcatenate
@@ -38,9 +36,6 @@ if '$(executarTransformacao)'='S' then
 		
 	drop table SECEX2000_2001;
 	drop table SECEX2000_2001A;
-	
-	
-	
 	
 
 	
@@ -54,8 +49,7 @@ if '$(executarTransformacao)'='S' then
 	LOAD      
 		ANO,
 		MES,
-		ApplyMap('HS2002xHS2007',trim(HS),trim(HS)) as HS2007,		
-		HS as HS2002,
+		ApplyMap('HS2002xHS2007',HS,HS) as HS2007,		
 		PAIS,
 		UF,
 		PORTO,
@@ -75,7 +69,6 @@ if '$(executarTransformacao)'='S' then
 	resident SECEX2002_2006;
 	
 	drop table SECEX2002_2006;
-				
 	
 	
 		
@@ -100,24 +93,20 @@ if '$(executarTransformacao)'='S' then
 		VALORFOB
 	FROM
 	E:\Bancos de Dados\MDIC\Importação\Dados Originais\EPEMG_BRIM20.qvd (qvd) where ANO>=2007 and ANO<=2011;
-	
-	
+		
 	NoConcatenate
 		
-	
 	SECEX2007_2011Final:
 	load *,
 		 ApplyMap('HS2007',HS2007,HS2007) as HS2007Check
 	resident SECEX2007_2011;
 	
 	drop table SECEX2007_2011;
-
-
 	
 	
 	/*
 	
-	Anos da SECEX com padrão HS2012: 2012	a 2014 
+	Anos da SECEX com padrão HS2012: 2012 a 2014 
 	
 	*/
 	
@@ -126,7 +115,7 @@ if '$(executarTransformacao)'='S' then
 	LOAD      
 		ANO,
 		MES,
-		ApplyMap('HS2002xHS2007_em2012',trim(HS),trim(HS)) as HS2007A,
+		ApplyMap('HS2002xHS2007_em2012',HS,HS) as HS2007A,
 		PAIS,
 		UF,
 		PORTO,
@@ -144,17 +133,15 @@ if '$(executarTransformacao)'='S' then
 	
 	SECEX2012_2014A:
 	load *,
-		 ApplyMap('HS2012xHS2007',trim(HS2007A),trim(HS2007A)) as HS2007
+		 ApplyMap('HS2012xHS2007',HS2007A,HS2007A) as HS2007
 	resident SECEX2012_2014;
 	
 	NoConcatenate
-	
-	
+		
 	SECEX2012_2014Final:
 	load 
 		*, 
-		ApplyMap('HS2007',HS2007,'X'&HS2007) as HS2007Check,
-		ApplyMap('HS2007Classe',left(HS2007,4),'X'&left(HS2007,4)) as HS2007ClasseCheck	
+		ApplyMap('HS2007',HS2007,'X'&HS2007) as HS2007Check
 	resident SECEX2012_2014A;
 	
 	drop table SECEX2012_2014;
@@ -162,11 +149,6 @@ if '$(executarTransformacao)'='S' then
 	
 	
 	
-	
-	
-			
-		
-		
 	/**
 	
 	SECEX - UNIFICANDO ANOS

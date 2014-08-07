@@ -9,7 +9,7 @@ if '$(executarCheckDados)'='S' then
 		 ANO, 
 		 MunIDMDIC,
 		 NCM2007,	
-		sum(VALORFOB) as VALORFOB
+			sum(VALORFOB) as VALORFOB
      
 	FROM
 	F:\Product Space\Dados Enviados para GV\2012_07_09_SECEX\MDIC_All.qvd (qvd)

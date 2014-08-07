@@ -28,6 +28,7 @@ HS1996xHS2002:
 mapping 
 load * resident HS1996xHS2002Tabela;
 
+drop table HS1996xHS2002Tabela;
 
 /**
 
@@ -35,7 +36,6 @@ load * resident HS1996xHS2002Tabela;
 
 Anos da SECEX com padrão HS2002: 2002 a 2006
 **/
-// MapSubString('MapRetiraTextosLixo',[HS 2002])
 
 HS2002xHS2007Tabela:
 LOAD trim([HS 2002]) as HS2002xHS2007_Origem, 
@@ -50,14 +50,7 @@ HS2002xHS2007:
 mapping 
 load * resident HS2002xHS2007Tabela;
 
-
-
-
-
-
-
-
-
+drop table HS2002xHS2007Tabela;
 
 
 /**
@@ -131,7 +124,7 @@ FROM
 */
 
 
-drop table HS1996xHS2002Tabela;
+
 
 
 /**

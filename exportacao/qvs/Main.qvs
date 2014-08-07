@@ -10,24 +10,29 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
 
-SET anoProcessamento='2010';
+SET anoProcessamento='2014';
 SET padraoNomeArquivo='';
 
 
 
 SET executarExtracao='N';
 
+SET executarAgrupar='N';
+
 SET executarTransformacao='N';
 
-SET executarExportar='N';
+SET executarExportar='S';
 
-SET executarCheckDados='S';
+SET executarCheckDados='N';
 
 DIRECTORY;
 $(Include=qvs\Map.qvs);
 
 DIRECTORY;
 $(Include=qvs\Extracao.qvs);
+
+DIRECTORY;
+$(Include=qvs\Agrupar.qvs);
 
 DIRECTORY;
 $(Include=qvs\Transformacao.qvs);

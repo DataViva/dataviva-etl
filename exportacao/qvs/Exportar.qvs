@@ -1,7 +1,6 @@
 
 if '$(executarExportar)'='S' then
-	trace 'EXECUTAR EXPORTAR';
-	
+		
 	SECEX:
 	load 
 			ANO as Year,
