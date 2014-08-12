@@ -138,3 +138,31 @@ Mapping LOAD
 RESIDENT CFOP;
 
 DROP TABLE CFOP;
+
+
+
+
+/**
+Utilizado para conferir os codigos de 2007
+*/
+HS2007:
+Mapping
+LOAD 
+	[HS 2007] as HS2007_origem,
+	[HS 2007] as HS2007_destino	
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\HS\HS_Todos_Anos - IMP.xlsx]
+(ooxml, embedded labels, table is [2007]);
+
+
+/**
+Utilizado para conferir os codigos de 2007
+*/
+HS2007_8d:
+Mapping
+LOAD 
+	[HS 2007] as NCM2007_origem,
+	[HS 2007] as NCM2007_destino	
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\HS\HS_Todos_Anos_original.xlsx]
+(ooxml, embedded labels, table is [2007_8d]);

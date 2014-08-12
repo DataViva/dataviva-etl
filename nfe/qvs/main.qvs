@@ -21,7 +21,11 @@ SET executarExtracao='N';
 
 SET executarTransformacao='N';
 
+SET executarCheckHS='N';
+
 SET executarExportar='S';
+
+
 
 
 DIRECTORY;
@@ -34,5 +38,10 @@ DIRECTORY;
 $(Include=qvs\Transformacao.qvs);
 
 DIRECTORY;
+$(Include=qvs\CheckHS.qvs);
+
+DIRECTORY;
 $(Include=qvs\Exportar.qvs);
+
+
 
