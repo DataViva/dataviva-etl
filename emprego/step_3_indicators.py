@@ -71,22 +71,22 @@ def checkWage():
 def checkImportance():
     print "Entering in checkImportance"
          
-    sql="select count(*) from rais_yio where  length(isic_id)=5 and length(cbo_id)=4 and ( (importance < 0 or importance > 1 ) \
+    sql="select count(*) from rais_yio where  length(cnae_id)=5 and length(cbo_id)=4 and ( (importance < 0 or importance > 1 ) \
     or ( importance is null  and num_emp>0) or (   importance is not null  and num_emp=0 ) ) "  
     runCountQuery('checkImportance', 'rais_yio', sql,cursor,count=True)
 
 
-#Diversity (HS / WLD / BRA): too for Ocupations (CBO) and ISIC
+#Diversity (HS / WLD / BRA): too for Ocupations (CBO) and cnae
 def checkDiversity():  
     print "Entering in checkDiversity"
 
     sql="SELECT count(*) FROM rais_yi where num_emp >0 and not (cbo_diversity >0 and cbo_diversity_eff >0 and bra_diversity>0  and bra_diversity_eff>0 );"
     runCountQuery('checkDiversity', 'rais_yi', sql,cursor,count=True)
 
-    sql="SELECT count(*) FROM rais_yb where num_emp >0 and not (cbo_diversity >0 and cbo_diversity_eff >0 and isic_diversity>0  and isic_diversity_eff>0 );"
+    sql="SELECT count(*) FROM rais_yb where num_emp >0 and not (cbo_diversity >0 and cbo_diversity_eff >0 and cnae_diversity>0  and cnae_diversity_eff>0 );"
     runCountQuery('checkDiversity', 'rais_yb', sql,cursor,count=True)
 
-    sql="SELECT count(*) FROM rais_yo where num_emp >0 and not (bra_diversity >0 and bra_diversity_eff >0 and isic_diversity>0  and isic_diversity_eff>0 );"
+    sql="SELECT count(*) FROM rais_yo where num_emp >0 and not (bra_diversity >0 and bra_diversity_eff >0 and cnae_diversity>0  and cnae_diversity_eff>0 );"
     runCountQuery('checkDiversity', 'rais_yo', sql,cursor,count=True)
    
 
@@ -125,14 +125,14 @@ def checkGrowth():
         
         #YI
         sql="select count(*) from rais_yi s where (  s.wage is not null and   \
-            (s.wage_growth_pct"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id) >0 ) \
+            (s.wage_growth_pct"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.cnae_id = s.cnae_id) >0 ) \
              ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_yi:"+year+":"+label, sql,cursor,count=True)
      
     
         #YBI
         sql="select count(*) from rais_ybi s where (  s.wage is not null and   (  (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
-           and (select wage from rais_ybi interno where interno.year=s.year-"+year+"  and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
+           and (select wage from rais_ybi interno where interno.year=s.year-"+year+"  and interno.cnae_id = s.cnae_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_ybi:"+year+":"+label, sql,cursor,count=True)    
         
@@ -145,7 +145,7 @@ def checkGrowth():
     
         #YBIO
         sql="select count(*) from rais_ybio s where (  s.wage is not null and    (   (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
-           and (select wage from rais_ybio interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.isic_id = s.isic_id and interno.bra_id = s.bra_id) >0 ) \
+           and (select wage from rais_ybio interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.cnae_id = s.cnae_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_ybio:"+year+":"+label, sql,cursor,count=True)     
     
@@ -166,7 +166,7 @@ def checkDistance():
     print "Entering in checkDistance"    
 
     sql="select count(*) from rais_ybi where (distance<0 or distance>1 ) \
-        or ( distance is null  and length(isic_id)=5) or ( distance is not  null  and length(isic_id)<>5);" 
+        or ( distance is null  and length(cnae_id)=5) or ( distance is not  null  and length(cnae_id)<>5);" 
     runCountQuery('checkDistance', 'rais_ybi', sql,cursor,count=True)
 
 
@@ -174,7 +174,7 @@ def checkDistance():
 def checkOpportunity():  
     print "Entering in checkOpportunity"
     
-    sql="select count(*) from rais_ybi where  ( opp_gain is null  and length(isic_id)=5) or (   opp_gain is not null  and length(isic_id)<>5) "
+    sql="select count(*) from rais_ybi where  ( opp_gain is null  and length(cnae_id)=5) or (   opp_gain is not null  and length(cnae_id)<>5) "
     runCountQuery('checkOpportunity', 'rais_ybi', sql,cursor,count=True)
 
 
@@ -183,7 +183,7 @@ def checkRequired():
     print "Entering in checkRequired"
     
     sql="select count(*) from rais_ybio r where (required < 0 ) or ( required is null  and num_emp>0 and \
-    (select importance from rais_yio where isic_id=r.isic_id and cbo_id=r.cbo_id)>=0.2) ;"
+    (select importance from rais_yio where cnae_id=r.cnae_id and cbo_id=r.cbo_id)>=0.2) ;"
     runCountQuery('checkRequired', 'rais_ybio', sql,cursor,count=True)
    
         

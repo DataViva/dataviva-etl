@@ -11,7 +11,7 @@
     
     python -m emprego.step_2_aggs -m BRA > BRA.log
     python -m emprego.step_2_aggs -m BRAPR > BRAPR.log
-    python -m emprego.step_2_aggs -m ISIC > ISIC.log
+    python -m emprego.step_2_aggs -m CNAE > CNAE.log
     python -m emprego.step_2_aggs -m CBO > CBO.log
     
     YBIO - Is the only table that is not in this check script. We need to find a viable way to do this check in this hude table
@@ -61,8 +61,8 @@ def checkBRA_ID():
         where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.wage <> \
             (SELECT sum(wage) FROM rais_ybi  \
                     where length(bra_id)=8 and left(bra_id,4)=b.bra_id \
-                    and isic_id=b.isic_id and year=b.year \
-                    group by left(bra_id,4),length(isic_id),year)"
+                    and cnae_id=b.cnae_id and year=b.year \
+                    group by left(bra_id,4),length(cnae_id),year)"
     runCountQuery('checkBRA_ID', 'rais_ybi', sql,cursor) 
 
     #YBO
@@ -95,8 +95,8 @@ def checkBRA_IDPR():
         where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.wage <> \
             (SELECT sum(s.wage) FROM rais_ybi s, attrs_bra_pr p   \
                     where p.bra_id = s.bra_id and  p.pr_id = b.bra_id and length(s.bra_id)=8 and left(s.bra_id,4)=b.bra_id \
-                    and s.isic_id=b.isic_id and s.year=b.year \
-                    group by left(s.bra_id,4),length(s.isic_id),year)"
+                    and s.cnae_id=b.cnae_id and s.year=b.year \
+                    group by left(s.bra_id,4),length(s.cnae_id),year)"
     runCountQuery('checkBRA_IDPR', 'rais_ybi', sql,cursor) 
     
 
@@ -113,39 +113,39 @@ def checkBRA_IDPR():
 
     #YBPW ??
 
-def checkISIC_ID():
-    print "Entering in checkISIC_ID"
+def checkCNAE_ID():
+    print "Entering in checkCNAE_ID"
     aggsP = [(1, 3),(3, 5)]
     for aggs in aggsP:    
         
-        # YI: Check ISIC aggs 
-        sql="SELECT count(*) FROM rais_yi as b where length(b.isic_id)="+str(aggs[0])+" and b.wage <> \
+        # YI: Check cnae aggs 
+        sql="SELECT count(*) FROM rais_yi as b where length(b.cnae_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_yi \
-            where length(isic_id)="+str(aggs[1])+" and left(isic_id,"+str(aggs[0])+")=b.isic_id  and year=b.year \
-            group by left(isic_id,"+str(aggs[0])+"))" 
-        #runCountQuery('checkISIC_ID', 'rais_yi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            where length(cnae_id)="+str(aggs[1])+" and left(cnae_id,"+str(aggs[0])+")=b.cnae_id  and year=b.year \
+            group by left(cnae_id,"+str(aggs[0])+"))" 
+        #runCountQuery('checkcnae_ID', 'rais_yi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
             
         
-        # YBI: Check ISIC aggs 
-        sql="SELECT count(*) FROM rais_ybi as b where length(b.isic_id)="+str(aggs[0])+" and b.wage <> \
+        # YBI: Check cnae aggs 
+        sql="SELECT count(*) FROM rais_ybi as b where length(b.cnae_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_ybi \
-            where length(isic_id)="+str(aggs[1])+" and left(isic_id,"+str(aggs[0])+")=b.isic_id and bra_id=b.bra_id  and year=b.year \
-            group by left(isic_id,"+str(aggs[0])+"),length(bra_id),year)"   
-        #runCountQuery('checkISIC_ID', 'rais_ybi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            where length(cnae_id)="+str(aggs[1])+" and left(cnae_id,"+str(aggs[0])+")=b.cnae_id and bra_id=b.bra_id  and year=b.year \
+            group by left(cnae_id,"+str(aggs[0])+"),length(bra_id),year)"   
+        #runCountQuery('checkcnae_ID', 'rais_ybi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
                     
         #YBIO
-        sql="SELECT count(*) FROM rais_ybio as b where length(b.isic_id)="+str(aggs[0])+" and b.wage <> \
+        sql="SELECT count(*) FROM rais_ybio as b where length(b.cnae_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_ybio \
-            where length(isic_id)="+str(aggs[1])+" and left(isic_id,"+str(aggs[0])+")=b.isic_id and bra_id=b.bra_id and cbo_id=b.cbo_id  \
-            and cbo_id=b.cbo_id and year=b.year   group by left(isic_id,"+str(aggs[0])+"),length(bra_id),length(cbo_id),year)"   
-        runCountQuery('checkISIC_ID', 'rais_ybio:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            where length(cnae_id)="+str(aggs[1])+" and left(cnae_id,"+str(aggs[0])+")=b.cnae_id and bra_id=b.bra_id and cbo_id=b.cbo_id  \
+            and cbo_id=b.cbo_id and year=b.year   group by left(cnae_id,"+str(aggs[0])+"),length(bra_id),length(cbo_id),year)"   
+        runCountQuery('checkcnae_ID', 'rais_ybio:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
         
-        # YIO: Check ISIC aggs 
-        sql="SELECT count(*) FROM rais_yio as b where length(b.isic_id)="+str(aggs[0])+" and b.wage <> \
+        # YIO: Check cnae aggs 
+        sql="SELECT count(*) FROM rais_yio as b where length(b.cnae_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_yio \
-            where length(isic_id)="+str(aggs[1])+" and left(isic_id,"+str(aggs[0])+")=b.isic_id and cbo_id=b.cbo_id  and year=b.year \
-            group by left(isic_id,"+str(aggs[0])+"),length(cbo_id),year)"   
-        runCountQuery('checkISIC_ID', 'rais_ybi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True)     
+            where length(cnae_id)="+str(aggs[1])+" and left(cnae_id,"+str(aggs[0])+")=b.cnae_id and cbo_id=b.cbo_id  and year=b.year \
+            group by left(cnae_id,"+str(aggs[0])+"),length(cbo_id),year)"   
+        runCountQuery('checkcnae_ID', 'rais_ybi:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True)     
 
 def checkCBO_ID():
     
@@ -174,15 +174,15 @@ def checkCBO_ID():
         # YBIO: Check WLD aggs 2 with 4
         sql="SELECT count(*) FROM rais_ybio as b where length(b.cbo_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_ybio \
-            where cbo_id=b.cbo_id and  length(cbo_id)="+str(aggs[1])+" and left(cbo_id,"+str(aggs[0])+")=b.cbo_id and bra_id=b.bra_id and isic_id=b.isic_id   and year=b.year \
-            group by left(cbo_id,"+str(aggs[0])+"),length(bra_id),length(isic_id),year)"   
+            where cbo_id=b.cbo_id and  length(cbo_id)="+str(aggs[1])+" and left(cbo_id,"+str(aggs[0])+")=b.cbo_id and bra_id=b.bra_id and cnae_id=b.cnae_id   and year=b.year \
+            group by left(cbo_id,"+str(aggs[0])+"),length(bra_id),length(cnae_id),year)"   
         runCountQuery('checkCBO_ID', 'rais_ybio:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
 
         # YIO: Check WLD aggs 2 with 4
         sql="SELECT count(*) FROM rais_yio as b where length(b.cbo_id)="+str(aggs[0])+" and b.wage <> \
                (SELECT sum(wage) FROM rais_yio \
-            where cbo_id=b.cbo_id and  length(cbo_id)="+str(aggs[1])+" and left(cbo_id,"+str(aggs[0])+")=b.cbo_id and isic_id=b.isic_id  and year=b.year \
-            group by left(cbo_id,"+str(aggs[0])+"),length(isic_id),year)"   
+            where cbo_id=b.cbo_id and  length(cbo_id)="+str(aggs[1])+" and left(cbo_id,"+str(aggs[0])+")=b.cbo_id and cnae_id=b.cnae_id  and year=b.year \
+            group by left(cbo_id,"+str(aggs[0])+"),length(cnae_id),year)"   
         runCountQuery('checkCBO_ID', 'rais_yio:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
             
     #Checking aggs in different tables
@@ -196,25 +196,25 @@ def checkCBO_ID():
     #YO x YBIO
     sql="SELECT count(*) FROM rais_yo as b where length(b.cbo_id)=1 and b.wage <> \
            (SELECT sum(wage) FROM rais_ybio \
-        where length(cbo_id)=2 and left(cbo_id,1)=b.cbo_id and year=b.year  and length(bra_id)=8  and length(isic_id)=5  \
+        where length(cbo_id)=2 and left(cbo_id,1)=b.cbo_id and year=b.year  and length(bra_id)=8  and length(cnae_id)=5  \
         group by left(cbo_id,1),year)"   
     runCountQuery('checkCBO_ID', 'rais_ybio x rais_yo', sql,cursor,count=True) 
 
 
 @click.command()
-@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRA , BRAPR, ISIC ,CBO ',required=False)
+@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRA , BRAPR, CNAE ,CBO ',required=False)
 def main(method):
     if not method or method=='all':
         checkBRA_ID()
-        checkISIC_ID()
+        checkCNAE_ID()
         checkCBO_ID()  
-        checkBRAIDPR()
+        checkBRA_IDPR()
     elif method=="BRA":
         checkBRA_ID()        
     elif method=="BRAPR":
         checkBRA_IDPR()    
-    elif method=="ISIC":
-        checkISIC_ID()
+    elif method=="CNAE":
+        checkCNAE_ID()
     elif method=="CBO":
         checkCBO_ID()
 
