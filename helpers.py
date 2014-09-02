@@ -79,7 +79,7 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
 
-def read_from_csv(file,header=None,delimiter=None):
+def read_from_csv(file,header=None,delimiter=None,cols=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
@@ -90,7 +90,7 @@ def read_from_csv(file,header=None,delimiter=None):
     """
     if not header:
         header=0
-    df = pd.read_csv(file, index_col=False,delimiter =delimiter );  #, header=header
+    df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols );  #, header=header
     return df
 
 def df_to_csv(data , file,header=None):
@@ -162,7 +162,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
 
 df = left(df,'id',4)
 '''
-def left_df(df,column_entrada,size,column_saida=None):
+def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
     if not column_saida:
         column_saida=column_entrada
         

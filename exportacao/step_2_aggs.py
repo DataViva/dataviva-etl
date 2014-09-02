@@ -120,7 +120,7 @@ def checkHS_ID():
                (SELECT sum(val_usd) FROM secex_yp \
             where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id  and year=b.year \
             group by left(hs_id,"+str(aggs[0])+"))" 
-        runCountQuery('checkHS_ID', 'secex_yp', sql,cursor) 
+        runCountQuery('checkHS_ID', 'secex_yp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
             
         
         # YBP: Check HS aggs 2 with 4
@@ -128,9 +128,23 @@ def checkHS_ID():
                (SELECT sum(val_usd) FROM secex_ybp \
             where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id  and year=b.year \
             group by left(hs_id,"+str(aggs[0])+"),length(bra_id),year)"   
-        runCountQuery('checkHS_ID', 'secex_ybp', sql,cursor) 
+        runCountQuery('checkHS_ID', 'secex_ybp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
                     
 
+        # YPW: Check HS aggs 2 with 4
+        sql="SELECT * FROM secex_ypw as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
+               (SELECT sum(val_usd) FROM secex_ypw \
+            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and wld_id=b.wld_id  and year=b.year \
+            group by left(hs_id,"+str(aggs[0])+"),length(wld_id),year)"   
+        runCountQuery('checkHS_ID', 'secex_ypw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+
+        # YBPW: Check HS aggs 2 with 4
+        sql="SELECT * FROM secex_ybpw as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
+               (SELECT sum(val_usd) FROM secex_ybpw \
+            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and wld_id=b.wld_id  and year=b.year \
+            group by left(hs_id,"+str(aggs[0])+"),length(wld_id),length(bra_id),year)"   
+        runCountQuery('checkHS_ID', 'secex_ybpw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+                
     #YBPW
 
 def checkWLD_ID():
@@ -142,8 +156,7 @@ def checkWLD_ID():
            (SELECT sum(val_usd) FROM secex_yw \
         where length(wld_id)=5 and left(wld_id,2)=b.wld_id  and year=b.year \
         group by left(wld_id,2))"    
-    runCountQuery('checkWLD_ID', 'secex_yw', sql,cursor) 
-
+    runCountQuery('checkWLD_ID', 'secex_yw', sql,cursor)
         
 
     # YBW: Check WLD aggs 2 with 5
@@ -152,10 +165,20 @@ def checkWLD_ID():
         where length(wld_id)=5 and left(wld_id,2)=b.wld_id and bra_id=b.bra_id  and year=b.year \
         group by left(wld_id,2),length(bra_id),year)"   
     runCountQuery('checkWLD_ID', 'secex_ybw', sql,cursor) 
-    
-            
-    #YPBW ??
 
+    # YPW:  Check WLD aggs 2 with 5
+    sql="SELECT * FROM secex_ypw as b where length(b.wld_id)=2 and b.val_usd <> \
+           (SELECT sum(val_usd) FROM secex_ypw \
+        where length(wld_id)=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id  and year=b.year \
+        group by left(hs_id,2),length(hs_id),year)"   
+    runCountQuery('checkWLD_ID', 'secex_ypw', sql,cursor)     
+            
+    #YPBW Check WLD aggs 2 with 5
+    sql="SELECT * FROM secex_ybpw as b where length(b.wld_id)=2 and b.val_usd <> \
+           (SELECT sum(val_usd) FROM secex_ybpw \
+        where length(wld_id)=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and bra_id=b.bra_id  and year=b.year \
+        group by left(wld_id,2),length(bra_id),length(hs_id),year)"   
+    runCountQuery('checkWLD_ID', 'secex_ybpw', sql,cursor) 
 
 @click.command()
 @click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRAID , HSID ,WLDID ',required=False)

@@ -3,17 +3,19 @@
     Check all data in rais tables
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     How to run: python -m emprego.step_4_sent -m all
-    If need to run just a specific check, run: python -m emprego.step_4_sent -m ISIC
+    If need to run just a specific check, run: python -m emprego.step_4_sent -m cnae
     
     
     Running a method for a yer:
-    python -m emprego.step_4_sent -m ISIC -y 2012 > ISIC.log
+    python -m emprego.step_4_sent -m cnae -y 2012 > cnae.log
     
-    
+    Running aall methods for a yer:
+    python -m emprego.step_4_sent -m all -y 2012 > cnae2012.log
+        
     Running one by one for all years:
     
     python -m emprego.step_4_sent -m all -y all > step_4_sent.log
-    python -m emprego.step_4_sent -m ISIC -y all > ISIC.log
+    python -m emprego.step_4_sent -m cnae -y all > cnae.log
     python -m emprego.step_4_sent -m Municipality -y all > Municipality.log 
     python -m emprego.step_4_sent -m State -y all > State.log 
     python -m emprego.step_4_sent -m CBO -y all > CBO.log     
@@ -21,15 +23,20 @@
     
     SENT DATA IN FORMAT CSV:
     
-    0 - Municipality_ID, ex.: 120040
-    1 - EconomicAtivity_ID_ISIC, ex.: 141 or  4730
-    2 - EconomicActivity_ID_CNAE, ex.: 0151201
-    3 - BrazilianOcupation_ID, ex.:  142105
-    4 - WageReceived, 
-    5 - AverageMonthlyWage, 
-    6 - Employee_ID, 
-    7 - Establishment_ID, 
-    8 - Year
+    0 - cbo, ex.: 413210
+    1 - cnae, ex.: 64221
+    2 - Literacy, ex.: 7
+    3 - Age, ex.: 50
+    4 - est_id 7120, 
+    5 - Simple 0, 
+    6 - munic 120040, 
+    7 - emp_id 10000652927, 
+    8 - Color 9 ,
+    9 - wage_dec 288,52
+   10 - wage 288,52
+   11 - Gender 1,
+   12 - Establishment_Size 5,
+   13 - Year 2002
      
     
     
@@ -55,27 +62,27 @@ db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"],
 db.autocommit(1)
 cursor = db.cursor()
 
-
+cols = ["cbo", "cnae", "literacy", "age", "est_id", "simple", "munic", "emp_id", "color", "wage_dec", "wage", "gender", "est_size", "year"]
 
 ##########################
 #
-#      CHECK FOR ISIC, CBO AND MDIC 
+#      CHECK FOR cnae, CBO AND MDIC 
 # 
 ##########################         
-def checkISIC(year):
-    print "Entering in checkISIC" 
-    dfDV = sql_to_df("SELECT right(s.isic_id,4) as id,sum(wage) as val FROM rais_yi s where length(s.isic_id)=5 and year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=",")    
-    run_check(dfDV,dfSent,'EconomicAtivity_ID_ISIC',year)  
+def checkCNAE(year):
+    print "Entering in checkCNAE" 
+    dfDV = sql_to_df("SELECT right(s.cnae_id,4) as id,sum(wage) as val FROM rais_yi s where length(s.cnae_id)=5 and year="+str(year)+" group by 1;",db)
+    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols) 
+    run_check(dfDV,dfSent,'cnae',year)  
 
  
    
 def checkMunicipality(year,size):
     print "Entering in checkBRA"    
     dfDV = sql_to_df("SELECT left(a.id_ibge,6) as id,sum(wage) as val FROM rais_yb s,attrs_bra a where length(a.id)="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=",")
+    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)
     #dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+"Teste.csv",delimiter=",")    
-    run_check(dfDV,dfSent,'Municipality_ID',year) 
+    run_check(dfDV,dfSent,'munic',year) 
     
     
     
@@ -83,13 +90,13 @@ def checkMunicipality(year,size):
 def checkCBO(year):
     print "Entering in checkCBO" 
     dfDV = sql_to_df("SELECT a.id as id,sum(wage) as val FROM rais_yo s,attrs_cbo a where length(a.id)=4 and  a.id=s.cbo_id and year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=",")   
-    run_check(dfDV,dfSent,'BrazilianOcupation_ID',year)  
+    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)   
+    run_check(dfDV,dfSent,'cbo',year)  
     
 
 def get_valueGroup(dfGroup,id,var):
     try:
-        valCSV= dfGroup.get_group(id)['AverageMonthlyWage'].sum() 
+        valCSV= dfGroup.get_group(id)['wage'].sum() 
         if valCSV==False or valCSV is None:
             print "Value in None or False sor "+valCSV
         else:
@@ -123,9 +130,9 @@ def run_check(dfDV,dfSent,groupId,year):
         
         valDV = dfDV[(dfDV['id']==id)]['val'].values[0]
 
-        valCSV=get_valueGroup(dfGroup,id,'AverageMonthlyWage')
+        valCSV=get_valueGroup(dfGroup,id,'wage')
         if valCSV==False:
-            valCSV=get_valueGroup(dfGroup,idint,'AverageMonthlyWage')
+            valCSV=get_valueGroup(dfGroup,idint,'wage')
         
         if valCSV==False:
             print "Not found in CSV a value for "+str(id)+" - "+str(idint)+"  : Exports of value  "+ str(valDV)+ " in the year "+str(year)
@@ -141,31 +148,31 @@ def run_check(dfDV,dfSent,groupId,year):
             txt="OK "+str(id)
             print txt
 
-#dfSent=dfSent[dfSent['BrazilianOcupation_ID4']<2000]
+#dfSent=dfSent[dfSent['cbo4']<2000]
 #dfDV=dfDV[dfDV['id']<2000]
 def clean_df_sent(dfSent):
     
-    for column in ('EconomicActivity_ID_CNAE','WageReceived','Employee_ID','Establishment_ID','Year'):
+    for column in ('cnae','wage_dec','emp_id','est_id','year'):
         dfSent = dfSent.drop(column, axis=1)
     
      
-    dfSent = left_df(dfSent,'BrazilianOcupation_ID',4,'BrazilianOcupation_ID4')
+    dfSent = left_df(dfSent,'cbo',4,'cbo4')
 
-    dfSent['BrazilianOcupation_ID'] = dfSent.apply(lambda f : to_number(f['BrazilianOcupation_ID4']) , axis = 1)
-    dfSent['Municipality_ID']=dfSent[dfSent.columns[0]]
+    dfSent['cbo'] = dfSent.apply(lambda f : to_number(f['cbo4']) , axis = 1)
+    dfSent['munic']=dfSent[dfSent.columns[0]]
     
     
-    dfSent['Municipality_ID'] = dfSent.apply(lambda f : to_number(f['Municipality_ID']) , axis = 1)
-    dfSent['Municipality_ID'] = dfSent['Municipality_ID'].astype(np.float64)   
-    dfSent['AverageMonthlyWage'] = dfSent.apply(lambda f : to_number(f['AverageMonthlyWage']) , axis = 1) 
-    dfSent['AverageMonthlyWage'] = dfSent['AverageMonthlyWage'].astype(np.float64)     
+    dfSent['munic'] = dfSent.apply(lambda f : to_number(f['munic']) , axis = 1)
+    dfSent['munic'] = dfSent['munic'].astype(np.float64)   
+    dfSent['wage'] = dfSent.apply(lambda f : to_number(f['wage']) , axis = 1) 
+    dfSent['wage'] = dfSent['wage'].astype(np.float64)     
 
     
     return dfSent
 
 
 def clean_df_dv(dfDV):
-    
+    print dfDV
     dfDV['id'] = dfDV.apply(lambda f : to_number(f['id']) , axis = 1) 
     dfDV['id'] = dfDV['id'].astype(np.float64)     
     return dfDV
@@ -184,7 +191,7 @@ def clean_df_dv(dfDV):
 ##########################            
         
 @click.command()
-@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: ISIC , Municipality , State , CBO',required=False)
+@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: CNAE , Municipality , State , CBO',required=False)
 @click.option('-y', '--year', prompt='Year', help='chosse a year to run : 2000 to 2014 or all',required=False)
 #@click.argument('method', type=click.Path(exists=True))
 def main(method,year):
@@ -204,12 +211,12 @@ def main(method,year):
 
 def runMethodYear(method,year):
     if not method or method=='all':
-        checkISIC(year)
+        checkCNAE(year)
         checkCBO(year)
         checkMunicipality(year,8) 
         checkMunicipality(year,2) 
-    elif method=="ISIC":
-        checkISIC(year)     
+    elif method=="CNAE":
+        checkCNAE(year)     
     elif method=="Municipality":
         checkMunicipality(year,8) 
     elif method=="State":
