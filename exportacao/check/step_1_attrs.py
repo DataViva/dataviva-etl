@@ -11,9 +11,8 @@ import csv, sys, os, argparse, MySQLdb, time, bz2
 from collections import defaultdict
 from os import environ
 from decimal import Decimal, ROUND_HALF_UP
-from ..config import DATA_DIR
-from ..helpers import d, get_file, format_runtime
-from scripts import YEAR
+from config import DATA_DIR
+from helpers import d, get_file, format_runtime
 
 ''' Connect to DB '''
 db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"], 
@@ -58,8 +57,7 @@ def updateMDICxIBGE():
 if __name__ == "__main__":
     start = time.time()
     
-    if not YEAR:
-        YEAR = raw_input("Year: ")
+    YEAR = raw_input("Year: ")
     updateMDICxIBGE()
     
     total_run_time = time.time() - start
