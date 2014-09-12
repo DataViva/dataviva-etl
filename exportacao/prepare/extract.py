@@ -1,32 +1,29 @@
 from helpers import fixed_to_csv
 
-def loadCSV():
-	return True
-
+''' Extract CSV file by year'''
 def extract(year):
-	"""
-	Keyword arguments:
-    filefixed -- path of a file containg data in fixed register. ex.: filefixed='/fixedregister.txt'
-    columns -- map of the positions of each column. ex.: columns = ((0,5),(5,18))
-    csvfile -- name of the result of this operation, where CSV will be written. ex.: csvfile='/fixedregister.csv'
-    headers -- name of each column to be written in CSV file. ex.: headers = ('ANO_CENSO','PK_COD_MATRICULA')
-    """
-	if(year == 2012):
-		fixed_to_csv('dados/exportacao/raw/Exportacao_2012.txt', ((1,4), (5,6), (7,14), (15,17), (18,19), (20,23), (24,30), (31,32), (33,47), (48,62), (63,67)),
-				'dados/exportacao/sent/2012.csv', ('ANO', 'MES', 'HS', 'PAIS', 'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB'))
-		
+	if year < 2012:
+		files = {
+			2000 : 'EPEMG_BREX2000_v201008',
+			2001 : 'EPEMG_BREX2001_v201008',
+			2002 : 'EPEMG_BREX2002_v201008',
+			2003 : 'EPEMG_BREX2003_v201008',
+			2004 : 'EPEMG_BREX2004_v201008',
+			2005 : 'EPEMG_BREX2005_v201008',
+			2006 : 'EPEMG_BREX2006_v201008',
+			2007 : 'EPEMG_BREX2007_v201008',
+			2008 : 'EPEMG_BREX2008_v201008',
+			2009 : 'EPEMG_BREX2009_v201008',
+			2010 : 'EPEMG_BREX201012_v201205',
+			2011 : 'EPEMG_BREX201112_v201205'
+		}
 
+		source_file = 'dados/exportacao/raw/' + files[year] + '.txt'
+		export_file = 'dados/exportacao/sent/' + str(year) + '_extract.csv'
 
+		data = fixed_to_csv(source_file, ((0,4), (4,6), (6,14), (14,17), (18,20), (19,23), (23,30), (30,32), (32,47), (47,62), (62,78)), export_file, ('ANO', 'MES', 'HS', 'PAIS', 'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB'))
 
-def greaterThan():
-	return "ano maior que 2012"
-
-def lessThan():
-	return "ano menor que 2012"
-
-def equal():
-	return "ano igual a 2012"	
 
 if __name__ == "__main__":
-    extract(2012)
-    
+	extract(2000)
+

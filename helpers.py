@@ -60,8 +60,8 @@ def format_runtime(x):
     if s < 1:
         return "< 1 second"
     return "{0} seconds".format(int(s))
-        
-        
+
+
 
 def fixed_to_csv(filefixed,columns,csvfile,headers):
     """Convert a file containg data in Fixed Register format to a CSV format.
@@ -72,19 +72,21 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     csvfile -- name of the result of this operation, where CSV will be written. ex.: csvfile='/fixedregister.csv'
     headers -- name of each column to be written in CSV file. ex.: headers = ('ANO_CENSO','PK_COD_MATRICULA')
     """
-    
-    raw_file_path = os.path.abspath( filefixed) 
+
+    raw_file_path = os.path.abspath( filefixed)
     print raw_file_path
     data = pd.read_fwf(raw_file_path, colspecs = columns, header=None)
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
+
+    return data
 
 def read_from_csv(file,header=None,delimiter=None,cols=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
     file -- path of a CSV file to read and that will be the source of dataframe. ex.: filefixed='/fixedregister.txt'
-    
+
     Return:
     dataframe -- python object containing data from the CSV file
     """
@@ -97,9 +99,9 @@ def df_to_csv(data , file,header=None):
     """Convert a dataframe object containing data to a CSV file.
 
     Keyword arguments:
-    data -- dataframe came from a CSV ( read_from_csv ), Fixed or others 
+    data -- dataframe came from a CSV ( read_from_csv ), Fixed or others
     file -- path of a CSV file that will be written using information in dataframe argument. ex.: filefixed='/fixedregister.csv'
-    """   
+    """
     if not header:
         header=True
     with open(file, "w") as f:
@@ -112,12 +114,12 @@ def sql_to_df(sql,db):
 
     Keyword arguments:
     sql             -- SQL Query
-    db            -- Connection to the database 
-    
+    db            -- Connection to the database
+
 
     Example:
     find_in_df(df,'id','2000_010101','val_usd')
-    """ 
+    """
     df = psql.frame_query(sql, db)
     return df
 
@@ -128,12 +130,12 @@ def find_in_df(df,idlabel,idsearch,valuelabel):
     df             -- Dataframe
     idlabel        -- name of the column that has the id that will be searched
     idsearch       -- value to be found in id column
-    valuelabel     -- name of the column of the value that will be found 
+    valuelabel     -- name of the column of the value that will be found
 
     Example:
     find_in_df(df,'id','2000_010101','val_usd')
-    """ 
-    
+    """
+
     d2 = df[(df[idlabel]==idsearch)]
     if d2.empty==False and  valuelabel in d2:
         return d2[valuelabel]
@@ -142,9 +144,9 @@ def find_in_df(df,idlabel,idsearch,valuelabel):
 def errorMessage(step, table, size):
     global total_error
     global msg_error
-    if size>0:          
+    if size>0:
         msg="Found {0} Errors in {1} for {2}".format(size,step,table)
-        print msg        
+        print msg
         total_error=total_error+size
 
 def runCountQuery(step, table, sql,cursor,count=None):
@@ -152,7 +154,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
     print "---------------------------"
     cursor.execute(sql)
     values=cursor.fetchall()
-    if count is None:        
+    if count is None:
         size=len(values)
     else:
         size=values[0][0]
@@ -165,8 +167,8 @@ df = left(df,'id',4)
 def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
     if not column_saida:
         column_saida=column_entrada
-        
-    def left_(s,size):        
+
+    def left_(s,size):
         try:
             s=str(s)
             s1 = s[0:size]
@@ -174,16 +176,16 @@ def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
         except ValueError:
             print "erro"
             return s
-    
+
     df[column_saida] = df.apply(lambda f : left_(f[column_entrada],size) , axis = 1)
-    return df 
+    return df
 
 
 
 def to_int(s):
     if s is None:
         return False
-    try: 
+    try:
         ret=int(s)
         return ret
     except ValueError:
@@ -199,7 +201,7 @@ def to_number(s):
     except ValueError:
         print "Erro to_number"+str(s)
         return 0
-    
+
 def fill_zeros(s):
     try:
         s1 =s.zfill(3)
@@ -207,13 +209,13 @@ def fill_zeros(s):
     except ValueError:
         print "Error fill_zeros"+str(s)
         return 0
-    
+
 
 '''
     SIMPLE COMPUTED COLUMNS
-    
+
     df["novo"]=df["ANO_CENSO"] + df["NUM_IDADE"]
-    
+
 '''
 
 
@@ -221,15 +223,15 @@ def fill_zeros(s):
     COMPLEX COMPUTED COLUMNS
     Day that you need to create a new column that the value is a calc using others values in the same row, you can  use as above.
     In this example we are converting string F and M for sex type and puting a number in place
-    
+
     First you need to declare the transform function:
     def sexo_to_number(entrada):
         x = entrada["TP_SEXO"]
         if x=="F":
             return 1
         else:
-            return 2        
-    
+            return 2
+
     Then you apply in the Dataframe:
     df["NOVOANO"] = df.apply(sexo_to_number,axis=1)
 
@@ -238,7 +240,7 @@ def fill_zeros(s):
 
 '''
     REPLACE PART COLUMN
-    
+
     If you want to replace just a part of a string in a column, use:
     misc['product_desc'] = misc['product_desc'].str.replace('\n', '')
 '''
@@ -246,8 +248,8 @@ def fill_zeros(s):
 '''
     MAP COMPUTED COLUMNS
     When you need to create a new column as a map, like a key value, you can use:
-    
-    
+
+
     df["A1"], df["A2"] = zip(*df["ANO_CENSO"].map(calculate))
 
     def calculate(x):
@@ -260,10 +262,10 @@ def fill_zeros(s):
    MERGE
    If you have 2 dataframes and wants to make a join, you can:
    df2.merge(df1)
-   
-   Example: 
+
+   Example:
    * http://stackoverflow.com/questions/17450857/using-python-pandas-lookup-another-dataframe-and-return-corresponding-values
-   
+
 '''
 
 #python -m censoescolar.step_1_extract
@@ -271,6 +273,6 @@ def fill_zeros(s):
 #columns = ((0,10),(11,14),(15,18),(19,22),(23,29),(30,35),(36,44),(45,45),(46,49),(50,55),(56,61),(62,67),(68,73),(74,79),(80,80),(81,86),(87,87),(88,108))
 #raw_file = get_file(raw_file_path)
 #w['female'] = w['female'].map({'female': 1, 'male': 0})
-#raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '', filefixed)) 
+#raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '', filefixed))
 #mapping = {'set': 1, 'test': 2}
 #df.replace({'set': mapping, 'tesst': mapping})
