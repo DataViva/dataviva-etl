@@ -74,10 +74,10 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     """
     
     raw_file_path = os.path.abspath( filefixed) 
-    print raw_file_path
     data = pd.read_fwf(raw_file_path, colspecs = columns, header=None)
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
+    return data
 
 def read_from_csv(file,header=None,delimiter=None,cols=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
