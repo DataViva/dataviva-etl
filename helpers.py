@@ -79,18 +79,20 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
         data.to_csv(f, header=headers)
     return data
 
-def read_from_csv(file,header=None,delimiter=None,cols=None):
+def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
     file -- path of a CSV file to read and that will be the source of dataframe. ex.: filefixed='/fixedregister.txt'
-    
+    header - it says how many lines its used to be the name of the columns
+    cols -- name of the columns used. ex.: cols= ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS']
+    converters -- functions to convert values in the column. ex.: converters = {"TransactedProduct_ID_NCM": bra_replace, "TransactedProduct_ID_HS": str} 
     Return:
     dataframe -- python object containing data from the CSV file
     """
     if not header:
         header=0
-    df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols );  #, header=header
+    df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols, converters=converters,header=header );  #, header=header
     return df
 
 def df_to_csv(data , file,header=None):
@@ -160,7 +162,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
 
 '''
 
-df = left(df,'id',4)
+df = left_df(df,'id',4)
 '''
 def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
     if not column_saida:
@@ -265,6 +267,23 @@ def fill_zeros(s):
    * http://stackoverflow.com/questions/17450857/using-python-pandas-lookup-another-dataframe-and-return-corresponding-values
    
 '''
+
+
+'''
+
+ybio = dados.groupby(["year", "bra_id", "cnae_id", "cbo_id"]) \
+.agg({"wage": np.sum, "num_emp": pd.Series.count, "num_est": pd.Series.count,\
+"num_emp_m": np.sum, "wage_m": np.sum, "wage_f": np.sum})
+
+'''
+
+def floatvert(x):
+    x = x.replace(',', '.')
+    try:
+        return float(x)
+    except:
+        return np.nan
+
 
 #python -m censoescolar.step_1_extract
 #raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '../', filename))
