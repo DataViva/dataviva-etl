@@ -37,11 +37,11 @@ def extract(year):
 	elif year == 2012:
 
 
-		headers = ('ANO', 'MES', 'HS', 'NO_NCM', 'PAIS', 'NO_PAIS', 'UF', 'NO_UF', 'MUNICIPIO', 'NO_MUN', 'PORTO', 'NO_PORTO' 'UNIDADE', 'NO_UNID' 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
+		cols = ('ANO', 'MES', 'HS', 'NO_NCM', 'PAIS', 'NO_PAIS', 'UF', 'NO_UF', 'MUNICIPIO', 'NO_MUN', 'PORTO', 'NO_PORTO', 'UNIDADE', 'NO_UNID', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
 
-		df = read_from_csv(source_file,header=headers,delimiter='|',cols=None)
-		df = df.drop(['NO_NCM', 'NO_PAIS', 'NO_UF', 'NO_MUN', 'NO_UNID'], 1)
-		df_to_csv(df, export_file)
+		df = read_from_csv(source_file, 1,"|", cols, None)
+		df = df.drop(['NO_NCM', 'NO_PAIS', 'NO_UF', 'NO_PORTO', 'NO_MUN', 'NO_UNID'], 1)
+		df_to_csv(df, export_file, None)
 
 	else:
 
