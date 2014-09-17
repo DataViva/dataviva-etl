@@ -72,37 +72,21 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
     csvfile -- name of the result of this operation, where CSV will be written. ex.: csvfile='/fixedregister.csv'
     headers -- name of each column to be written in CSV file. ex.: headers = ('ANO_CENSO','PK_COD_MATRICULA')
     """
-<<<<<<< HEAD
 
     raw_file_path = os.path.abspath( filefixed)
-    print raw_file_path
-=======
-    
-    raw_file_path = os.path.abspath( filefixed) 
->>>>>>> 3b8897f2ce70573c84ccb547074d945da061ac12
     data = pd.read_fwf(raw_file_path, colspecs = columns, header=None)
     with open(csvfile, "w") as f:
         data.to_csv(f, header=headers)
     return data
 
-<<<<<<< HEAD
-    return data
-
-def read_from_csv(file,header=None,delimiter=None,cols=None):
-=======
 def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None):
->>>>>>> 3b8897f2ce70573c84ccb547074d945da061ac12
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
     file -- path of a CSV file to read and that will be the source of dataframe. ex.: filefixed='/fixedregister.txt'
-<<<<<<< HEAD
-
-=======
     header - it says how many lines its used to be the name of the columns
     cols -- name of the columns used. ex.: cols= ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS']
-    converters -- functions to convert values in the column. ex.: converters = {"TransactedProduct_ID_NCM": bra_replace, "TransactedProduct_ID_HS": str} 
->>>>>>> 3b8897f2ce70573c84ccb547074d945da061ac12
+    converters -- functions to convert values in the column. ex.: converters = {"TransactedProduct_ID_NCM": bra_replace, "TransactedProduct_ID_HS": str}
     Return:
     dataframe -- python object containing data from the CSV file
     """
