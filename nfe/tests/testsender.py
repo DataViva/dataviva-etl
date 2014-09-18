@@ -1,31 +1,55 @@
-from helpers import read_from_csv,df_to_csv,left_df,floatvert
+from helpers import read_from_csv,df_to_csv,left_df,floatvert,printTime
 import pandas as pd
 import numpy as np
-
-
-def main():
+import time
+    
+run=''
+      
+def main(run):
+    
+    
+    start=time.time()
+    
+    
     #Prepare
     bl=openBL()
-    entrada="dados/nfe/teste.csv"
-    delimiter=','
+    start=printTime("openBL",start)
     
-    entrada="dados/nfe/2013_01.csv"
-    delimiter=';'
+    if run=='test':
+        #Test Data
+        entrada="dados/nfe/testegrande.csv"
+        delimiter=','
+    else:
+    #Full Data
+        entrada="dados/nfe/2013_01.csv"
+        delimiter=';'
     
-    dados=openNFe(entrada,delimiter)    
+    dados=openNFe(entrada,delimiter)   
+    start=printTime("openNFe",start) 
+    
     dados=mergeNfeBL(dados,bl)
-        
+    start=printTime("mergeNfeBL",start)
+    
+
     
     dados=groupBYMunCNAE(dados) 
+    start=printTime("groupBYMunCNAE",start)
+    
     dadosSave=dados.drop(['corte','empresas'],1)
     df_to_csv(dadosSave , "dados/nfe/finalgroup.csv")
     #dadosSave.to_json("dados/nfe/finalgroup.json")
     
     dadosNovoBL=novoCorte(dados)
+    start=printTime("novoCorte",start)
+    
     dadosNovoBL = marcarCorteMenorFaturamento(dadosNovoBL)
+    start=printTime("marcarCorteMenorFaturamento",start)
     
+    df_to_csv(dadosNovoBL , "dados/nfe/finalNovoBL.csv")
     
+        
     dadosFinal = corteFinal(dados,dadosNovoBL)
+    start=printTime("corteFinal",start)
     
     dadosFinal['EconomicAtivity_ID_CNAE_Sender'][ dadosFinal.cortar==1] = 0
     dadosFinal=dadosFinal.drop(['corte','empresas','cortar','cortefinal'],1)
@@ -88,21 +112,28 @@ def openBL():
     return bl
     
 def openNFe(entrada,delimiter):
+    '''
+    TransactedProduct_ID_NCM,TransactedProduct_ID_HS,EconomicAtivity_ID_CNAE_Receiver,
+    EconomicAtivity_ID_CNAE_Sender,CFOP_ID,CFOP_Reclassification,CFOP_Flow,Receiver_Type,
+    Sender_Type,Municipality_ID_Receiver,Municipality_ID_Sender,Year,Monthly,
+    Receiver_Situation,Sender_Situation,Cost_Value,ICMS_ST_Value,ICMS_ST_RET_Value,ICMS_Value,
+    IPI_Value,PIS_Value,COFINS_Value,II_Value,Product_Value,ISSQN_Value,Origin
+    '''
     
-    orig_cols = ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS','EconomicAtivity_ID_CNAE_Sender','EconomicAtivity_ID_CNAE_Sender','CFOP_ID','CFOP_Reclassification','CFOP_Flow','Sender_Type','Sender_Type','Municipality_ID_Sender','Municipality_ID_Sender','Year','Monthly','Sender_Situation','Sender_Situation','Cost_Value','ICMS_ST_Value','ICMS_ST_RET_Value','ICMS_Value','IPI_Value','PIS_Value','COFINS_Value','II_Value','Product_Value','ISSQN_Value','Origin']
+    orig_cols = ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS','EconomicAtivity_ID_CNAE_Receiver','EconomicAtivity_ID_CNAE_Sender','CFOP_ID','CFOP_Reclassification','CFOP_Flow','Sender_Type','Sender_Type','Municipality_ID_Receiver','Municipality_ID_Sender','Year','Monthly','Sender_Situation','Sender_Situation','Cost_Value','ICMS_ST_Value','ICMS_ST_RET_Value','ICMS_Value','IPI_Value','PIS_Value','COFINS_Value','II_Value','Product_Value','ISSQN_Value','Origin']
     converters = {"EconomicAtivity_ID_CNAE_Sender": str, "Municipality_ID_Sender": str, "Product_Value": floatvert}
     
     dados = read_from_csv(entrada,delimiter=delimiter,cols=orig_cols,converters=converters,header=1)
     dados=dados[['EconomicAtivity_ID_CNAE_Sender','Municipality_ID_Sender','Product_Value']]
     
-    dados['EconomicAtivity_ID_CNAE_Sender'][ dados.EconomicAtivity_ID_CNAE_Sender=='1'] = 0
-    dados['EconomicAtivity_ID_CNAE_Sender'][ dados.EconomicAtivity_ID_CNAE_Sender=='2'] = 0
+    #dados['EconomicAtivity_ID_CNAE_Sender'][ dados.EconomicAtivity_ID_CNAE_Sender=='1'] = '0'
+    #dados['EconomicAtivity_ID_CNAE_Sender'][ dados.EconomicAtivity_ID_CNAE_Sender=='2'] = '0'
     #dados.EconomicAtivity_ID_CNAE_Sender = dados.EconomicAtivity_ID_CNAE_Sender.apply(lambda x: str(x).zfill(2))
     dados = left_df(dados,'EconomicAtivity_ID_CNAE_Sender',2) 
     return dados
 
 def mergeNfeBL(dados,bl):
-        
+    
     dados['concatenar']=dados['Municipality_ID_Sender']+dados['EconomicAtivity_ID_CNAE_Sender']
     
     dados=pd.merge( dados,bl, on='concatenar',how='left') #, how='outer'
@@ -138,4 +169,4 @@ def mergeNfeBL(dados,bl):
 
 
    
-main()
+main(run)
