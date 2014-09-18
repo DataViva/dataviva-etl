@@ -1,6 +1,5 @@
 from helpers import *
 
-
 ''' Extract CSV file by year'''
 def extract(year):
 
@@ -24,18 +23,15 @@ def extract(year):
 
 	source_file = 'dados/exportacao/raw/' + files[year] + '.txt'
 	export_file = 'dados/exportacao/sent/' + str(year) + '_extract.csv'
+
 	if year < 2012:
 
 		columns = ((0,4), (4,6), (6,14), (14,17), (18,20), (19,23), (23,30), (30,32), (32,47), (47,62), (62,78))
 
 		headers = ('ANO', 'MES', 'HS', 'PAIS', 'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
-
-
-
 		data = fixed_to_csv(source_file, columns, export_file, headers)
 
 	elif year == 2012:
-
 
 		cols = ('ANO', 'MES', 'HS', 'NO_NCM', 'PAIS', 'NO_PAIS', 'UF', 'NO_UF', 'MUNICIPIO', 'NO_MUN', 'PORTO', 'NO_PORTO', 'UNIDADE', 'NO_UNID', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
 
@@ -45,14 +41,11 @@ def extract(year):
 
 	else:
 
-		headers = ('ANO', 'MES', 'HS', 'PAIS',  'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
-
-		df = read_from_csv(source_file,headers,'|',None)
-		df_to_csv(df, export_file, headers)
-
-
+		cols = ('ANO', 'MES', 'HS', 'PAIS',  'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
+		df = read_from_csv(source_file, 1,"|", cols, None)
+		df_to_csv(df, export_file, None)
 
 
 if __name__ == "__main__":
-	extract(2012)
+	extract(2013)
 
