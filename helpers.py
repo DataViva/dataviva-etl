@@ -1,4 +1,4 @@
-import csv, sys, os, argparse, time, bz2
+import csv, sys, os, argparse, time, bz2,time
 from collections import defaultdict
 from os import environ
 from config import DATA_DIR
@@ -283,6 +283,23 @@ def floatvert(x):
         return float(x)
     except:
         return np.nan
+
+
+'''
+Ex.:
+First line: 
+    start=time.time()
+    
+Second time and beyond:
+    start=printTime("agregate",start)
+'''
+def printTime(name,start=None):
+    if not start:
+        start = time.time()
+    print; print;
+    print "Total runtime - " +name+ ": {0} minutes".format(int((time.time() - start) / 60))
+    print "Total runtime - " +name+ ": {0} seconds".format(int((time.time() - start) ))
+    return time.time()
 
 
 #python -m censoescolar.step_1_extract
