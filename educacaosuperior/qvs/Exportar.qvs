@@ -1,0 +1,71 @@
+ 
+if '$(executarExportar)'='S' then
+		
+	MATRICULA_$(anoProcessamento):
+	LOAD 
+		CO_IES as ID_university, 
+		CO_CATEGORIA_ADMINISTRATIVA as Adm_category, 
+		CO_ORGANIZACAO_ACADEMICA as Academic_organization, 
+		CO_CURSO as ID_course, 
+		CO_GRAU_ACADEMICO as Degree, 
+		CO_MODALIDADE_ENSINO as Modality, 
+		CO_NIVEL_ACADEMICO as Level, 
+		CO_ALUNO_CURSO as ID_student, 
+		IN_MATRICULA as ID_Enrolled, 
+		IN_CONCLUINTE as ID_Graduates, 
+		IN_INGRESSO as ID_Entrants, 
+		ANO_INGRESSO as Year_entry, 
+		IN_SEXO_ALUNO as Gender, 
+		NU_IDADE_ALUNO as Age, 
+		CO_COR_RACA_ALUNO as Ethnicity, 
+		CO_MUNICIPIO as Municipality, 
+		CO_OCDE as CO_Course, 
+		NO_OCDE as Name_Course, 
+		IN_MATUTINO_CURSO as Morning, 
+		IN_VESPERTINO_CURSO as Evening, 
+		IN_NOTURNO_CURSO as Night, 
+		IN_INTEGRAL_CURSO as Full_time,
+		$(anoProcessamento) as Year
+	FROM
+	[E:\Bancos de Dados\Educacao Superior\$(anoProcessamento)\DADOS\Matricula_Curso_$(anoProcessamento).qvd]
+	(qvd);
+		
+		
+	store MATRICULA_$(anoProcessamento) into
+	E:\Bancos de Dados\Educacao Superior\$(anoProcessamento)\DADOS\Undergraduate_census_$(anoProcessamento)_microdata.csv (txt, delimiter is ';');
+
+	drop table MATRICULA_$(anoProcessamento);
+	
+	
+	CURSO_$(anoProcessamento):
+	LOAD 
+		CO_IES as ID_university, 
+		CO_CATEGORIA_ADMINISTRATIVA as Adm_category, 
+		CO_ORGANIZACAO_ACADEMICA as Academic_organization, 
+		CO_NIVEL_ACADEMICO as Level, 
+		CO_MODALIDADE_ENSINO as Modality, 
+		CO_GRAU_ACADEMICO as Degree, 
+		CO_CURSO as ID_course, 
+		CO_MUNICIPIO as Municipality, 
+		CO_OCDE as CO_Course, 
+		NO_OCDE as Name_Course, 
+		IN_MATUTINO_CURSO as Morning, 
+		IN_VESPERTINO_CURSO as Evening, 
+		IN_NOTURNO_CURSO as Night, 
+		IN_INTEGRAL_CURSO as Full_time, 
+		QT_MATRICULA_CURSO as Enrolled, 
+		QT_CONCLUINTE_CURSO as Graduates, 
+		QT_VAGAS_CURSO as Openings, 
+		QT_INGRESSO_CURSO as Entrants,
+		$(anoProcessamento) as Year
+	FROM
+	[E:\Bancos de Dados\Educacao Superior\$(anoProcessamento)\DADOS\Curso_$(anoProcessamento).qvd]
+	(qvd);
+
+	store CURSO_$(anoProcessamento) into
+	E:\Bancos de Dados\Educacao Superior\$(anoProcessamento)\DADOS\Undergraduate_census_$(anoProcessamento).csv (txt, delimiter is ';');
+
+	drop table CURSO_$(anoProcessamento);
+	
+	
+end if	

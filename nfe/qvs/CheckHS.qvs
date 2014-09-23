@@ -14,8 +14,8 @@ if '$(executarCheckHS)'='S' then
 		fluxo_CFOP,	
 		DS_TP_DESTINATARIO, 
 		DS_TP_REMETENTE, 
-		CD_LOCALIDADE_DESTINATARIO, 
-		CD_LOCALIDADE_REMETENTE, 
+		NM_LOCALIDADE_DESTINATARIO, 
+		NM_LOCALIDADE_REMETENTE, 
 		NR_ANO, 
 		NR_MES, 
 		DS_SITUACAO_DESTINATARIO, 
@@ -34,5 +34,7 @@ if '$(executarCheckHS)'='S' then
 	FROM
 	[E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento)_T.qvd]
 	(qvd);
+	
+	drop table NFE;
 
 end if
