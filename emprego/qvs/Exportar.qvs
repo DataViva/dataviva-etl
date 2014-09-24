@@ -11,6 +11,6 @@ if '$(executarExportar)'='S' then
 	store RAIS_$(anoProcessamento) into
 	E:\Bancos de Dados\MTE\RAIS_COMPLETA\$(anoProcessamento)\Rais_$(anoProcessamento).csv (txt, delimiter is ';');
 
-		
+	drop table RAIS_$(anoProcessamento);	
 	
 end if	

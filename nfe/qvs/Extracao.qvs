@@ -35,12 +35,12 @@ if '$(executarExtracao)'='S' then
 		@30 as V_ISSQN, 
 		@31 as ORIGEM
 	FROM
-	[E:\Bancos de Dados\FAZENDA\NFe\Dados_Escritorio_$(anoProcessamento)$(mesProcessamento).csv]
+	[E:\Bancos de Dados\FAZENDA\NFe\Dados_Escritorio_prd_$(anoProcessamento)$(mesProcessamento).csv]
 	(txt, codepage is 1252, no labels, delimiter is ';', msq)
 	where @14<>'';
 
 	store NFE into E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento).qvd (qvd);
 	
-	//drop table NFE;
+	drop table NFE;
 
 end if

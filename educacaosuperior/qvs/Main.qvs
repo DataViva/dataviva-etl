@@ -9,23 +9,22 @@ SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
 SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
-SET anoProcessamento='2013';
-SET mesProcessamento='03';
+
+SET anoProcessamento='2012';
 SET padraoNomeArquivo='';
 
-
 //Caminho
-SET diretorioBaseDados='E:\Bancos de Dados\FAZENDA\NFe\';
+SET caminhoArquivos='E:\Bancos de Dados\Educação Superior';
 
 SET executarExtracao='S';
 
-SET executarTransformacao='S';
+SET executarAgrupar='S';
 
-SET executarCheckHS='N';
+SET executarTransformacao='N';
+
+SET executarCheckDados='N';
 
 SET executarExportar='S';
-
-
 
 
 DIRECTORY;
@@ -35,13 +34,18 @@ DIRECTORY;
 $(Include=qvs\Extracao.qvs);
 
 DIRECTORY;
-$(Include=qvs\Transformacao.qvs);
+$(Include=qvs\Agrupar.qvs);
 
 DIRECTORY;
-$(Include=qvs\CheckHS.qvs);
+$(Include=qvs\CheckDados.qvs);
+
+DIRECTORY;
+$(Include=qvs\Transformacao.qvs);
 
 DIRECTORY;
 $(Include=qvs\Exportar.qvs);
 
+		
 
+exit script;
 

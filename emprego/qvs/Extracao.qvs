@@ -235,7 +235,7 @@ if '$(executarExtracao)'='S' then
 		
 				
 	
-	elseif anoProcessamento>'2010' then
+	elseif anoProcessamento>'2010' and anoProcessamento<2013 then
 		
 	
 		Directory $(caminhoArquivos)\$(anoProcessamento)\;
@@ -268,7 +268,41 @@ if '$(executarExtracao)'='S' then
 			
 			
 		Next CSVFile;		
-		
+	
+	
+	
+	elseif anoProcessamento>'2012' then
+			
+		Directory $(caminhoArquivos)\$(anoProcessamento)\;
+		For each CSVFile in filelist ('*.TXT')
+			RAIS_$(anoProcessamento):
+			LOAD  
+				 ApplyMap('MapRetiraTextosLixo',trim([CBO Ocupação 2002]),trim([CBO Ocupação 2002])) as BrazilianOcupation_ID, 
+				 [CNAE 2.0 Classe] as EconomicAtivity_ID_CNAE, 
+				 ApplyMap('MapInstrucao',trim([Escolaridade após 2005]),trim([Escolaridade após 2005])) as Literacy, 
+				 [Vínculo Ativo 31/12],
+				 Idade as Age,
+				 [CNPJ / CEI] as Establishment_ID, 
+				 [Ind Simples] as Simple, 
+				 Município as Municipality_ID, 
+				 PIS as Employee_ID, 
+				 ApplyMap('MapCor',trim([Raça Cor]),trim([Raça Cor])) as Color, 
+				 [Vl Remun Dezembro Nom] as WageReceived, 
+				 [Vl Remun Média Nom] as AverageMonthlyWage, 
+				 ApplyMap('MapGenero',trim([Sexo Trabalhador]),trim([Sexo Trabalhador])) as Gender,
+				 ApplyMap('MapTamanhoEstabelecimento',trim([Tamanho Estabelecimento]),trim([Tamanho Estabelecimento])) as Establishment_Size, 
+				 $(anoProcessamento) as Year	     
+			FROM
+			[$(CSVFile)] 
+			(txt, codepage is 1252, embedded labels, delimiter is ';', msq)
+			Where [Vínculo Ativo 31/12] = 1;			
+			
+			store RAIS_$(anoProcessamento) into	$(CSVFile).qvd (qvd);;
+			
+			drop table RAIS_$(anoProcessamento);
+						
+		Next CSVFile;	
+	
 	
 	end if
 		

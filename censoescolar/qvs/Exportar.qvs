@@ -14,7 +14,9 @@ if '$(executarExportar)'='S' then
 		 FK_COD_ETAPA_ENSINO_Code_ensino as Education,		 
 		 PK_COD_TURMA as Class_ID, 
 		 FK_COD_CURSO_PROF as Course_ID, 
-		 PK_COD_ENTIDADE as School_ID, 
+		 PK_COD_ENTIDADE as School_ID,
+		 FK_COD_MUNICIPIO_END as Municipality_lives,
+		 ID_ZONA_RESIDENCIAL as Location_lives,		 
 		 COD_MUNICIPIO_ESCOLA as Municipality, 
 		 ID_LOCALIZACAO_ESC as Location, 
 		 ID_DEPENDENCIA_ADM_ESC as Adm_Dependency
