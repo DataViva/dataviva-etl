@@ -4,6 +4,9 @@ from os import environ
 from config import DATA_DIR
 import pandas as pd
 import pandas.io.sql as psql
+import csv
+import json
+
 
 ''' Import statements '''
 import sys, bz2, gzip, zipfile, os
@@ -301,7 +304,28 @@ def printTime(name,start=None):
     print "Total runtime - " +name+ ": {0} seconds".format(int((time.time() - start) ))
     return time.time()
 
+'''
 
+Example:
+    
+    fieldnames = ("Municipality_ID_Receiver","Municipality_ID_Sender","Product_Value","Municipio") 
+    csv_to_json("dados/nfe/NFE_teste_2013_01.csv","dados/nfe/NFE_teste_2013_01.json",fieldnames) 
+
+'''
+def csv_to_json(entrada,saida,fieldnames,delimiter=None):
+    csvfile = open(entrada, 'r')
+    jsonfile = open(saida, 'w')
+    
+    if not delimiter:
+        delimiter=";"
+    
+    reader = csv.DictReader( csvfile, fieldnames,delimiter=';')
+    for row in reader:
+        #print row #.encode("utf8")
+        json.dump(row, jsonfile, ensure_ascii=False)
+    jsonfile.write('\n')
+    
+    
 #python -m censoescolar.step_1_extract
 #raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '../', filename))
 #columns = ((0,10),(11,14),(15,18),(19,22),(23,29),(30,35),(36,44),(45,45),(46,49),(50,55),(56,61),(62,67),(68,73),(74,79),(80,80),(81,86),(87,87),(88,108))
