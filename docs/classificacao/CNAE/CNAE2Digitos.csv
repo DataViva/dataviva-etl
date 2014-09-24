@@ -1,0 +1,88 @@
+Código;Descrição;Nome Curto;Description;Short Name
+01;Agricultura, pecuária e serviços relacionados;Agropecuária;Agriculture, livestock and related services;Agriculture and Livestock
+02;Produção florestal;Produção Florestal;Forest production;Forest Production
+03;Pesca e aqüicultura;Pesca e Aqüicultura;Fishing and aquaculture;Fishing and Aquaculture
+05;Extração de carvão mineral;Extração de carvão mineral;Coal extraction;Coal extraction
+06;Extração de petróleo e gás natural;Extração de petróleo e gás natural;Extraction of oil and natural gas ;Extraction of oil and natural gas
+07;Extração de minerais metálicos;Extração de minerais metálicos;Extraction of metal minerals;Extraction of metal minerals
+08;Extração de minerais não-metálicos;Extração de minerais não-metálicos;Extraction of non-metal minerals;Extraction of non-metal minerals
+09;Atividades de apoio à extração de minerais;Atividades de apoio à extração de minerais;Mining support activities;Mining support activities
+10;Fabricação de produtos alimentícios;Produtos Alimentícios;Manufacture of food products;Food Products
+11;Fabricação de bebidas;Bebidas;Manufacture of beverages;Beverage
+12;Fabricação de produtos do fumo;Produtos do Fumo;Manufacture of tobacco products;Tobacco Products
+13;Fabricação de produtos têxteis;Produtos Têxteis;Manufacture of textile products;Textile Products
+14;Confecção de artigos do vestuário e acessórios;Confecção e Vestuário;Manufacture of clothing articles and accessories;Garment Industry 
+15;Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados;Couro e Calçados;Leather preparation and manufacture of leather articles, travel goods and footwear;Leather and Footwear
+16;Fabricação de produtos de madeira;Produtos de Madeira;Manufacture of wooden products;Wooden Products
+17;Fabricação de celulose, papel e produtos de papel;Papel e Celulose;Manufacture of pulp, paper and paper products;Pulp and Paper
+18;Impressão e reprodução de gravações;Impressão e Reprodução de Gravações;Printing and reproduction of recorded media;Printing and Reproduction of Recorded Media
+19;Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis;Coque e derivados de Petróleo;Manufacture of coke, petroleum products and biofuels;Coke and Petroleum Products
+20;Fabricação de produtos químicos;Produtos Químicos;Manufacture of chemical products;Chemical Products
+21;Fabricação de produtos farmoquímicos e farmacêuticos;Produtos Farmoquímicos e Farmacêuticos;Manufacture of pharmochemicals and pharmaceutic products;Pharmochemicals and Pharmaceutic Products
+22;Fabricação de produtos de borracha e de material plástico;Produtos de borracha e de material plástico;Manufacture of rubber and plastic products;Rubber and Plastic Products
+23;Fabricação de produtos de minerais não-metálicos;Produtos de minerais não-metálicos;Manufacture of non-metallic mineral products;Non-metal mineral Products
+24;Metalurgia;Metalurgia;Metallurgy;Metallurgy
+25;Fabricação de produtos de metal, exceto máquinas e equipamentos;Produtos de metal;Manufacture of metal products, except machinery and equipment;Metal Products
+26;Fabricação de equipamentos de informática, produtos eletrônicos e ópticos;Produtos eletrônicos;Manufacture of computer products, electronic and optical products;Electronic Products
+27;Fabricação de máquinas, aparelhos e materiais elétricos;Produtos e materiais elétricos;Manufacture of electrical machines, devices and materials;Electrical Products and Materials
+28;Fabricação de máquinas e equipamentos;Máquinas e Equipamentos;Manufacture of machinery and equipment;Machinery and Equipment
+29;Fabricação de veículos automotores, reboques e carrocerias;Veículos Automotores;Manufacture of motor vehicles, trailers and bodies;Motor Vehicles
+30;Fabricação de outros equipamentos de transporte, exceto veículos automotores;Outros Equipamentos de Transporte;Manufacture of other transport equipment except motor vehicles;Other Transport Equipment
+31;Fabricação de móveis;Móveis;Manufacture of furniture;Furniture
+32;Fabricação de produtos diversos;Produtos Diversos;Manufacture of diverse products;Diverse products
+33;Manutenção, reparação e instalação de máquinas e equipamentos;Manutenção de máquinas e equipamentos;Maintenance, repair and installation of machinery and equipment;Maintenance of Machinery and Equipment
+35;Eletricidade, gás e outras utilidades;Eletricidade e gás;Electricity, gas and other utilities;Electricity and Gas
+36;Captação, tratamento e distribuição de água;Distribuição de água;Water collection, treatment and distribution;Water Supply
+37;Esgoto e atividades relacionadas;Esgoto e Saneamento;Sewage and related activities;Sewage and Sanitation
+38;"Coleta, tratamento e disposição de resíduos; recuperação de materiais";Coleta de Resíduos;"Wastes collection, treatment and disposal; materials reclaiming";Wastes Collection
+39;Descontaminação e outros serviços de gestão de resíduos;Gestão de Resíduos;Decontamination and other wastes management services;Wastes Management
+41;Construção de edifícios;Construção de Edifícios;Buildings construction;Buildings construction
+42;Obras de infra-estrutura;Obras de Infra-estrutura;Infrastructure works;Infrastructure Works
+43;Serviços especializados para construção;Serviços Especializados para Construção;Construction specialized services;Construction Specialized Service
+45;Comércio e reparação de veículos automotores e motocicletas;Comércio de Veículos Automotores;Trade and repair of motor vehicles and motorcycles;Trade of Motor Vehicles
+46;Comércio por atacado, exceto veículos automotores e motocicletas;Comércio Atacadista;Wholesale, except motor vehicles and motorcycles;Wholesale
+47;Comércio varejista;Comércio Varejista;Retail trade;Retail Trade
+49;Transporte terrestre;Transporte Terrestre;Land transport;Land Transport
+50;Transporte aquaviário;Transporte Aquaviário;Waterway transport;Waterway Transport
+51;Transporte aéreo;Transporte Aéreo;Airway transport;Airway Transport
+52;Armazenamento e atividades auxiliares dos transportes;Atividades Auxiliares dos Transportes;Warehousing and transport support activities;Transport Support Activities
+53;Correio e outras atividades de entrega;Atividades de Entrega;Postal and other delivery services;Delivery Services
+55;Alojamento;Alojamento;Lodging;Lodging
+56;Alimentação;Alimentação;Food service;Food Service
+58;Edição e edição integrada à impressão;Edição e impressão;Publishing and combined publishing/printing;Publishing and Printing
+59;"Atividades cinematográficas, produção de vídeos e de programas de televisão; gravação de som e edição de música";Produção cinematográfica, de vídeos e de programas de televisão;"Movies production; videos and television production; sound recording and music publishing";Movies, videos and television shows production
+60;Atividades de rádio e de televisão;Rádio e Televisão;Radio and television activities;Radio and Television
+61;Telecomunicações;Telecomunicações;Telecommunications;Telecommunications
+62;Atividades dos serviços de tecnologia da informação;Serviços de Tecnologia da Informação;Information technology services;Information Technology Services
+63;Atividades de prestação de serviços de informação;Prestação de Serviços de Informação;Provision of information services ;Provision of Information Services
+64;Atividades de serviços financeiros;Serviços Financeiros;Financial services;Financial Services
+65;Seguros, resseguros, previdência complementar e planos de saúde;Seguros e Previdência Complementar;Insurance, re-insurance, pension funds and health plans;Insurance and Pension Funds
+66;Atividades auxiliares dos serviços financeiros, seguros, previdência complementar e planos de saúde;Atividades de Serviços Financeiros;Support activities for financial services, insurance, pension funds and health plans;Financial Services 
+68;Atividades imobiliárias;Atividades Imobiliárias;Real estate activities;Real Estate Activities
+69;Atividades jurídicas, de contabilidade e de auditoria;Atividades jurídicas, de contabilidade e de auditoria;Legal, accounting and auditing activities;Legal, accounting and auditing activities
+70;Atividades de sedes de empresas e de consultoria em gestão empresarial;Consultoria em Gestão Empresarial;Activities of company´s headquarters and consultancy in business management;Management Consulting
+71;"Serviços de arquitetura e engenharia; testes e análises técnicas";Arquitetura e Engenharia;"Architecture and engineering services; testing and technical analyses";Architecture and Engineering
+72;Pesquisa e desenvolvimento científico;Pesquisa e desenvolvimento científico;Scientific research and development;Scientific Research and Development
+73;Publicidade e pesquisa de mercado;Publicidade e pesquisa de mercado;Advertising and market survey;Advertising and Market Survey
+74;Outras atividades profissionais, científicas e técnicas;Outras atividades profissionais;Other professional, scientific and technical activities;Other Professional Activities
+75;Atividades veterinárias;Atividades veterinárias;Veterinary activities;Veterinary Activities
+77;Aluguéis não-imobiliários e gestão de ativos intangíveis não-financeiros;Aluguéis não-imobiliários;Non-real estate rentals and management of non-financial intangible assets;Non-real Estate Rentals
+78;Seleção, agenciamento e locação de mão-de-obra;Seleção e Agenciamento de Mão-de-obra;Labor selection, agency and leasing;Labor Selection and Agency
+79;Agências de viagens, operadores turísticos e serviços de reservas;Agências de viagens;Travel agencies, tourism operators and reservation services;Travel Agencies
+80;Atividades de vigilância, segurança e investigação;Vigilância e Segurança;Surveillance, security and investigation services;Surveillance and Security
+81;Serviços para edifícios e atividades paisagísticas;Serviços para Edifícios;Support services for buildings and landscaping activities;Buildings Services
+82;Serviços de escritório, de apoio administrativo e outros serviços prestados às empresas;Serviços de Escritório;Office services, office support and other business services;Office Services 
+84;Administração pública, defesa e seguridade social;Administração Pública;Public administration, defense and social security;Public Administration
+85;Educação;Educação;Education;Education
+86;Atividades de atenção à saúde humana;Saúde Humana;Human health care activities;Human Health Care
+87;Atividades de atenção à saúde humana integradas com assistência social, prestadas em residências coletivas e particulares;Saúde Humana Integradas com Assistência Social;Human health care activities combined with social assistance performed at private and collective residences;Combined Health Care and Social Assistance
+88;Serviços de assistência social sem alojamento;Serviços de Assistência Social;Homeless social assistance services;Social Assistance
+90;Atividades artísticas, criativas e de espetáculos;Atividades Artísticas;Artistic, creative and show activities;Artistic Activities
+91;Atividades ligadas ao patrimônio cultural e ambiental;Atividades Culturais;Activities related to cultural and environmental heritage;Cultural Activities
+92;Atividades de exploração de jogos de azar e apostas;Atividades de Jogos de Azar;Gambling and betting activities;Betting activities
+93;Atividades esportivas e de recreação e lazer;Atividades Esportivas e de Recreação;Sports, recreation and leisure activities;Sports And Recreation Activities
+94;Atividades de organizações associativas;Organizações Associativas;Activities of membership organizations;Membership Associations
+95;Reparação e manutenção de equipamentos de informática e comunicação e de objetos pessoais e domésticos;Reparação e Manutenção de Equipamentos;Repair and maintenance of computer and communication equipment and personal and domestic goods;Repair and Maintenance of Equipment
+96;Outras atividades de serviços pessoais;Outras atividades de serviços pessoais;Other personal services activities;Other personal services activities
+97;Serviços domésticos;Serviços domésticos;Domestic services;Domestic Services
+99;Organismos internacionais e outras instituições extraterritoriais;Organismos Internacionais;International organizations and other foreigh institutions;International Organizations
