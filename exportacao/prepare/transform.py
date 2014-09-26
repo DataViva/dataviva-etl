@@ -44,9 +44,13 @@ def transform(year):
         f = lambda x: rd['HS02'][rd.HS96 == str(x)]
         df.apply(f)
 
-        # CONVERT TO 2001
-
         # CONVERT TO 2007
+
+        rdCols2 = ['HS2007']
+        rd2 = read_from_csv('docs/classificacao/HS/anos/2007.csv', 1, ';', rdCols2, converters={"HS2007": str})
+
+        f2 = lambda x: [rd2.HS96 == str(x)]
+        df.apply(f2)
 
 
         print df

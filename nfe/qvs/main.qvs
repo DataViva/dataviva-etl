@@ -17,9 +17,9 @@ SET padraoNomeArquivo='';
 //Caminho
 SET diretorioBaseDados='E:\Bancos de Dados\FAZENDA\NFe\';
 
-SET executarExtracao='N';
+SET executarExtracao='S';
 
-SET executarTransformacao='N';
+SET executarTransformacao='S';
 
 SET executarCheckHS='N';
 

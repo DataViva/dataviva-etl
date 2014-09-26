@@ -47,5 +47,5 @@ def extract(year):
 
 
 if __name__ == "__main__":
-	extract(2000)
+	extract(2012)
 

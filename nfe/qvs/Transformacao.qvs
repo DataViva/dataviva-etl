@@ -2,8 +2,8 @@ if '$(executarTransformacao)'='S' then
 	NFE:
 	LOAD 
 		CD_SUBITEM_NCM, 
-		left(MapSubString('MapCaracteres',CD_CNAE_DESTINATARIO),5) as CD_CNAE_DESTINATARIO, 
-		left(MapSubString('MapCaracteres',CD_CNAE_REMETENTE),5) as CD_CNAE_REMETENTE, 
+		left((ApplyMap('MapIndefinidos',(MapSubString('MapCaracteres',CD_CNAE_DESTINATARIO)))),5) as CD_CNAE_DESTINATARIO, 
+		left((ApplyMap('MapIndefinidos',(MapSubString('MapCaracteres',CD_CNAE_REMETENTE)))),5) as CD_CNAE_REMETENTE, 
 		CD_CAPITULO_NCM, 
 		CD_RECO_DESTINATARIO, 
 		DS_REGIME_RECO_DESTINATARIO, 
@@ -11,16 +11,17 @@ if '$(executarTransformacao)'='S' then
 		DS_REGIME_RECO_REMETENTE, 
 		CD_CFOP,
 		ApplyMap('MapCFOPCod',CD_CFOP) as novo_CFOP,
+		ApplyMap('MapCFOP2Cod',CD_CFOP) as novo_CFOP2,
 		ApplyMap('MapFLUXOCod',CD_CFOP) as fluxo_CFOP,		
 		CD_CST, 
 		DS_TP_DESTINATARIO, 
 		DS_TP_REMETENTE, 
 		NM_LOCALIDADE_DESTINATARIO,
-		ApplyMap('MapMunicipiosErradosCod',ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_DESTINATARIO,NM_LOCALIDADE_DESTINATARIO),
-										ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_DESTINATARIO,NM_LOCALIDADE_DESTINATARIO))	as CD_LOCALIDADE_DESTINATARIO,
+		//ApplyMap('MapMunicipiosErradosCod',ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_DESTINATARIO,NM_LOCALIDADE_DESTINATARIO),
+		//								ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_DESTINATARIO,NM_LOCALIDADE_DESTINATARIO))	as CD_LOCALIDADE_DESTINATARIO,
 		NM_LOCALIDADE_REMETENTE,
-		ApplyMap('MapMunicipiosErradosCod',ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_REMETENTE,NM_LOCALIDADE_REMETENTE),
-										ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_REMETENTE,NM_LOCALIDADE_REMETENTE)) as CD_LOCALIDADE_REMETENTE,
+		//ApplyMap('MapMunicipiosErradosCod',ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_REMETENTE,NM_LOCALIDADE_REMETENTE),
+		//								ApplyMap('MapMunicipiosCod',NM_LOCALIDADE_REMETENTE,NM_LOCALIDADE_REMETENTE)) as CD_LOCALIDADE_REMETENTE,
 		NR_ANO, 
 		NR_MES, 
 		SIGLA_UF_DESTINATARIO, 
@@ -43,5 +44,7 @@ if '$(executarTransformacao)'='S' then
 	(qvd);
 	
 	store NFE into E:\Bancos de Dados\FAZENDA\NFe\$(anoProcessamento)_$(mesProcessamento)_T.qvd (qvd);
+	
+	drop table NFE;
 
 end if

@@ -41,6 +41,7 @@ def main(run):
     
     dadosNovoBL=novoCorte(dados)
     start=printTime("novoCorte",start)
+    df_to_csv(dadosNovoBL , "dados/nfe/finalInitBL.csv")
     
     dadosNovoBL = marcarCorteMenorFaturamento(dadosNovoBL)
     start=printTime("marcarCorteMenorFaturamento",start)
@@ -52,6 +53,7 @@ def main(run):
     start=printTime("corteFinal",start)
     
     dadosFinal['EconomicAtivity_ID_CNAE_Sender'][ dadosFinal.cortar==1] = 0
+    df_to_csv(dadosFinal , "dados/nfe/finalAntesDrop.csv")
     dadosFinal=dadosFinal.drop(['corte','empresas','cortar','cortefinal'],1)
     dadosFinal=dadosFinal.set_index('Municipality_ID_Sender')
     df_to_csv(dadosFinal , "dados/nfe/final.csv")

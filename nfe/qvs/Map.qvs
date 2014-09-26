@@ -31,6 +31,14 @@ Mapping LOAD * inline
 ];
 
 
+MapIndefinidos:
+Mapping LOAD * inline 
+[
+	From,To
+	'1','-1'
+	'2','-2'
+];
+
 
 /*
 Retirar caracteres dos códigos CNAE e NCM
@@ -115,6 +123,29 @@ Mapping LOAD
 RESIDENT CFOP;
 
 DROP TABLE CFOP;
+
+
+
+/*
+Reclassificar CFOP 2
+*/
+
+
+CFOP2:
+LOAD 
+	CFOP, 
+	[Reclassificação2]     
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\NFe\CFOP.xlsx]
+(ooxml, embedded labels, table is [CFOP_de_para]);
+
+MapCFOP2Cod:	
+Mapping LOAD  
+	CFOP,
+	[Reclassificação2] as novo_cfop2 
+RESIDENT CFOP2;
+
+DROP TABLE CFOP2;
 
 
 
