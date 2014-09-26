@@ -52,23 +52,28 @@ def transform(year):
         f2 = lambda x: [rd2.HS96 == str(x)]
         df.apply(f2)
 
-
         print df
 
     elif year > 2001 and year <= 2006:
         ##
         rdCols = ['HS02', 'HS07']
-        rd = read_from_csv('docs/classificacao/HS/HS_2002_2007.csv', 1, ';', rdCols, converters={"HS07": str})
+        rd = read_from_csv('docs/classificacao/HS/anos/2002x2007.csv', 1, ';', rdCols, converters={"HS07": str})
 
         f = lambda x: rd['HS02'][rd.HS07 == str(x)]
         df.apply(f)
+
+        rdCols2 = ['HS2007']
+        rd2 = read_from_csv('docs/classificacao/HS/anos/2007.csv', 1, ';', rdCols2, converters={"HS2007": str})
+
+        f2 = lambda x: [rd2.HS2007 == str(x)]
+        df.apply(f2)
 
         print df
 
     elif year >= 2007 and year <= 2011:
 
         rdCols = ['HS2012', 'HS2007']
-        rd = read_from_csv('docs/classificacao/HS/HS_2007X2012.csv', 1, ';', rdCols, converters={"HS2007": str})
+        rd = read_from_csv('docs/classificacao/HS/anos/2012x2007.csv', 1, ';', rdCols, converters={"HS2007": str})
 
         f = lambda x: rd['HS2012'][rd.HS2007 == str(x)]
         df.apply(f)
@@ -78,8 +83,7 @@ def transform(year):
     elif year >= 2012 and year <= 2014:
 
         rdCols = ['HS2012', 'HS2007']
-        ## PROCURAR ARQUIVO
-        rd = read_from_csv('docs/classificacao/HS/HS_2007X2012.csv', 1, ';', rdCols, converters={"HS2007": str})
+        rd = read_from_csv('docs/classificacao/HS/anos/2012x2007.csv', 1, ';', rdCols, converters={"HS2007": str})
 
         f = lambda x: rd['HS2012'][rd.HS2007 == str(x)]
         df.apply(f)
@@ -88,5 +92,5 @@ def transform(year):
 
 
 if __name__ == "__main__":
-    transform(2000)
+    transform(2002)
 
