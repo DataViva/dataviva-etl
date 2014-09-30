@@ -3,13 +3,16 @@ from helpers import *
 ''' Extract CSV file by year'''
 def extract(year):
 
-    source_file = 'dados/importacao/raw/' + files[year] + '.txt'
+    source_file = 'dados/importacao/raw/' + 'MDIC_' + str(year) + '.csv'
     export_file = 'dados/importacao/sent/' + str(year) + '_extract.csv'
 
-    headers = ('ANO', 'MES', 'HS', 'PAIS', 'UF', 'MUNICIPIO', 'PORTO',
-    'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
+    cols = ('ANO', 'MES', 'PAIS', 'ESTADO', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB', 'HS2007')
 
-    data = fixed_to_csv(source_file, columns, export_file, headers)
+    df = read_from_csv(source_file, 1,"|", cols, None)
+
+    df_to_csv(df, export_file, None)
+
+    print df
 
 if __name__ == '__main__':
-    extract(2014)
+    extract(2011)
