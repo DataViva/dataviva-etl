@@ -14,9 +14,11 @@ def transform(year):
     df = read_from_csv(source_file, 1, None, cols, None)
 
     rdCols = ['HS2007']
+
     rd = read_from_csv('docs/classificacao/HS/anos/HS_Todos_Anos_IMP.csv', 1, ';', rdCols, converters={"HS2007": str})
 
     f2 = lambda x: [rd.HS2007 == str(x)]
+
     df.apply(f2)
 
     print df
