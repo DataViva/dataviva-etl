@@ -40,6 +40,20 @@ Mapping LOAD * inline
 ];
 
 
+
+MapTipo:
+Mapping LOAD * inline 
+[
+From,To
+'Estrangeiro','1'
+'Inscrito em MG','0'
+'Inscrito Outra UF','0'
+'N?o informado','0'
+'Pessoa Fisica','0'
+'Pessoa Juridica n?o Inscrita','0'
+'Produtor Rural - PF','0'
+];
+
 /*
 Retirar caracteres dos códigos CNAE e NCM
 */
