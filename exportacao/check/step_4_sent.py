@@ -7,11 +7,11 @@
     
     Running one by one:
     
-    python -m exportacao.step_4_sent -m all -y all > step_4_sent.log
-    python -m exportacao.step_4_sent -m HS -y all > HS.log
-    python -m exportacao.step_4_sent -m Municipality -y all > Municipality.log 
-    python -m exportacao.step_4_sent -m State -y all > State.log 
-    python -m exportacao.step_4_sent -m WLD -y all > WLD.log     
+    python -m exportacao.check.step_4_sent -m all -y all > step_4_sent.log
+    python -m exportacao.check.step_4_sent -m HS -y all > HS.log
+    python -m exportacao.check.step_4_sent -m Municipality -y all > Municipality.log 
+    python -m exportacao.check.step_4_sent -m State -y all > State.log 
+    python -m exportacao.check.step_4_sent -m WLD -y all > WLD.log     
     
     
 """
@@ -47,7 +47,7 @@ def to_int(s):
 def checkHS(year):
     print "Entering in checkHS" 
 
-    dfDV = sql_to_df("SELECT s.hs_id as id,sum(val_usd) as val FROM secex_yp s where length(s.hs_id)=6 and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT s.hs_id as id,sum(val_usd) as val FROM secex_ymp s where s.hs_id_len=6 and year="+str(year)+" group by 1;",db)
 
     dfSent = read_from_csv("dados\exportacao\sent\MDIC_"+str(year)+".csv",delimiter="|")
     dfGroup = dfSent.groupby(dfSent.columns[10])
@@ -79,7 +79,7 @@ def checkHS(year):
 def checkMunicipality(year,size,column):
     print "Entering in checkBRA" 
 
-    dfDV = sql_to_df("SELECT a.id_mdic as id,sum(val_usd) as val FROM secex_yb s,attrs_bra a where length(a.id)="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT a.id_mdic as id,sum(val_usd) as val FROM secex_ymb s,attrs_bra a where s.bra_id_len="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
 
     dfSent = read_from_csv("dados\exportacao\sent\MDIC_"+str(year)+".csv",delimiter="|")
     dfGroup = dfSent.groupby(dfSent.columns[column])
@@ -108,7 +108,7 @@ def checkMunicipality(year,size,column):
 def checkWLD(year):
     print "Entering in checkWLD" 
 
-    dfDV = sql_to_df("SELECT a.id_mdic as id,sum(val_usd) as val FROM secex_yw s,attrs_wld a where length(a.id)=5 and  a.id=s.wld_id and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT a.id_mdic as id,sum(val_usd) as val FROM secex_ymw s,attrs_wld a where s.wld_id_len=5 and  a.id=s.wld_id and year="+str(year)+" group by 1;",db)
 
     dfSent = read_from_csv("dados\exportacao\sent\MDIC_"+str(year)+".csv",delimiter="|")
     dfGroup = dfSent.groupby(dfSent.columns[2])

@@ -8,10 +8,10 @@
     
     
     Running one by one:
-    
-    python -m exportacao.step_2_aggs -m BRAID > BRAID.log
-    python -m exportacao.step_2_aggs -m HSID > HSID.log
-    python -m exportacao.step_2_aggs -m WLDID > WLDID.log
+    python -m exportacao.check.step_2_aggs -m all > allstep2exp.log
+    python -m exportacao.check.step_2_aggs -m BRAID > BRAID.log
+    python -m exportacao.check.step_2_aggs -m HSID > HSID.log
+    python -m exportacao.check.step_2_aggs -m WLDID > WLDID.log
     
     YBPW - Is the only table that is not in this check script. We need to find a viable way to do this check in this hude table
     
@@ -23,14 +23,12 @@ import csv, sys, os, argparse, MySQLdb, time, bz2,click
 from collections import defaultdict
 from os import environ
 from decimal import Decimal, ROUND_HALF_UP
-from config import DATA_DIR
+from config import DATA_DIR,DATAVIVA_DB_USER,DATAVIVA_DB_PW,DATAVIVA_DB_NAME
 from helpers import d, get_file, format_runtime,errorMessage,runCountQuery
 #from scripts import YEAR
 
 ''' Connect to DB '''
-db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"], 
-                        passwd=environ["DATAVIVA_DB_PW"], 
-                        db=environ["DATAVIVA_DB_NAME"])
+db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER, passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
 db.autocommit(1)
 cursor = db.cursor()
 
@@ -46,32 +44,35 @@ def checkBRA_ID():
 
     print "Entering in checkBRA_ID"
     
-    # YB: Check aggs 2 with 4
-    sql="SELECT * FROM secex_yb as b where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.val_usd <> \
-        (SELECT sum(val_usd) FROM secex_yb \
-        where length(bra_id)=8 and left(bra_id,4)=b.bra_id  and year=b.year \
-        group by left(bra_id,4))"  
-    runCountQuery('checkBRA_ID', 'secex_yb', sql,cursor)   
+    # YMB: Check aggs 2 with 4 (2,7,8)
+    sql="SELECT * FROM secex_ymb as b where left(bra_id,2)<>'xx' and b.bra_id_len=2 and \
+    concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+        (SELECT concat(CAST(sum(import_val) AS CHAR),CAST(sum(export_val) AS CHAR )    )  FROM secex_ymb \
+        where bra_id_len=8 and left(bra_id,2)=b.bra_id and month=b.month  and year=b.year \
+        group by left(bra_id,2))"  
+    runCountQuery('checkBRA_ID', 'secex_ymb', sql,cursor)   
 
 
     
-    #YBP - bra_id 2 x 4
-    sql="SELECT * FROM secex_ybp as b \
-        where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.val_usd <> \
-            (SELECT sum(val_usd) FROM secex_ybp  \
-                    where length(bra_id)=8 and left(bra_id,4)=b.bra_id \
-                    and hs_id=b.hs_id and year=b.year \
-                    group by left(bra_id,4),length(hs_id),year)"
-    runCountQuery('checkBRA_ID', 'secex_ybp', sql,cursor) 
+    #YMBP - bra_id 2 x 4
+    sql="SELECT * FROM secex_ymbp as b \
+        where left(bra_id,2)<>'xx' and b.bra_id_len=2 and \
+        concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+            (SELECT concat(CAST(sum(import_val) AS CHAR),CAST(sum(export_val) AS CHAR )) FROM secex_ymbp  \
+                    where bra_id_len=8 and left(bra_id,2)=b.bra_id \
+                    and hs_id=b.hs_id and year=b.year and month=b.month \
+                    group by left(bra_id,2),hs_id_len,year)"
+    runCountQuery('checkBRA_ID', 'secex_ymbp', sql,cursor) 
 
-    #YBW
-    sql="SELECT * FROM secex_ybw as b \
-        where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.val_usd <> \
-            (SELECT sum(val_usd) FROM secex_ybw  \
-                    where length(bra_id)=8 and left(bra_id,4)=b.bra_id \
-                    and wld_id=b.wld_id and year=b.year \
-                    group by left(bra_id,4),length(wld_id),year)    "
-    runCountQuery('checkBRA_ID', 'secex_ybw', sql,cursor) 
+    #YMBW
+    sql="SELECT * FROM secex_ymbw as b \
+        where left(bra_id,2)<>'xx' and b.bra_id_len=2 and \
+        concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+            (SELECT concat(CAST(sum(import_val) AS CHAR),CAST(sum(export_val) AS CHAR )) FROM secex_ymbw  \
+                    where bra_id_len=8 and left(bra_id,2)=b.bra_id \
+                    and wld_id=b.wld_id and year=b.year and month=b.month \
+                    group by left(bra_id,2),wld_id_len,year)    "
+    runCountQuery('checkBRA_ID', 'secex_ymbw', sql,cursor) 
     
 
                 
@@ -80,31 +81,30 @@ def checkBRA_ID():
 '''
 def checkBRA_IDPR():    
     #YB 
-    sql="SELECT * FROM secex_yb as b where left(bra_id,2)<>'xx' and length(b.bra_id)=7 and b.val_usd <> \
-        (SELECT sum(val_usd) FROM secex_yb s, attrs_bra_pr p \
-        where p.bra_id = s.bra_id and p.pr_id = b.bra_id and length(s.bra_id)=8 and \
-            left(s.bra_id,4)=b.bra_id  and s.year=b.year group by left(s.bra_id,4))"
-    runCountQuery('checkBRA_IDPR', 'secex_yb', sql,cursor) 
+    sql="SELECT * FROM secex_ymb as b where left(bra_id,2)<>'xx' and b.bra_id_len=7 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+        (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymb s, attrs_bra_pr p \
+        where p.bra_id = s.bra_id and p.pr_id = b.bra_id and s.bra_id_len=8 and \
+            left(s.bra_id,4)=b.bra_id  and s.year=b.year and s.month=b.month group by left(s.bra_id,4))"
+    runCountQuery('checkBRA_IDPR', 'secex_ymb', sql,cursor) 
 
         
     #YBP - bra_id 2 x 4
-    sql="SELECT * FROM secex_ybp as b \
-        where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.val_usd <> \
-            (SELECT sum(s.val_usd) FROM secex_ybp s, attrs_bra_pr p   \
-                    where p.bra_id = s.bra_id and  p.pr_id = b.bra_id and length(s.bra_id)=8 and left(s.bra_id,4)=b.bra_id \
-                    and s.hs_id=b.hs_id and s.year=b.year \
-                    group by left(s.bra_id,4),length(s.hs_id),year)"
-    runCountQuery('checkBRA_IDPR', 'secex_ybp', sql,cursor) 
+    sql="SELECT * FROM secex_ymbp as b \
+        where left(bra_id,2)<>'xx' and b.bra_id_len=4 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+            (SELECT concat(CAST(s.import_val AS CHAR),CAST(s.export_val AS CHAR )) FROM secex_ymbp s, attrs_bra_pr p   \
+                    where p.bra_id = s.bra_id and  p.pr_id = b.bra_id and s.bra_id_len=8 and left(s.bra_id,4)=b.bra_id \
+                    and s.hs_id=b.hs_id and s.year=b.year and s.month=b.month \
+                    group by left(s.bra_id,4),s.hs_id_len,year)"
+    runCountQuery('checkBRA_IDPR', 'secex_ymbp', sql,cursor) 
     
 
     #YBW
-    sql="SELECT * FROM secex_ybw as b \
-        where left(bra_id,2)<>'xx' and length(b.bra_id)=4 and b.val_usd <> \
-            (SELECT sum(s.val_usd) FROM secex_ybw s, attrs_bra_pr p   \
-                    where p.bra_id = s.bra_id and p.pr_id = b.bra_id and length(s.bra_id)=8 and left(s.bra_id,4)=b.bra_id \
-                    and s.wld_id=b.wld_id and s.year=b.year \
-                    group by left(s.bra_id,4),length(s.wld_id),s.year)    "
-    runCountQuery('checkBRA_IDPR', 'secex_ybw', sql,cursor) 
+    sql="SELECT * FROM secex_ymbw as b \
+        where left(bra_id,2)<>'xx' and b.bra_id_len=4 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+            (SELECT concat(CAST(s.import_val AS CHAR),CAST(s.export_val AS CHAR )) FROM secex_ymbw s, attrs_bra_pr p   \
+                    where p.bra_id = s.bra_id and p.pr_id = b.bra_id and s.bra_id_len=8 and left(s.bra_id,4)=b.bra_id \
+                    and s.wld_id=b.wld_id and s.year=b.year and s.month=b.month \
+                    group by left(s.bra_id,4),s.wld_id_len,s.year)    "
     
 
 
@@ -116,34 +116,34 @@ def checkHS_ID():
     for aggs in aggsP:    
         
         # YP: Check HS aggs 2 with 4
-        sql="SELECT * FROM secex_yp as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
-               (SELECT sum(val_usd) FROM secex_yp \
-            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id  and year=b.year \
+        sql="SELECT * FROM secex_ymp as b where b.hs_id_len="+str(aggs[0])+" and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+               (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymp \
+            where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and month=b.month  and year=b.year \
             group by left(hs_id,"+str(aggs[0])+"))" 
-        runCountQuery('checkHS_ID', 'secex_yp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+        runCountQuery('checkHS_ID', 'secex_ymp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
             
         
         # YBP: Check HS aggs 2 with 4
-        sql="SELECT * FROM secex_ybp as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
-               (SELECT sum(val_usd) FROM secex_ybp \
-            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id  and year=b.year \
-            group by left(hs_id,"+str(aggs[0])+"),length(bra_id),year)"   
-        runCountQuery('checkHS_ID', 'secex_ybp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+        sql="SELECT * FROM secex_ymbp as b where b.hs_id_len="+str(aggs[0])+" and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+               (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbp \
+            where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and month=b.month and year=b.year \
+            group by left(hs_id,"+str(aggs[0])+"),bra_id_len,year)"   
+        runCountQuery('checkHS_ID', 'secex_ymbp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
                     
 
         # YPW: Check HS aggs 2 with 4
-        sql="SELECT * FROM secex_ypw as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
-               (SELECT sum(val_usd) FROM secex_ypw \
-            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and wld_id=b.wld_id  and year=b.year \
-            group by left(hs_id,"+str(aggs[0])+"),length(wld_id),year)"   
-        runCountQuery('checkHS_ID', 'secex_ypw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+        sql="SELECT * FROM secex_ympw as b where b.hs_id_len="+str(aggs[0])+" and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+               (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ympw \
+            where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and wld_id=b.wld_id and month=b.month  and year=b.year \
+            group by left(hs_id,"+str(aggs[0])+"),wld_id_len,year)"   
+        runCountQuery('checkHS_ID', 'secex_ympw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
 
         # YBPW: Check HS aggs 2 with 4
-        sql="SELECT * FROM secex_ybpw as b where length(b.hs_id)="+str(aggs[0])+" and b.val_usd <> \
-               (SELECT sum(val_usd) FROM secex_ybpw \
-            where length(hs_id)="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and wld_id=b.wld_id  and year=b.year \
-            group by left(hs_id,"+str(aggs[0])+"),length(wld_id),length(bra_id),year)"   
-        runCountQuery('checkHS_ID', 'secex_ybpw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
+        sql="SELECT * FROM secex_ymbpw as b where b.hs_id_len="+str(aggs[0])+" and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+               (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbpw \
+            where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and wld_id=b.wld_id and month=b.month  and year=b.year \
+            group by left(hs_id,"+str(aggs[0])+"),wld_id_len,bra_id_len,year)"   
+        runCountQuery('checkHS_ID', 'secex_ymbpw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor) 
                 
     #YBPW
 
@@ -152,33 +152,33 @@ def checkWLD_ID():
     print "Entering in checkWLD_ID"
     
     # YW: Check WLD aggs 2 with 5
-    sql="SELECT * FROM secex_yw as b where length(b.wld_id)=2 and b.val_usd <> \
-           (SELECT sum(val_usd) FROM secex_yw \
-        where length(wld_id)=5 and left(wld_id,2)=b.wld_id  and year=b.year \
+    sql="SELECT * FROM secex_ymw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+           (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymw \
+        where wld_id_len=5 and left(wld_id,2)=b.wld_id and month=b.month  and year=b.year \
         group by left(wld_id,2))"    
-    runCountQuery('checkWLD_ID', 'secex_yw', sql,cursor)
+    runCountQuery('checkWLD_ID', 'secex_ymw', sql,cursor)
         
 
     # YBW: Check WLD aggs 2 with 5
-    sql="SELECT * FROM secex_ybw as b where length(b.wld_id)=2 and b.val_usd <> \
-           (SELECT sum(val_usd) FROM secex_ybw \
-        where length(wld_id)=5 and left(wld_id,2)=b.wld_id and bra_id=b.bra_id  and year=b.year \
-        group by left(wld_id,2),length(bra_id),year)"   
-    runCountQuery('checkWLD_ID', 'secex_ybw', sql,cursor) 
+    sql="SELECT * FROM secex_ymbw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+           (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbw \
+        where wld_id_len=5 and left(wld_id,2)=b.wld_id and bra_id=b.bra_id and month=b.month  and year=b.year \
+        group by left(wld_id,2),bra_id_len,year)"   
+    runCountQuery('checkWLD_ID', 'secex_ymbw', sql,cursor) 
 
     # YPW:  Check WLD aggs 2 with 5
-    sql="SELECT * FROM secex_ypw as b where length(b.wld_id)=2 and b.val_usd <> \
-           (SELECT sum(val_usd) FROM secex_ypw \
-        where length(wld_id)=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id  and year=b.year \
-        group by left(hs_id,2),length(hs_id),year)"   
-    runCountQuery('checkWLD_ID', 'secex_ypw', sql,cursor)     
+    sql="SELECT * FROM secex_ympw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+           (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ympw \
+        where wld_id_len=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and month=b.month  and year=b.year \
+        group by left(hs_id,2),hs_id_len,year)"   
+    runCountQuery('checkWLD_ID', 'secex_ympw', sql,cursor)     
             
     #YPBW Check WLD aggs 2 with 5
-    sql="SELECT * FROM secex_ybpw as b where length(b.wld_id)=2 and b.val_usd <> \
-           (SELECT sum(val_usd) FROM secex_ybpw \
-        where length(wld_id)=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and bra_id=b.bra_id  and year=b.year \
-        group by left(wld_id,2),length(bra_id),length(hs_id),year)"   
-    runCountQuery('checkWLD_ID', 'secex_ybpw', sql,cursor) 
+    sql="SELECT * FROM secex_ymbpw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
+           (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbpw \
+        where wld_id_len=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and bra_id=b.bra_id and month=b.month  and year=b.year \
+        group by left(wld_id,2),bra_id_len,hs_id_len,year)"   
+    runCountQuery('checkWLD_ID', 'secex_ymbpw', sql,cursor) 
 
 @click.command()
 @click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRAID , HSID ,WLDID ',required=False)

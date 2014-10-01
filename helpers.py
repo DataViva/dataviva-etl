@@ -157,10 +157,10 @@ def runCountQuery(step, table, sql,cursor,count=None):
     print "---------------------------"
     cursor.execute(sql)
     values=cursor.fetchall()
-    if count is None:
+    if not count:
         size=len(values)
     else:
-        size=values[0][0]
+        size=values[0][0]    
     errorMessage(step, table, size)
 
 '''
@@ -323,6 +323,7 @@ def csv_to_json(entrada,saida,fieldnames,delimiter=None):
     for row in reader:
         #print row #.encode("utf8")
         json.dump(row, jsonfile, ensure_ascii=False)
+        jsonfile.write(', \n ')
     jsonfile.write('\n')
     
     
