@@ -1,0 +1,8 @@
+Entering in checkValUSD
+checkValUSD : secex_ymb
+---------------------------
+Found 116109 Errors in checkValUSD for secex_ymb
+checkValUSD : secex_ymbp
+---------------------------
+checkValUSD : secex_ymbpw
+---------------------------
