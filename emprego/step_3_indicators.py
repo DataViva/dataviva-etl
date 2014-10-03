@@ -32,15 +32,12 @@ import csv, sys, os, argparse, MySQLdb, time, bz2,click
 from collections import defaultdict
 from os import environ
 from decimal import Decimal, ROUND_HALF_UP
-from config import DATA_DIR
+from config import DATA_DIR,DATAVIVA_DB_USER,DATAVIVA_DB_PW,DATAVIVA_DB_NAME
 from helpers import d, get_file, format_runtime,errorMessage,runCountQuery
 #from scripts import YEAR
 
 ''' Connect to DB '''
-db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"], 
-                        passwd=environ["DATAVIVA_DB_PW"], 
-                        db=environ["DATAVIVA_DB_NAME"])
-db.autocommit(1)
+db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER, passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
 cursor = db.cursor()
 
 

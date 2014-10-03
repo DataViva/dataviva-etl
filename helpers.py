@@ -274,6 +274,9 @@ def fill_zeros(s):
 
 '''
 
+df = df.drop(['NO_NCM', 'NO_PAIS', 'NO_UF', 'NO_PORTO', 'NO_MUN', 'NO_UNID'], 1)
+
+
 ybio = dados.groupby(["year", "bra_id", "cnae_id", "cbo_id"]) \
 .agg({"wage": np.sum, "num_emp": pd.Series.count, "num_est": pd.Series.count,\
 "num_emp_m": np.sum, "wage_m": np.sum, "wage_f": np.sum})

@@ -119,43 +119,43 @@ def checkGrowth():
     for vals in years:
         year=vals[0]
         label=vals[1]   
-        #YB
+        #YMB
         sql="select count(*) from secex_ymb s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymb interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000"     
         runCountQuery('checkGrowth_pct', "secex_ymb", sql,cursor,True)
     
-        #YW
+        #YMW
         sql="select count(*) from secex_ymw s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymw interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id) >0 ) \
             ) and year > 2000"     
         runCountQuery('checkGrowth', "secex_ymw", sql,cursor,True)
         
-        #YP
+        #YMP
         sql="select count(*) from secex_ymp s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymp interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.hs_id = s.hs_id) >0 ) \
              ) and year > 2000" 
         runCountQuery('checkGrowth', "secex_ymp", sql,cursor,True)
      
     
-        #YBP
+        #YMBP
         sql="select count(*) from secex_ymbp s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymbp interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.hs_id = s.hs_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
-        runCountQuery('checkGrowth', "secex_ymbp", sql,cursor,True)    
+        #runCountQuery('checkGrowth', "secex_ymbp", sql,cursor,True)    
         
         
-        #YBW
+        #YMBW
         sql="select count(*) from secex_ymbw s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymbw interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id and interno.bra_id = s.bra_id) >0 ) \
              ) and year > 2000" 
-        runCountQuery('checkGrowth', "secex_ymbw", sql,cursor,True)      
+        #runCountQuery('checkGrowth', "secex_ymbw", sql,cursor,True)      
     
-        #YBPW
+        #YMBPW
         sql="select count(*) from secex_ymbpw s where (  \
             (s.export_val_growth_pct"+label+" is null and (select export_val from secex_ymbpw interno where interno.month=s.month and interno.year=s.year-"+year+"  and interno.wld_id = s.wld_id and interno.hs_id = s.hs_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2000" 
-        runCountQuery('checkGrowth', "secex_ymbw", sql,cursor,True)     
+        #runCountQuery('checkGrowth', "secex_ymbpw", sql,cursor,True)     
     
 
 #RCA: For all HS and all locations     
