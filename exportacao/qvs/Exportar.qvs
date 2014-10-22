@@ -9,8 +9,8 @@ if '$(executarExportar)'='S' then
 			UF as State_ID,
 			PORTO as Customs_Unit_Boarding_ID,
 			MUNICÍPIO as Municipality_ID,
-			UNIDADE as Unit_ID,
-			QUANTIDADE as Quantity,
+			//UNIDADE as Unit_ID,
+			//QUANTIDADE as Quantity,
 			KGLIQUIDO as TransactionAmount_kg,
 			VALORFOB as [TransactionAmount_US$_FOB],
 			HS2007 as TransactedProduct_ID_HS
