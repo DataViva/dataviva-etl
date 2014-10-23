@@ -13,8 +13,8 @@ if '$(executarTransformacao)'='S' then
 		UF,
 		PORTO,
 		MUNICÍPIO,
-		UNIDADE,
-		QUANTIDADE,
+		//UNIDADE,
+		//QUANTIDADE,
 		KGLIQUIDO,
 		VALORFOB
 	FROM
@@ -54,8 +54,8 @@ if '$(executarTransformacao)'='S' then
 		UF,
 		PORTO,
 		MUNICÍPIO,
-		UNIDADE,
-		QUANTIDADE,
+		//UNIDADE,
+		//QUANTIDADE,
 		KGLIQUIDO,
 		VALORFOB
 	FROM
@@ -96,8 +96,8 @@ if '$(executarTransformacao)'='S' then
 		UF,
 		PORTO,
 		MUNICÍPIO,
-		UNIDADE,
-		QUANTIDADE,
+		//UNIDADE,
+		//QUANTIDADE,
 		KGLIQUIDO,
 		VALORFOB
 	FROM
@@ -129,8 +129,8 @@ if '$(executarTransformacao)'='S' then
 		UF,
 		PORTO,
 		MUNICÍPIO,
-		UNIDADE,
-		QUANTIDADE,
+		//UNIDADE,
+		//QUANTIDADE,
 		KGLIQUIDO,
 		VALORFOB
 	FROM
