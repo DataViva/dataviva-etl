@@ -14,11 +14,11 @@
         
     Running one by one for all years:
     
-    python -m emprego.step_4_sent -m all -y all > step_4_sent.log
-    python -m emprego.step_4_sent -m cnae -y all > cnae.log
-    python -m emprego.step_4_sent -m Municipality -y all > Municipality.log 
-    python -m emprego.step_4_sent -m State -y all > State.log 
-    python -m emprego.step_4_sent -m CBO -y all > CBO.log     
+    python -m emprego.check.step_4_sent -m all -y all > step_4_sent.log
+    python -m emprego.check.step_4_sent -m CNAE -y all > CNAE.log
+    python -m emprego.check.step_4_sent -m Municipality -y all > Municipality.log 
+    python -m emprego.check.step_4_sent -m State -y all > State.log 
+    python -m emprego.check.step_4_sent -m CBO -y all > CBO.log     
     
     
     SENT DATA IN FORMAT CSV:
@@ -48,7 +48,7 @@ import csv, sys, os, argparse, MySQLdb, time, bz2,click
 from collections import defaultdict
 from os import environ
 from decimal import Decimal, ROUND_HALF_UP
-from config import DATA_DIR
+from config import DATA_DIR,DATAVIVA_DB_USER,DATAVIVA_DB_PW,DATAVIVA_DB_NAME
 from helpers import d, get_file, format_runtime,find_in_df,sql_to_df,read_from_csv,df_to_csv,left_df,to_int,to_number
 import pandas as pd
 from pandas import DataFrame
@@ -56,9 +56,7 @@ import pandas.io.sql as psql
 import numpy as np
 
 ''' Connect to DB '''
-db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"], 
-                        passwd=environ["DATAVIVA_DB_PW"], 
-                        db=environ["DATAVIVA_DB_NAME"])
+db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER,  passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
 db.autocommit(1)
 cursor = db.cursor()
 
@@ -71,7 +69,8 @@ cols = ["cbo", "cnae", "literacy", "age", "est_id", "simple", "munic", "emp_id",
 ##########################         
 def checkCNAE(year):
     print "Entering in checkCNAE" 
-    dfDV = sql_to_df("SELECT right(s.cnae_id,4) as id,sum(wage) as val FROM rais_yi s where length(s.cnae_id)=5 and year="+str(year)+" group by 1;",db)
+    #before right 4 and len 5
+    dfDV = sql_to_df("SELECT right(s.cnae_id,4) as id,sum(wage) as val FROM rais_yi s where s.cnae_id_len=6 and year="+str(year)+" group by 1;",db)
     dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols) 
     run_check(dfDV,dfSent,'cnae',year)  
 
@@ -79,7 +78,7 @@ def checkCNAE(year):
    
 def checkMunicipality(year,size):
     print "Entering in checkBRA"    
-    dfDV = sql_to_df("SELECT left(a.id_ibge,6) as id,sum(wage) as val FROM rais_yb s,attrs_bra a where length(a.id)="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT left(a.id_ibge,6) as id,sum(wage) as val FROM rais_yb s,attrs_bra a where s.bra_id_len="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
     dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)
     #dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+"Teste.csv",delimiter=",")    
     run_check(dfDV,dfSent,'munic',year) 
@@ -89,7 +88,7 @@ def checkMunicipality(year,size):
          
 def checkCBO(year):
     print "Entering in checkCBO" 
-    dfDV = sql_to_df("SELECT a.id as id,sum(wage) as val FROM rais_yo s,attrs_cbo a where length(a.id)=4 and  a.id=s.cbo_id and year="+str(year)+" group by 1;",db)
+    dfDV = sql_to_df("SELECT s.cbo_id as id,sum(wage) as val FROM rais_yo s where s.cbo_id_len=4 and s.year="+str(year)+" group by 1;",db)
     dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)   
     run_check(dfDV,dfSent,'cbo',year)  
     
@@ -151,8 +150,8 @@ def run_check(dfDV,dfSent,groupId,year):
 #dfSent=dfSent[dfSent['cbo4']<2000]
 #dfDV=dfDV[dfDV['id']<2000]
 def clean_df_sent(dfSent):
-    
-    for column in ('cnae','wage_dec','emp_id','est_id','year'):
+    #'cnae',
+    for column in ('wage_dec','emp_id','est_id','year'):
         dfSent = dfSent.drop(column, axis=1)
     
      
@@ -196,10 +195,10 @@ def clean_df_dv(dfDV):
 #@click.argument('method', type=click.Path(exists=True))
 def main(method,year):
     if not year:
-        year=2000
+        year=2002
         
     elif year=='all':
-        for y in (2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013):
+        for y in (2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013):
             runMethodYear(method,y)
             
         return

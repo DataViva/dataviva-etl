@@ -1,8 +1,7 @@
 eclipse.preferences.version=1
-encoding//emprego/step_1_attrs.py=utf-8
-encoding//emprego/step_2_aggs.py=utf-8
-encoding//emprego/step_3_indicators.py=utf-8
-encoding//emprego/step_4_sent.py=utf-8
+encoding//emprego/check/step_2_aggs.py=utf-8
+encoding//emprego/check/step_3_indicators.py=utf-8
+encoding//emprego/check/step_4_sent.py=utf-8
 encoding//exportacao/check/step_1_attrs.py=utf-8
 encoding//exportacao/check/step_2_aggs.py=utf-8
 encoding//exportacao/check/step_3_indicators.py=utf-8

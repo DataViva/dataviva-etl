@@ -11,15 +11,15 @@
     
     Running one by one:
     
-    python -m emprego.step_3_indicators -m Importance > Importance.log
-    python -m emprego.step_3_indicators -m Diversity > Diversity.log
-    python -m emprego.step_3_indicators -m Growth > Growth.log
-    python -m emprego.step_3_indicators -m GrowthAnual > GrowthAnual.log    
-    python -m emprego.step_3_indicators -m RCA > RCA.log
-    python -m emprego.step_3_indicators -m Distance > Distance.log
-    python -m emprego.step_3_indicators -m Opportunity > Opportunity.log
-    python -m emprego.step_3_indicators -m Required > Required.log
-    python -m emprego.step_3_indicators -m Wage > Wage.log
+    python -m emprego.check.step_3_indicators -m Importance > Importance.log
+    python -m emprego.check.step_3_indicators -m Diversity > Diversity.log
+    python -m emprego.check.step_3_indicators -m Growth > Growth.log
+    python -m emprego.check.step_3_indicators -m GrowthAnual > GrowthAnual.log    
+    python -m emprego.check.step_3_indicators -m RCA > RCA.log
+    python -m emprego.check.step_3_indicators -m Distance > Distance.log
+    python -m emprego.check.step_3_indicators -m Opportunity > Opportunity.log
+    python -m emprego.check.step_3_indicators -m Required > Required.log
+    python -m emprego.check.step_3_indicators -m Wage > Wage.log
     
     YBPW - Is the only table that is not in this check script. We need to find a viable way to do this check in this hude table
     References about this check in https://github.com/DataViva/datavivaetl/wiki/emprego#indicators
@@ -32,14 +32,12 @@ import csv, sys, os, argparse, MySQLdb, time, bz2,click
 from collections import defaultdict
 from os import environ
 from decimal import Decimal, ROUND_HALF_UP
-from config import DATA_DIR
+from config import DATA_DIR,DATAVIVA_DB_USER,DATAVIVA_DB_PW,DATAVIVA_DB_NAME
 from helpers import d, get_file, format_runtime,errorMessage,runCountQuery
 #from scripts import YEAR
 
 ''' Connect to DB '''
-db = MySQLdb.connect(host="localhost", user=environ["DATAVIVA_DB_USER"], 
-                        passwd=environ["DATAVIVA_DB_PW"], 
-                        db=environ["DATAVIVA_DB_NAME"])
+db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER,  passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
 db.autocommit(1)
 cursor = db.cursor()
 
@@ -71,7 +69,7 @@ def checkWage():
 def checkImportance():
     print "Entering in checkImportance"
          
-    sql="select count(*) from rais_yio where  length(cnae_id)=5 and length(cbo_id)=4 and ( (importance < 0 or importance > 1 ) \
+    sql="select count(*) from rais_yio where  cnae_id_len=5 and cbo_id_len=4 and ( (importance < 0 or importance > 1 ) \
     or ( importance is null  and num_emp>0) or (   importance is not null  and num_emp=0 ) ) "  
     runCountQuery('checkImportance', 'rais_yio', sql,cursor,count=True)
 
@@ -99,9 +97,9 @@ def checkGrowthAnual():
     #Anual - Check 
     aggsP = ["rais_yb","rais_ybi","rais_ybio","rais_ybo","rais_yi","rais_yo"]
     for aggs in aggsP:    
-        sql="select count(*) from "+aggs+" s where ((wage_growth_val is null and s.wage is not null)  or ( s.num_emp is not null and  num_emp_growth_val is null)) and year > 2002"   
+        sql="select count(*) from "+aggs+" s where ((wage_growth is null and s.wage is not null)  or ( s.num_emp is not null and  num_emp_growth is null)) and year > 2002"   
         #Check ir because all values that should be 0 is None  
-        runCountQuery('checkGrowth_val', aggs, sql,cursor,count=True)
+        runCountQuery('checkGrowth', aggs, sql,cursor,count=True)
 
     
 def checkGrowth():  
@@ -113,38 +111,38 @@ def checkGrowth():
         label=vals[1]   
         #YB
         sql="select count(*) from rais_yb s where (  s.wage is not null and   \
-            (s.wage_growth_pct"+label+" is null and (select wage from rais_yb interno where interno.year=s.year-"+year+"  and interno.bra_id = s.bra_id) >0 ) \
+            (s.wage_growth"+label+" is null and (select wage from rais_yb interno where interno.year=s.year-"+year+"  and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2002"     
-        runCountQuery('checkGrowth_pct', "rais_yb:"+year+":"+label, sql,cursor,count=True)
+        runCountQuery('checkGrowth', "rais_yb:"+year+":"+label, sql,cursor,count=True)
     
         #YO
         sql="select count(*) from rais_yo s where (  s.wage is not null and   \
-            (s.wage_growth_pct"+label+" is null and (select wage from rais_yo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id) >0 ) \
+            (s.wage_growth"+label+" is null and (select wage from rais_yo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id) >0 ) \
             ) and year > 2002"     
         runCountQuery('checkGrowth', "rais_yo:"+year+":"+label, sql,cursor,count=True)
         
         #YI
         sql="select count(*) from rais_yi s where (  s.wage is not null and   \
-            (s.wage_growth_pct"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.cnae_id = s.cnae_id) >0 ) \
+            (s.wage_growth"+label+" is null and (select wage from rais_yi interno where interno.year=s.year-"+year+"  and interno.cnae_id = s.cnae_id) >0 ) \
              ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_yi:"+year+":"+label, sql,cursor,count=True)
      
     
         #YBI
-        sql="select count(*) from rais_ybi s where (  s.wage is not null and   (  (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+        sql="select count(*) from rais_ybi s where (  s.wage is not null and   (  (s.wage_growth"+label+" is null or s.num_emp_growth"+label+" is null )  \
            and (select wage from rais_ybi interno where interno.year=s.year-"+year+"  and interno.cnae_id = s.cnae_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_ybi:"+year+":"+label, sql,cursor,count=True)    
         
         
         #YBO
-        sql="select count(*) from rais_ybo s where (  s.wage is not null and   ( (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+        sql="select count(*) from rais_ybo s where (  s.wage is not null and   ( (s.wage_growth"+label+" is null or s.num_emp_growth"+label+" is null )  \
             and (select wage from rais_ybo interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.bra_id = s.bra_id) >0 ) \
              ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_ybo:"+year+":"+label, sql,cursor,count=True)      
     
         #YBIO
-        sql="select count(*) from rais_ybio s where (  s.wage is not null and    (   (s.wage_growth_pct"+label+" is null or s.num_emp_growth_pct"+label+" is null )  \
+        sql="select count(*) from rais_ybio s where (  s.wage is not null and    (   (s.wage_growth"+label+" is null or s.num_emp_growth"+label+" is null )  \
            and (select wage from rais_ybio interno where interno.year=s.year-"+year+"  and interno.cbo_id = s.cbo_id and interno.cnae_id = s.cnae_id and interno.bra_id = s.bra_id) >0 ) \
             ) and year > 2002" 
         runCountQuery('checkGrowth', "rais_ybio:"+year+":"+label, sql,cursor,count=True)     
@@ -166,7 +164,7 @@ def checkDistance():
     print "Entering in checkDistance"    
 
     sql="select count(*) from rais_ybi where (distance<0 or distance>1 ) \
-        or ( distance is null  and length(cnae_id)=5) or ( distance is not  null  and length(cnae_id)<>5);" 
+        or ( distance is null  and cnae_id_len=5) or ( distance is not  null  and cnae_id_len<>5);" 
     runCountQuery('checkDistance', 'rais_ybi', sql,cursor,count=True)
 
 
@@ -174,7 +172,7 @@ def checkDistance():
 def checkOpportunity():  
     print "Entering in checkOpportunity"
     
-    sql="select count(*) from rais_ybi where  ( opp_gain is null  and length(cnae_id)=5) or (   opp_gain is not null  and length(cnae_id)<>5) "
+    sql="select count(*) from rais_ybi where  ( opp_gain is null  and cnae_id_len=5) or (   opp_gain is not null  and cnae_id_len<>5) "
     runCountQuery('checkOpportunity', 'rais_ybi', sql,cursor,count=True)
 
 
@@ -200,7 +198,7 @@ def main(method):
         checkRCA()
         checkDistance()
         checkOpportunity()
-        checkRequired()
+        #checkRequired()
     elif method=="Wage":
         checkWage()        
     elif method=="Importance":
