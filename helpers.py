@@ -6,6 +6,7 @@ import pandas as pd
 import pandas.io.sql as psql
 import csv
 import json
+import numpy as np
 
 
 ''' Import statements '''
@@ -90,10 +91,10 @@ names -- map of the name of each column. ex.: names = ('ID','NOME')
 """
 def read_from_fixed(filefixed,columns,names =None):
     raw_file_path = os.path.abspath( filefixed)
-    data = pd.read_fwf(raw_file_path, colspecs = columns, header=None,names =names )    
+    data = pd.read_fwf(raw_file_path, colspecs = columns, header=None,names =names )
     return data
-    
-def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None):
+
+def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None,usecols=None):
     """Read contents from a CSV to a Dataframe, that can be accessed with python scripts.
 
     Keyword arguments:
@@ -101,13 +102,16 @@ def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None):
     header - it says how many lines its used to be the name of the columns
     cols -- name of the columns used. ex.: cols= ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS']
     converters -- functions to convert values in the column. ex.: converters = {"TransactedProduct_ID_NCM": bra_replace, "TransactedProduct_ID_HS": str}
+    usecols -- array of columns wich you like to read. ex.: cols= ['TransactedProduct_ID_NCM','TransactedProduct_ID_HS']
     Return:
     dataframe -- python object containing data from the CSV file
     """
     if not header:
         header=0
-    df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols, converters=converters,header=header );  #, header=header
+    df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols, converters=converters,header=header,usecols=usecols);  #, header=header
+
     return df
+
 
 def df_to_csv(data , file,header=None):
     """Convert a dataframe object containing data to a CSV file.
@@ -171,7 +175,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
     if not count:
         size=len(values)
     else:
-        size=values[0][0]    
+        size=values[0][0]
     errorMessage(step, table, size)
 
 '''
@@ -304,9 +308,9 @@ def floatvert(x):
 
 '''
 Ex.:
-First line: 
+First line:
     start=time.time()
-    
+
 Second time and beyond:
     start=printTime("agregate",start)
 '''
@@ -321,26 +325,26 @@ def printTime(name,start=None):
 '''
 
 Example:
-    
-    fieldnames = ("Municipality_ID_Receiver","Municipality_ID_Sender","Product_Value","Municipio") 
-    csv_to_json("dados/nfe/NFE_teste_2013_01.csv","dados/nfe/NFE_teste_2013_01.json",fieldnames) 
+
+    fieldnames = ("Municipality_ID_Receiver","Municipality_ID_Sender","Product_Value","Municipio")
+    csv_to_json("dados/nfe/NFE_teste_2013_01.csv","dados/nfe/NFE_teste_2013_01.json",fieldnames)
 
 '''
 def csv_to_json(entrada,saida,fieldnames,delimiter=None):
     csvfile = open(entrada, 'r')
     jsonfile = open(saida, 'w')
-    
+
     if not delimiter:
         delimiter=";"
-    
+
     reader = csv.DictReader( csvfile, fieldnames,delimiter=';')
     for row in reader:
         #print row #.encode("utf8")
         json.dump(row, jsonfile, ensure_ascii=False)
         jsonfile.write(', \n ')
     jsonfile.write('\n')
-    
-    
+
+
 #python -m censoescolar.step_1_extract
 #raw_file_path = os.path.abspath(os.path.join(DATA_DIR, '../', filename))
 #columns = ((0,10),(11,14),(15,18),(19,22),(23,29),(30,35),(36,44),(45,45),(46,49),(50,55),(56,61),(62,67),(68,73),(74,79),(80,80),(81,86),(87,87),(88,108))

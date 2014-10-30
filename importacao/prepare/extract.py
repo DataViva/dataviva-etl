@@ -15,4 +15,6 @@ def extract(year):
     print df
 
 if __name__ == '__main__':
-    extract(2011)
+    for x in xrange(2002, 2011):
+        print "execute year: " + str(x)
+        extract(x)
