@@ -15,4 +15,4 @@ def extract(year):
     print df
 
 if __name__ == '__main__':
-    extract(2011)
+    extract(2002)

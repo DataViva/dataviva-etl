@@ -6,6 +6,7 @@ import pandas as pd
 import pandas.io.sql as psql
 import csv
 import json
+import numpy as np
 
 
 ''' Import statements '''
