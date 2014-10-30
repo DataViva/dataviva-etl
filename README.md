@@ -18,6 +18,4 @@ each database has a folder with a file called "test.py", file can be test with t
 python -m unittest {{FOLDER}}.check.test
 ```
 
-
-
 See the [Wiki](https://github.com/DataViva/datavivaetl/wiki) for more information.

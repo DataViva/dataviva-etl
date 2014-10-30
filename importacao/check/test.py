@@ -2,14 +2,24 @@ import unittest
 from helpers import *
 
 "Check import data. if the errors are greater than 1 percent of hits, tests will don't pass"
-class TestSequenceFunctions(unittest.TestCase):
+class TestCheck(unittest.TestCase):
 
     def setUp(self):
-        self.seq = range(10)
+        True
 
-    def test_prepare(self):
-        source_file = 'dados/importacao/raw/' + 'MDIC_' + str(2002) + '.csv'
-        exported_file = 'dados/importacao/sent/' + str(2002) + '_extract.csv'
+    def test_years(self):
+        for x in xrange(2002,2011):
+            if(self.prepare(x)):
+                assert True
+            else:
+                assert False
+
+    def prepare(self, year):
+
+        print "Check year: " + str(year)
+
+        source_file = 'dados/importacao/raw/' + 'MDIC_' + str(year) + '.csv'
+        exported_file = 'dados/importacao/sent/' + str(year) + '_extract.csv'
 
         cols = ['ANO', 'MES', 'PAIS', 'ESTADO', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB', 'HS2007']
 
@@ -38,15 +48,17 @@ class TestSequenceFunctions(unittest.TestCase):
 
             except Exception, e:
                 print "error: "  + str(i) + '\n'
-                assert False
+                return False
 
             finally:
                 b += 1
 
         if((b / 100) > a):
-            assert True
+            print "a : " + str(a) + '\n'
+            print "b : " + str(b) + '\n'
+            return True
         else:
-            assert False
+            return False
 
 
 if __name__ == '__main__':
