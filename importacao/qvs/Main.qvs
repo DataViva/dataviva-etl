@@ -21,7 +21,7 @@ SET executarAgrupar='N';
 
 SET executarTransformacao='N';
 
-SET executarExportar='N';
+SET executarExportar='S';
 
 SET executarCheckDados='S';
 

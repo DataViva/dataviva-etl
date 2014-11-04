@@ -173,7 +173,6 @@ if '$(executarTransformacao)'='S' then
 	store SECEX into 
 	E:\Bancos de Dados\MDIC\Importação\Dados finais\MDIC.qvd (qvd);
 	
-	exit Script;
 	drop table SECEX;
 	
 	

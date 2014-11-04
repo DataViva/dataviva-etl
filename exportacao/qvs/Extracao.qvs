@@ -18,12 +18,12 @@ if '$(executarExtracao)'='S' then
 			@63:n as VALORFOB
 		FROM
 		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BREX$(anoProcessamento)*.txt]
-		(fix, utf8);
+		(fix, codepage is 1252);
 		
 		store SECEX_$(anoProcessamento) into
 		[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EXP_$(anoProcessamento).qvd] (qvd);
 		
-		drop table SECEX_$(anoProcessamento);
+		//drop table SECEX_$(anoProcessamento);
 		
 	elseif anoProcessamento=2012 then 
 	

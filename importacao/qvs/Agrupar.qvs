@@ -9,7 +9,7 @@ if '$(executarAgrupar)'='S' then
 	(qvd);
 	
 	store SECEX into
-	[E:\Bancos de Dados\MDIC\Exportação\Dados Originais\EPEMG_BRIM20.qvd] (qvd);
+	[E:\Bancos de Dados\MDIC\Importação\Dados Originais\EPEMG_BRIM20.qvd] (qvd);
 
 	drop table SECEX;
 			
