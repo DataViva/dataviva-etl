@@ -24,5 +24,7 @@ def transform(year):
     print df
 
 if __name__ == "__main__":
-    transform(2011)
+    for x in xrange(2000, 2014):
+        print "execute year: " + str(x)
+        transform(x)
 

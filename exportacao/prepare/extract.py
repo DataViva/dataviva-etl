@@ -41,11 +41,13 @@ def extract(year):
 
 	else:
 
-		cols = ('ANO', 'MES', 'HS', 'PAIS',  'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
+		cols = ('ANO', 'MES', 'HS2007', 'PAIS',  'UF', 'PORTO', 'MUNICIPIO', 'UNIDADE', 'QUANTIDADE', 'KGLIQUIDO', 'VALORFOB')
 		df = read_from_csv(source_file, 1,"|", cols, None)
 		df_to_csv(df, export_file, None)
 
 
 if __name__ == "__main__":
-	extract(2012)
+
+	extract(2000)
+
 

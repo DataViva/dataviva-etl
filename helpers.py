@@ -82,14 +82,17 @@ def fixed_to_csv(filefixed,columns,csvfile,headers):
         data.to_csv(f, header=headers)
     return data
 
-"""Read from a Fixed Register format to a Dataframe (pandas).
+
+def read_from_fixed(filefixed,columns,names =None):
+
+    """Read from a Fixed Register format to a Dataframe (pandas).
 
 Keyword arguments:
 filefixed -- path of a file containg data in fixed register. ex.: filefixed='/fixedregister.txt'
 columns -- map of the positions of each column. ex.: columns = ((0,5),(5,18))
 names -- map of the name of each column. ex.: names = ('ID','NOME')
 """
-def read_from_fixed(filefixed,columns,names =None):
+
     raw_file_path = os.path.abspath( filefixed)
     data = pd.read_fwf(raw_file_path, colspecs = columns, header=None,names =names )
     return data
