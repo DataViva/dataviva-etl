@@ -6,7 +6,7 @@
     
     Running one by one:
     
-    python -m exportacao.check.step_5_site > step_5_site.log
+    C:\Python27-64\python -m exportacao.check.step_5_site > step_5_site.log
     C:\Python27-64\Scripts\py.test exportacao\check\step_5_site.py
     
 """
@@ -22,7 +22,7 @@ from helpers import d, get_file, format_runtime,find_in_df,sql_to_df,read_from_c
 import pandas as pd
 from pandas import DataFrame
 import pandas.io.sql as psql
-import allure
+#import allure
 
 ''' Connect to DB '''
 db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER, passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
@@ -30,16 +30,14 @@ db.autocommit(1)
 cursor = db.cursor()
 
 
-@allure.feature('MDIC')
-@allure.story('Export')
+#@allure.feature('MDIC')@allure.story('Export')
 def test_checkExports():
     print "Entering in checkExports" 
     arquivo='dados/exportacao/site/dados.txt'
     checkExportsImports(arquivo,'exports')
     
 
-@allure.feature('MDIC')
-@allure.story('Import')
+#@allure.feature('MDIC') @allure.story('Import')
 def test_checkImports():
     print "Entering in checkExports" 
     arquivo='dados/exportacao/site/imports.txt'
