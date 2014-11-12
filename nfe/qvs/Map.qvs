@@ -138,6 +138,26 @@ RESIDENT CFOP;
 
 DROP TABLE CFOP;
 
+/*
+Reclassificar CFOP - DAPI
+*/
+
+
+DAPI:
+LOAD 
+	CFOP, 
+	[DAPI]     
+FROM
+[E:\Bancos de Dados\Correspondências das Classificações\NFe\CFOP.xlsx]
+(ooxml, embedded labels, table is [De_para_CFOP]);
+
+MapCFOP_Dapi:	
+Mapping LOAD  
+	CFOP,
+	[DAPI] as dapi_cfop 
+RESIDENT DAPI;
+
+DROP TABLE DAPI;
 
 
 /*
