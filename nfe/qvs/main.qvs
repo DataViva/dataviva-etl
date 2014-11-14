@@ -10,20 +10,20 @@ SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
 SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
 
 SET anoProcessamento='2013';
-SET mesProcessamento='03';
+SET mesProcessamento='01';
 SET padraoNomeArquivo='';
 
 
 //Caminho
 SET diretorioBaseDados='E:\Bancos de Dados\FAZENDA\NFe\';
 
-SET executarExtracao='S';
+SET executarExtracao='N';
 
 SET executarTransformacao='S';
 
 SET executarCheckHS='N';
 
-SET executarExportar='S';
+SET executarExportar='N';
 
 
 

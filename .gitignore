@@ -3,3 +3,4 @@ dados
 *.qvd
 *.pyc
 *.log
+.settings/
