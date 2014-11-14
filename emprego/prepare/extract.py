@@ -24,7 +24,9 @@ def extract(year):
 
         cbo = read_from_csv(cbo_file, 1, ';', cols_cbo)
 
+        """MapIgnorado"""
         cbo['CBO94'] [cbo['CBO94'] == "IGNORADO"]= '-1'
+
 
         def convert(row):
             return int(row['CBO94'])
@@ -57,9 +59,28 @@ def extract(year):
 
             return to_int(converted)
 
+        def cnaeConversion(row):
+            converted = cnae['CNAE 20'][cnae['CNAE 10'] == row['CLAS CNAE 95_Fonte']]
+            if len(converted) > 1:
+                converted = converted.head(1)
+
+            return to_int(converted)
+
         useCols = ('ID', 'CLAS CNAE 95_Fonte', 'OCUPACAO', 'GRAU INSTR_Fonte', 'IDADE', 'IDENTIFICAD', 'IND SIMPLES_Fonte', 'MUNICIPIO_Fonte', 'PIS', 'RACA_COR OR_Fonte', 'REM DEZ (R$)', 'REM MED (R$)', 'SEXO_Fonte', 'TAMESTAB_Fonte')
 
         df = read_from_csv(source_file, 2,"|", cols, None, useCols)
+
+        def toString(row):
+            return str(row['SEXO_Fonte'])
+
+        df['SEXO_Fonte'] = df.apply(toString, axis=1)
+
+        """MapGenero"""
+        df['SEXO_Fonte'] [df['SEXO_Fonte'] == "MASCULINO"]= 1
+        df['SEXO_Fonte'] [df['SEXO_Fonte'] == "FEMININO"]= 0
+        df['SEXO_Fonte'] [df['SEXO_Fonte'] == "2" ]= 0
+        df['SEXO_Fonte'] [df['SEXO_Fonte'] == "02" ]= 0
+        df['SEXO_Fonte'] [df['SEXO_Fonte'] == "01" ]= 1
 
         """ remove string from field ocupacao"""
         def toIntCBO(row):
