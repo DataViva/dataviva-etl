@@ -68,7 +68,7 @@ def checkICMS(month,senderReceiver):
 
 #5    Remessas ou Retornos    Remittances or returns
 def checkRemit(month,senderReceiver):
-    prepare(month,'remit',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',5)
+    prepare(month,'remit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',5)
 
 #Tax
 def checkIcmsTax(month,senderReceiver):
@@ -176,12 +176,11 @@ def main(month=None, step=None,city=None):
     if not step:
         step='all'        
 
-    if not step:
-        step='all' 
-            
     if not city:
-        city='all'    
-                   
+        city='all' 
+            
+    if not month:
+        month='all'  
     elif month=='all':
         for y in ('01','02','03','04'):
             runstepcity(y,city,step)
