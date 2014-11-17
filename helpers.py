@@ -14,6 +14,10 @@ import sys, bz2, gzip, zipfile, os
 from decimal import Decimal, ROUND_HALF_UP
 from os.path import splitext, basename, exists
 
+""" read Files in folder """
+import glob
+import os
+
 total_error=0
 
 '''
@@ -52,6 +56,18 @@ def get_file(file_path):
     print "ERROR: unable to find file named {0}[.zip, .bz2, .gz] " \
             "in directory specified.".format(file_name)
     return None
+
+def get_files_in_folder(folder, extension):
+    """Get a list of all files in folder by extension.
+
+    Keyword arguments:
+    folder -- path of folder. ex.: folder='/dados/raw/db/2013'
+    extension -- extension os files without dot ex.: extension = csv
+    """
+    os.chdir(folder)
+    extension.replace(".", "")
+    return glob.glob("*." + str(extension))
+
 
 def format_runtime(x):
     # convert to hours, minutes, seconds
@@ -200,8 +216,6 @@ def left_df(df,column_entrada,size,column_saida=None,maxSize=None):
 
     df[column_saida] = df.apply(lambda f : left_(f[column_entrada],size) , axis = 1)
     return df
-
-
 
 def to_int(s):
     if s is None:
