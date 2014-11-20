@@ -305,7 +305,7 @@ def extract(year):
 
             df_to_csv(df, export_file, None)
 
-    elif year > 2010 and year < 2013:
+    elif year > 2010 and year <= 2012:
 
         folder = "dados/rais/raw/" + str(year) + '/'
 
@@ -353,6 +353,68 @@ def extract(year):
 
 
             df_to_csv(df, export_file, None)
+
+    elif year > 2012:
+
+        folder = "dados/rais/raw/" + str(year) + '/'
+
+        arr = get_files_in_folder(folder, 'TXT')
+
+        for x in arr:
+
+            source_file = x
+            export_file =  os.path.splitext(x)[0] + '.csv'
+
+            useCols = ('CBO Ocupação 2002', 'CNAE 2.0 Classe', 'Escolaridade após 2005', 'Vínculo Ativo 31/12', 'Idade', 'CNPJ / CEI', 'Ind Simples', 'Município', 'PIS', 'Raça Cor', 'Vl Remun Dezembro Nom', 'Vl Remun Média Nom', 'Sexo Trabalhador', 'Tamanho Estabelecimento')
+
+            df = read_from_csv(source_file, 2,"|", COLS_2010, None, useCols)
+
+
+            """Map textosLixo"""
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLAS CNAE']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLASSE']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLASS']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLAS']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CBO']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == '0000-1']= '-1'
+
+
+
+            """Map instrucao"""
+            df['Escolaridade após 2005'] [df['Escolaridade após 2005'] == 10]= 9
+            df['Escolaridade após 2005'] [df['Escolaridade após 2005'] == 11]= 9
+
+            def toString(row):
+                return str(row['GENERO'])
+
+            df['GENERO'] = df.apply(toString, axis=1)
+
+            """MapGenero"""
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "MASCULINO"]= 1
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "FEMININO"]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "2" ]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "02" ]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "01" ]= 1
+
+
+            """Map Cor"""
+            df['Raça Cor'] [df['Raça Cor'] == 99 ] = -1
+
+            """Map Tamanho Estabelecimento"""
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "1"]= "1"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "2"]= "1"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "3"]= "2"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "4"]= "3"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "5"]= "4"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "6"]= "5"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "7"]= "6"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "8"]= "7"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "9"]= "8"
+            df['Tamanho Estabelecimento'] [df['Tamanho Estabelecimento'] == "10"]= "9"
+
+            df_to_csv(df, export_file, None)
+
+
 
 if __name__ == '__main__':
     start = time.time()
