@@ -14,6 +14,8 @@ COLS_2007 = ('MUNICIPIO', 'CLAS CNAE 95', 'EMP EM 31/12', 'TP VINCULO', 'CAUSA D
 
 COLS_2008 = ('MUNICIPIO', 'CLAS CNAE 95', 'EMP EM 31/12', 'TP VINCULO', 'CAUSA DESLIG', 'IND ALVARA', 'TIPO ADM', 'TIPO SAL', 'OCUPACAO 94', 'GRAU INSTR', 'GENERO', 'NACIONALIDAD', 'RACA_COR', 'PORT DEFIC', 'TAMESTAB', 'NAT JURIDICA', 'IND CEI VINC', 'TIPO ESTBL', 'IND PAT', 'IND SIMPLES', 'DT ADMISSAO', 'REM MEDIA', 'REM MED (R$)', 'REM DEZEMBRO', 'REM DEZ (R$)', 'TEMP EMPR', 'HORAS CONTR', 'ULT REM', 'SAL CONTR', 'PIS', 'DT NASCIMENT', 'NUME CTPS', 'CPF', 'CEI VINC', 'IDENTIFICAD', 'RADIC CNPJ', 'TIPO ESTB ID', 'NOME', 'DIA DESL', 'OCUP 2002', 'CLAS CNAE 20', 'SB CLAS 20', 'TP DEFIC', 'CAUS AFAST 1', 'DIA INI AF 1', 'MES INI AF 1', 'DIA FIM AF 1', 'MES FIM AF 1', 'CAUS AFAST 2', 'DIA INI AF 2', 'MES INI AF 2', 'DIM FIM AF 2', 'MES FIM AF 2', 'CAUS AFAST 3', 'DIA INI AF 3', 'MES INI AF 3', 'DIA FIM AF 3', 'MES FIM AF 3', 'QT DIAS AFAS')
 
+COLS_2010 = ('Município', 'CNAE 95 Classe', 'Vínculo Ativo 31/12', 'Tipo Vinculo','Motivo Desligamento', 'Mês desligamento', 'Ind Vínculo Alvará', 'Tipo Admissão', 'Tipo Salário', 'CBO 94 Ocupação', 'Escolaridade após 2005', 'Sexo trabalhador', 'Nacionalidade', 'Raça Cor', 'Ind Portador Defic', 'Tamanho Estabelecimento', 'Natureza Jurídica', 'Ind CEI Vinculado', 'Tipo Estab', 'Ind Estab Participa PAT', 'Ind Simples', 'Data Admissão Declarada', 'Vl Remun Média Nom', 'Vl Remun Média (SM)', 'Vl Remun Dezembro Nom ', 'Vl Remun Dezembro (SM)', 'Tempo Emprego', 'Qtd Hora Contr', 'Vl Última Remuneração Ano', 'Vl Salário Contratual', 'PIS', 'Número CTPS', 'CPF', 'CEI Vinculado', 'CNPJ / CEI', 'CNPJ Raiz', 'Nome Trabalhador', 'CBO Ocupação 2002', 'CNAE 2.0 Classe', 'CNAE 2.0 Subclasse', 'Tipo Defic', 'Causa Afastamento 1', 'Dia Ini AF 1', 'Mês Ini AF1', 'Dia Fim AF1', 'Mês Fim AF1', 'Causa Afastamento 2', 'Dia Ini AF2', 'Mês Ini AF2', 'Dia Fim AF2', 'Mês Fim AF2', 'Causa Afastamento 3', 'Dia Ini AF3', 'Mês Ini AF3', 'Dia Fim AF3', 'Mês Fim AF3', 'Qtd Dias Afastamento')
+
 
 """ Extract CSV file by year """
 def extract(year):
@@ -299,6 +301,55 @@ def extract(year):
             df['GENERO'] [df['GENERO'] == "01" ]= 1
 
             df['CLAS CNAE 95_Fonte'] = df.apply(cnaeConversion, axis=1)
+
+
+            df_to_csv(df, export_file, None)
+
+    elif year > 2010 and year < 2013:
+
+        folder = "dados/rais/raw/" + str(year) + '/'
+
+        arr = get_files_in_folder(folder, 'TXT')
+
+        for x in arr:
+
+            source_file = x
+            export_file =  os.path.splitext(x)[0] + '.csv'
+
+            useCols = ('CBO Ocupação 2002', 'CNAE 2.0 Classe', 'Escolaridade após 2005', 'Vínculo Ativo 31/12', 'Idade', 'CNPJ / CEI', 'Ind Simples', 'Município', 'PIS', 'Raça Cor', 'Vl Remun Dezembro Nom', 'Vl Remun Média Nom', 'Sexo Trabalhador', 'Tamanho Estabelecimento')
+
+            df = read_from_csv(source_file, 2,"|", COLS_2010, None, useCols)
+
+
+            """Map textosLixo"""
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLAS CNAE']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLASSE']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLASS']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CLAS']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == 'CBO']= ''
+            df['CBO Ocupação 2002'] [df['CBO Ocupação 2002'] == '0000-1']= '-1'
+
+
+
+            """Map instrucao"""
+            df['Escolaridade após 2005'] [df['Escolaridade após 2005'] == 10]= 9
+            df['Escolaridade após 2005'] [df['Escolaridade após 2005'] == 11]= 9
+
+            def toString(row):
+                return str(row['GENERO'])
+
+            df['GENERO'] = df.apply(toString, axis=1)
+
+            """MapGenero"""
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "MASCULINO"]= 1
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "FEMININO"]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "2" ]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "02" ]= 0
+            df['Sexo Trabalhador'] [df['Sexo Trabalhador'] == "01" ]= 1
+
+
+            """Map Cor"""
+            df['Raça Cor'] [df['Raça Cor'] == 99 ] = -1
 
 
             df_to_csv(df, export_file, None)
