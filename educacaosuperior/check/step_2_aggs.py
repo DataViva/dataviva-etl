@@ -2,17 +2,13 @@
 """
     Check all data in EI tables
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    How to run: python -m nfe.check.step_2_aggs
-    
-    If need to run just a specific check, run: python -m emprego.step_2_aggs -m BRAID
+    How to run: python -m educacaosuperior.check.step_2_aggs
     
     
-    Running one by one:
+    python -m educacaosuperior.check.step_2_aggs -m all
     
-    python -m nfe.check.step_2_aggs -m BRA > BRA.log
-    
-    YBIO - Is the only table that is not in this check script. We need to find a viable way to do this check in this hude table
-    
+    python -m tests.runtests -d educacaosuperior > tests\educacaosuperior.html
+
 """
 
 
@@ -32,116 +28,78 @@ cursor = db.cursor()
 
 
 class EducacaoSuperiorAggs(unittest.TestCase):  
-    '''
-        BRA_ID
+
+    #
+    def checkcampo(self,campo):
     
-        * excluding on air products (bra_id xx)
-        * length with size 2 cant be compered with others.. values from state exports are different than municipality
-        * To compare 7 with 4,8 necessary to use table attrs_bra_pr
-    '''
-    def test_BRA_ID(self):
-    
-        print "Entering in checkBRA_ID"
         total=0
-        #YMR
-        sql="SELECT * FROM ei_ymr r where length(r.bra_id_r) =3 and r.purchase_value <> \
-        (SELECT sum(purchase_value) FROM ei_ymr s where length(s.bra_id_r) =9 \
-         and left(s.bra_id_r,3)= r.bra_id_r and r.month=s.month and r.year=s.year)"
-        total+=runCountQuery('checkBRA_ID', 'ei_ymr', sql,cursor,count=True)
+        
+        titulo="check_"+campo
+        sql="SELECT count(*) FROM hedu_ybc b where b.bra_id_len=3 and b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_ybc where b.bra_id_len=9  \
+        and b.course_id=course_id and left(bra_id,3)=b.bra_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_ybc', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_ybd b where b.bra_id_len=3 and b."+campo+" <> \
+        (  select sum("+campo+") from hedu_ybd where b.bra_id_len=9  \
+        and b.d_id=d_id and left(bra_id,3)=b.bra_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_ybd', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_ybu b where b.bra_id_len=3 and b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_ybu where b.bra_id_len=9  \
+        and b.university_id=university_id and left(bra_id,3)=b.bra_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_ybu', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_yc b where b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_yc where  b.course_id=course_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_yc', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_yd b where b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_yd where  b.d_id=d_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_yd', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_yd b where b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_ybd where d_id=b.d_id and b.year=year )"
+        total+=runCountQuery(titulo, 'hedu_yd x hedu_ybd', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_yc b where b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_ybc where course_id=b.course_id and b.year=year )"
+        total+=runCountQuery(titulo, 'hedu_yc x hedu_ybc', sql,cursor,count=True)
+
+        sql="SELECT count(*) FROM hedu_ybuc b where b.bra_id_len=3 and b."+campo+" <>  \
+        (  select sum("+campo+") from hedu_ybuc where b.bra_id_len=9 and course_id=b.course_id \
+        and b.university_id=university_id and left(bra_id,3)=b.bra_id and b.year=year  )"
+        total+=runCountQuery(titulo, 'hedu_ybuc', sql,cursor,count=True)
+
+        # hedu_ybucd - muito longo
+        
+        return total
     
-        #YMRP
-        sql="SELECT * FROM ei_ymrp r where length(r.bra_id_r) =3 and r.purchase_value <> \
-        (SELECT sum(purchase_value) FROM ei_ymrp s where length(s.bra_id_r) =9 \
-        and left(s.bra_id_r,3)= r.bra_id_r and r.month=s.month and r.year=s.year \
-        and r.hs_id = s.hs_id)"
-        total+=runCountQuery('checkBRA_ID', 'ei_ymrp', sql,cursor,count=True)
-        
+
+    def test_sum(self):
+        print "Entering in test_sum"
+        total=0
+
+        aggsP = ["enrolled","students","graduates","entrants","morning","afternoon","night","full_time"]
+        for aggs in aggsP:    
+            total+=self.checkcampo(aggs)
+            
         self.assertEqual(total, 0)
-        
-        
+    
+       
     #SELECT bra_id,year,sum(enrolled) FROM hedu_ybd where d_id in ('A','B') and bra_id_len=9 group by 1,2;
     #SELECT bra_id,year,sum(enrolled) FROM hedu_ybc where course_id_len=6 and bra_id_len=9 group by 1,2;
     #SELECT bra_id,year,sum(enrolled) FROM hedu_ybu where bra_id_len=9 group by 1,2;  
-    
-    
-    '''
-    
-    SELECT * FROM hedu_yc c where course_id_len=6 and enrolled<> (
-        SELECT sum(b.enrolled) FROM hedu_ybc b where b.course_id_len=6 and b.bra_id_len=9 
-        and b.course_id = c.course_id and b.year=c.year    group by b.year,b.course_id);
-        
-    SELECT * FROM hedu_yd c where  enrolled<> (
-        SELECT sum(b.enrolled) FROM hedu_ybd b where b.bra_id_len=9 
-        and b.d_id = c.d_id and b.year=c.year    group by b.year,b.d_id);
-        
-        
-    SELECT * FROM hedu_ybu c where  enrolled<> (
-        SELECT sum(b.enrolled) FROM hedu_ybuc b where b.bra_id_len=9 and b.course_id_len=6 
-        and b.bra_id = c.bra_id and b.university_id = c.university_id and 
-        b.year=c.year    group by b.year,b.bra_id,b.university_id);
-        
-        
-    SELECT * FROM hedu_ybu c where c.bra_id_len=9 and  enrolled= (
-        SELECT sum(b.enrolled) FROM hedu_ybucd b where b.bra_id_len=9 and b.course_id_len=6 
-        and b.bra_id = c.bra_id and b.university_id = c.university_id and b.d_id in ('A','B') and
-        b.year=c.year    group by b.year,b.bra_id,b.university_id,b.d_id);
-    '''
-                    
-    '''
-        BRA_ID x Planning Regions
-        len 3 - state and len9 - 
-    '''
-    def test_BRA_IDPR(self):    
-        
-        print "Entering in checkBRA_IDPR"
-    
-        #YBPW ??    
-    
-    
-    def test_CNAE_ID(self):
-        print "Entering in checkCNAE_ID"
-        total=0
-        # YMR: Check cnae aggs
-        aggsP = ['ei_ymrp', 'ei_ymsr']
-        for aggs in aggsP:    
-            sql="SELECT count(*) FROM ei_ymr r where r.purchase_value <> \
-            (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
-            and r.bra_id_r = p.bra_id_r  and r.cnae_id_r = p.cnae_id_r);"
-            total+=runCountQuery('test_CNAE_ID', 'ei_ymr: '+aggs, sql,cursor,count=True) 
-            
-        # YMP: Check cnae aggs
-        aggsP = ['ei_ymrp', 'ei_ymsp']
-        for aggs in aggsP:    
-            sql="SELECT count(*) FROM ei_ymp r where r.purchase_value <> \
-            (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
-            and r.hs_id = p.hs_id );"
-            total+=runCountQuery('test_CNAE_ID', 'ei_ymp: '+aggs, sql,cursor,count=True) 
-                
-        # YMS: Check cnae aggs
-        aggsP = ['ei_ymsp', 'ei_ymsr']
-        for aggs in aggsP:    
-            sql="SELECT count(*) FROM ei_yms r where r.purchase_value <> \
-            (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
-            and r.bra_id_s = p.bra_id_s  and r.cnae_id_s = p.cnae_id_s);"
-            total+=runCountQuery('test_CNAE_ID', 'ei_yms: '+aggs, sql,cursor,count=True) 
-            
-        self.assertEqual(total, 0)
-            
+
             
 @click.command()
-@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRA , CNAE, HSID ',required=False)
+@click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: sum ',required=False)
 def main(method):
     cls=EducacaoSuperiorAggs()
     if not method or method=='all':
-        cls.test_BRA_ID()
-        cls.test_CNAE_ID()
-        cls.test_HS_ID()  
-    elif method=="BRA":
-        cls.test_BRA_ID()     
-    elif method=="CNAE":
-        cls.test_CNAE_ID()
-    elif method=="HSID":
-        cls.test_HS_ID()
+        cls.test_sum()
+    elif method=="sum":
+        cls.test_sum()     
 
 if __name__ == "__main__":
     start = time.time()
