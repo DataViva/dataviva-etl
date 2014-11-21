@@ -20,6 +20,7 @@ import pandas as pd
 from pandas import DataFrame
 import pandas.io.sql as psql
 import numpy as np
+import unittest
 
 ''' Connect to DB '''
 db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER,  passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
@@ -93,6 +94,30 @@ def run_check(dfDV,dfSent,groupId,month,valId):
             print txt
 
 
+class EducacaoSuperiorSent(unittest.TestCase):  
+    
+    def test_main(self):
+
+        #"Brasil;;;2.314;"
+        cols=['bra','bra_sub1','bra_sub2','value']    
+        idsites=['bra','bra_sub1','bra_sub2','value']
+        
+        dfSent = read_from_csv("docs\\check\\educacaosuperior\\sinopse_da_educacao_superior_2009-1.1.csv",delimiter=";",cols=cols,usecols=cols)
+        dfSent=dfSent.drop(['bra_sub1','bra_sub2'],axis=1)
+        dfSent = dfSent.dropna(thresh=2)
+        
+        mapStates=getMapStates()    
+    
+        format = lambda x:  city_fix(x,mapStates)
+        dfSent['bra']= dfSent["bra"].map(format)
+        dfSent['value'] = dfSent.apply(lambda f : to_number(f['value']) , axis = 1)
+        dfSent['value'] = dfSent['value'].astype(np.float64)
+        
+    
+        sql="SELECT bra_id,sum(enrolled) as value FROM hedu_ybucd where bra_id='4mg' and bra_id_len=3 AND d_id in ('A','B') and course_id_len=6 group by 1"
+        dfDV = sql_to_df(sql,db)
+        dfDV['value'] = dfDV['value'].astype(np.float64)
+        
 ##########################
 #
 #      RUN COMMAND CONSOLE SCRIPTS
@@ -104,25 +129,7 @@ def run_check(dfDV,dfSent,groupId,month,valId):
 #@click.option('-s', '--step', prompt='step', help='chosse a step to run. Use all or [purchase,transfer,devolution,icms, remit, icmstax,tax]',required=False)
 def main(year=None):
 
-    #"Brasil;;;2.314;"
-    cols=['bra','bra_sub1','bra_sub2','value']    
-    idsites=['bra','bra_sub1','bra_sub2','value']
-    
-    dfSent = read_from_csv("docs\\check\\educacaosuperior\\sinopse_da_educacao_superior_2009-1.1.csv",delimiter=";",cols=cols,usecols=cols)
-    dfSent=dfSent.drop(['bra_sub1','bra_sub2'],axis=1)
-    dfSent = dfSent.dropna(thresh=2)
-    
-    mapStates=getMapStates()    
 
-    format = lambda x:  city_fix(x,mapStates)
-    dfSent['bra']= dfSent["bra"].map(format)
-    dfSent['value'] = dfSent.apply(lambda f : to_number(f['value']) , axis = 1)
-    dfSent['value'] = dfSent['value'].astype(np.float64)
-    
-
-    sql="SELECT bra_id,sum(enrolled) as value FROM hedu_ybucd where bra_id='4mg' and bra_id_len=3 AND d_id in ('A','B') and course_id_len=6 group by 1"
-    dfDV = sql_to_df(sql,db)
-    dfDV['value'] = dfDV['value'].astype(np.float64)
     
 
     return 
@@ -143,32 +150,7 @@ def getMapStates():
     cols=['bra','bra_accent','value']
     mapStates = read_from_csv("docs\\check\\codestados.csv",delimiter=";",cols=cols)
     return mapStates
-            
-def runsteps(month,senderReceiver,step):
-    
-    if step=="all":
-        checkPurchase(month,senderReceiver)
-        checkTransfer(month,senderReceiver)
-        checkDevolution(month,senderReceiver)
-        checkICMS(month,senderReceiver)
-        checkRemit(month,senderReceiver)
-        checkIcmsTax(month,senderReceiver)
-        checkTax(month,senderReceiver)
-    elif step=="purchase":
-        checkPurchase(month,senderReceiver)
-    elif step=="transfer":
-        checkTransfer(month,senderReceiver)
-    elif step=="devolution":
-        checkDevolution(month,senderReceiver)
-    elif step=="icms":
-        checkICMS(month,senderReceiver)
-    elif step=="remit":
-        checkRemit(month,senderReceiver)
-    elif step=="icmstax":
-        checkIcmsTax(month,senderReceiver)
-    elif step=="tax":
-        checkTax(month,senderReceiver)
-                    
+
                                                       
 if __name__ == "__main__":
     start = time.time()

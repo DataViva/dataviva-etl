@@ -28,55 +28,55 @@ import pandas.io.sql as psql
 db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER, passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
 db.autocommit(1)
 cursor = db.cursor()
+import unittest
 
-
-#@allure.feature('MDIC')@allure.story('Export')
-def test_checkExports():
-    print "Entering in checkExports" 
-    arquivo='dados/exportacao/site/dados.txt'
-    checkExportsImports(arquivo,'exports')
+class ExportSite(unittest.TestCase):  
+    def test_checkExports(self):
+        print "Entering in checkExports" 
+        arquivo='dados/exportacao/site/dados.txt'
+        checkExportsImports(arquivo,'exports')
+        
     
-
-#@allure.feature('MDIC') @allure.story('Import')
-def test_checkImports():
-    print "Entering in checkExports" 
-    arquivo='dados/exportacao/site/imports.txt'
-    checkExportsImports(arquivo,'imports')
-
-
-
-def checkExportsImports(arquivo,variavel):
-    # Ano    1 até 4  , Mês   5 até 7   , Mês em Número     8 até 9  , US$     10 até 31 , Kg Líquido    32 até 53   , Quantidade   54 até 75   
-    columns = ((0,4),(4,7),(7,9),(9,31),(31,53),(53,75))
-    names =('year','monthname','month','valor','kg','qty')
-    dfSite = read_from_fixed(arquivo,columns,names)
-        
-    sql="SELECT sum(export_val) as exports,sum(import_val) as imports,month,year,concat(month,'-',year) as monthyear FROM dataviva2.secex_ymb where bra_id_len=8 and month>0 group by month,year;"
-    dfDV = sql_to_df(sql,db)
+    def test_checkImports(self):
+        print "Entering in checkExports" 
+        arquivo='dados/exportacao/site/imports.txt'
+        checkExportsImports(arquivo,'imports')
     
-    print dfDV
-    for monthyear in dfDV['monthyear']:
-        month = dfDV[dfDV['monthyear']==monthyear]['month'].values[0]
-        year = dfDV[dfDV['monthyear']==monthyear]['year'].values[0]
-        exports = dfDV[dfDV['monthyear']==monthyear][variavel].values[0]
+    
+    
+    def checkExportsImports(self,arquivo,variavel):
+        # Ano    1 até 4  , Mês   5 até 7   , Mês em Número     8 até 9  , US$     10 até 31 , Kg Líquido    32 até 53   , Quantidade   54 até 75   
+        columns = ((0,4),(4,7),(7,9),(9,31),(31,53),(53,75))
+        names =('year','monthname','month','valor','kg','qty')
+        dfSite = read_from_fixed(arquivo,columns,names)
+            
+        sql="SELECT sum(export_val) as exports,sum(import_val) as imports,month,year,concat(month,'-',year) as monthyear FROM dataviva2.secex_ymb where bra_id_len=8 and month>0 group by month,year;"
+        dfDV = sql_to_df(sql,db)
         
-        exportsSite = dfSite[ (dfSite['month']==month) & (dfSite['year']==year)]
-        exportsSite = exportsSite['valor'].values[0]
-        
-         
-        diff = exportsSite - exports
-        if diff>10 or diff < -10:
-            print "Error on "+str(month)+"/"+str(year)+" : "+str(diff)
-            print "Site: " +str(exportsSite)
-            print "DV2: " + str(exports)
-            print "-----------------"
-    assert True
+        print dfDV
+        for monthyear in dfDV['monthyear']:
+            month = dfDV[dfDV['monthyear']==monthyear]['month'].values[0]
+            year = dfDV[dfDV['monthyear']==monthyear]['year'].values[0]
+            exports = dfDV[dfDV['monthyear']==monthyear][variavel].values[0]
+            
+            exportsSite = dfSite[ (dfSite['month']==month) & (dfSite['year']==year)]
+            exportsSite = exportsSite['valor'].values[0]
+            
+             
+            diff = exportsSite - exports
+            if diff>10 or diff < -10:
+                print "Error on "+str(month)+"/"+str(year)+" : "+str(diff)
+                print "Site: " +str(exportsSite)
+                print "DV2: " + str(exports)
+                print "-----------------"
+        assert True
  
   
 @click.command()
 def main():
-    #test_checkExports()
-    test_checkImports()
+    cls=ExportSite()
+    cls.test_checkExports()
+    cls.test_checkImports()
                                               
 if __name__ == "__main__":
     main()

@@ -54,6 +54,7 @@ import pandas as pd
 from pandas import DataFrame
 import pandas.io.sql as psql
 import numpy as np
+import unittest
 
 ''' Connect to DB '''
 db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER,  passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
@@ -66,32 +67,34 @@ cols = ["cbo", "cnae", "literacy", "age", "est_id", "simple", "munic", "emp_id",
 #
 #      CHECK FOR cnae, CBO AND MDIC 
 # 
-##########################         
-def checkCNAE(year):
-    print "Entering in checkCNAE" 
-    #before right 4 and len 5
-    dfDV = sql_to_df("SELECT right(s.cnae_id,4) as id,sum(wage) as val FROM rais_yi s where s.cnae_id_len=6 and year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols) 
-    run_check(dfDV,dfSent,'cnae',year)  
-
- 
-   
-def checkMunicipality(year,size):
-    print "Entering in checkBRA"    
-    dfDV = sql_to_df("SELECT left(a.id_ibge,6) as id,sum(wage) as val FROM rais_yb s,attrs_bra a where s.bra_id_len="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)
-    #dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+"Teste.csv",delimiter=",")    
-    run_check(dfDV,dfSent,'munic',year) 
-    
-    
-    
-         
-def checkCBO(year):
-    print "Entering in checkCBO" 
-    dfDV = sql_to_df("SELECT s.cbo_id as id,sum(wage) as val FROM rais_yo s where s.cbo_id_len=4 and s.year="+str(year)+" group by 1;",db)
-    dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)   
-    run_check(dfDV,dfSent,'cbo',year)  
-    
+########################## 
+class EmpregoSent(unittest.TestCase):  
+                
+    def test_CNAE(self,year):
+        print "Entering in checkCNAE" 
+        #before right 4 and len 5
+        dfDV = sql_to_df("SELECT right(s.cnae_id,4) as id,sum(wage) as val FROM rais_yi s where s.cnae_id_len=6 and year="+str(year)+" group by 1;",db)
+        dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols) 
+        total=run_check(dfDV,dfSent,'cnae',year)  
+        self.assertEqual(total, 0)
+     
+       
+    def test_Municipality(self,year,size):
+        print "Entering in checkBRA"    
+        dfDV = sql_to_df("SELECT left(a.id_ibge,6) as id,sum(wage) as val FROM rais_yb s,attrs_bra a where s.bra_id_len="+str(size)+" and  a.id=s.bra_id and year="+str(year)+" group by 1;",db)
+        dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)
+        #dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+"Teste.csv",delimiter=",")    
+        total=run_check(dfDV,dfSent,'munic',year) 
+        self.assertEqual(total, 0)
+        
+        
+             
+    def test_CBO(self,year):
+        print "Entering in checkCBO" 
+        dfDV = sql_to_df("SELECT s.cbo_id as id,sum(wage) as val FROM rais_yo s where s.cbo_id_len=4 and s.year="+str(year)+" group by 1;",db)
+        dfSent = read_from_csv("dados\emprego\sent\Rais"+str(year)+".csv",delimiter=";",cols=cols)   
+        total=run_check(dfDV,dfSent,'cbo',year)  
+        self.assertEqual(total, 0)
 
 def get_valueGroup(dfGroup,id,var):
     try:
@@ -120,7 +123,8 @@ def run_check(dfDV,dfSent,groupId,year):
     
     dfGroup = dfSent.groupby([groupId]) 
     df_to_csv(dfGroup.sum(),"dados\emprego\sent\RaisGroup"+str(year)+".csv")
-            
+    
+    total=0
     print "Enterin in for "+groupId
     for id in dfDV['id']:  
         idint =to_int(id)
@@ -134,6 +138,7 @@ def run_check(dfDV,dfSent,groupId,year):
             valCSV=get_valueGroup(dfGroup,idint,'wage')
         
         if valCSV==False:
+            total=total+1
             print "Not found in CSV a value for "+str(id)+" - "+str(idint)+"  : Exports of value  "+ str(valDV)+ " in the year "+str(year)
             continue 
 
@@ -143,9 +148,12 @@ def run_check(dfDV,dfSent,groupId,year):
         if valDV!=valCSV:
             txt= "ERROR in groupId ("+str(year)+"): "+str(id)+" / "+str(idint)+" - Value in CSV "+ str(valCSV)+ " <> Value in DV "+str(valDV) + " - Difference: "+str(valCSV - valDV)
             print txt
+            total=total+1
         else:
             txt="OK "+str(id)
-            print txt
+            #print txt
+    return total
+
 
 #dfSent=dfSent[dfSent['cbo4']<2000]
 #dfDV=dfDV[dfDV['id']<2000]
@@ -209,19 +217,20 @@ def main(method,year):
        
 
 def runMethodYear(method,year):
+    cls=EmpregoSent()
     if not method or method=='all':
-        checkCNAE(year)
-        checkCBO(year)
-        checkMunicipality(year,8) 
-        checkMunicipality(year,2) 
+        cls.test_CNAE(year)
+        cls.test_CBO(year)
+        cls.test_Municipality(year,8) 
+        cls.test_Municipality(year,2) 
     elif method=="CNAE":
-        checkCNAE(year)     
+        cls.test_CNAE(year)     
     elif method=="Municipality":
-        checkMunicipality(year,8) 
+        cls.test_Municipality(year,8) 
     elif method=="State":
-        checkMunicipality(year,2)
+        cls.test_Municipality(year,2)
     elif method=="CBO":
-        checkCBO(year)  
+        cls.test_CBO(year)  
                                                 
 if __name__ == "__main__":
     start = time.time()

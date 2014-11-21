@@ -31,6 +31,7 @@ import pandas as pd
 from pandas import DataFrame
 import pandas.io.sql as psql
 import numpy as np
+import unittest
 
 ''' Connect to DB '''
 db = MySQLdb.connect(host="localhost", user=DATAVIVA_DB_USER,  passwd=DATAVIVA_DB_PW, db=DATAVIVA_DB_NAME)
@@ -48,37 +49,45 @@ def getTable(senderReceiver):
         return 'ei_yms'
     return 'ei_ymr'
 
-# ,senderReceiver = 'Sender' or 'Receiver'
-#1    Compras/Vendas    Purchases / Sales
-def checkPurchase(month,senderReceiver):
+class NfeSent(unittest.TestCase):  
+        
+    # ,senderReceiver = 'Sender' or 'Receiver'
+    #1    Compras/Vendas    Purchases / Sales
+    def test_Purchase(self,month,senderReceiver):        
+        total=prepare(month,'purchase_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',1)
+        self.assertEqual(total, 0)
     
-    prepare(month,'purchase_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',1)
-
-#2    Transferências    Transfer
-def checkTransfer(month,senderReceiver):
-    prepare(month,'transfer_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',2)
-
-#3    Devolução    Devolution
-def checkDevolution(month,senderReceiver):
-    prepare(month,'devolution_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',3)
-
-#4    Crédito ICMS    ICMS credit
-def checkICMS(month,senderReceiver):
-    prepare(month,'icms_credit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',4)
-
-#5    Remessas ou Retornos    Remittances or returns
-def checkRemit(month,senderReceiver):
-    prepare(month,'remit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',5)
-
-#Tax
-def checkIcmsTax(month,senderReceiver):
-    prepare(month,'icms_tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["ICMS_ST_Value", "ICMS_Value"])
+    #2    Transferências    Transfer
+    def test_Transfer(self,month,senderReceiver):
+        total=prepare(month,'transfer_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',2)
+        self.assertEqual(total, 0)
     
-#5    Remessas ou Retornos    Remittances or returns
-def checkTax(month,senderReceiver):
-    prepare(month,'tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["IPI_Value", "PIS_Value", "COFINS_Value", "II_Value", "Product_Value", "ISSQN_Value"]) 
+    #3    Devolução    Devolution
+    def test_Devolution(self,month,senderReceiver):
+        total=prepare(month,'devolution_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',3)
+        self.assertEqual(total, 0)
     
+    #4    Crédito ICMS    ICMS credit
+    def test_ICMS(self,month,senderReceiver):
+        total=prepare(month,'icms_credit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',4)
+        self.assertEqual(total, 0)
     
+    #5    Remessas ou Retornos    Remittances or returns
+    def test_Remit(self,month,senderReceiver):
+        total=prepare(month,'remit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',5)
+        self.assertEqual(total, 0)
+    
+    #Tax
+    def test_IcmsTax(self,month,senderReceiver):
+        total=prepare(month,'icms_tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["ICMS_ST_Value", "ICMS_Value"])
+        self.assertEqual(total, 0)
+        
+    #5    Remessas ou Retornos    Remittances or returns
+    def test_Tax(self,month,senderReceiver):
+        total=prepare(month,'tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["IPI_Value", "PIS_Value", "COFINS_Value", "II_Value", "Product_Value", "ISSQN_Value"])
+        self.assertEqual(total, 0) 
+        
+        
     
 def prepare(month,field,table,city,value,cfop=None):
     print "Loading : table "+ table + " value for "+field+" in "+city  
@@ -95,7 +104,7 @@ def prepare(month,field,table,city,value,cfop=None):
         dfSent[value] = dfSent.apply(lambda f : to_number(f[value]) , axis = 1)
     dfSent[value] = dfSent[value].astype(np.float64)   
     
-    run_check(dfDV,dfSent,city,month,value) 
+    return run_check(dfDV,dfSent,city,month,value) 
     
 def sumColumns(f,columns):
     total=None
@@ -133,6 +142,7 @@ def run_check(dfDV,dfSent,groupId,month,valId):
     #df_to_csv(dfGroup.sum(),"dados\emprego\sent\RaisGroup"+str(year)+".csv")
             
     print "Running check "
+    total=0
     for id in dfDV['id']:  
         idint =to_int(id)
         if not id:
@@ -147,6 +157,7 @@ def run_check(dfDV,dfSent,groupId,month,valId):
         if valCSV==False:
             if valDV>1:
                 print "Not found in CSV a value for "+str(id)+" - "+str(idint)+"  : Exports of value  "+ str(valDV)+ " in the month "+str(month)
+                total+=1
             continue 
 
          
@@ -155,11 +166,12 @@ def run_check(dfDV,dfSent,groupId,month,valId):
         diffDVCSV=valCSV - valDV
         if valDV!=valCSV and (diffDVCSV>1 or diffDVCSV<-1):
             txt= "ERROR in groupId ("+str(month)+"): "+str(id)+" / "+str(idint)+" - Value in CSV "+ str(valCSV)+ " <> Value in DV "+str(valDV) + " - Difference: "+str(diffDVCSV)
+            total+=1
             print txt
         else:
             txt="OK "+str(id)
-            print txt
-
+            #print txt
+    return total
 
 ##########################
 #
@@ -196,29 +208,29 @@ def runstepcity(month,city,step):
         runsteps(month,city,step)
             
 def runsteps(month,senderReceiver,step):
-    
+    cls=NfeSent()
     if step=="all":
-        checkPurchase(month,senderReceiver)
-        checkTransfer(month,senderReceiver)
-        checkDevolution(month,senderReceiver)
-        checkICMS(month,senderReceiver)
-        checkRemit(month,senderReceiver)
-        checkIcmsTax(month,senderReceiver)
-        checkTax(month,senderReceiver)
+        cls.test_Purchase(month,senderReceiver)
+        cls.test_Transfer(month,senderReceiver)
+        cls.test_Devolution(month,senderReceiver)
+        cls.test_ICMS(month,senderReceiver)
+        cls.test_Remit(month,senderReceiver)
+        cls.test_IcmsTax(month,senderReceiver)
+        cls.test_Tax(month,senderReceiver)
     elif step=="purchase":
-        checkPurchase(month,senderReceiver)
+        cls.test_Purchase(month,senderReceiver)
     elif step=="transfer":
-        checkTransfer(month,senderReceiver)
+        cls.test_Transfer(month,senderReceiver)
     elif step=="devolution":
-        checkDevolution(month,senderReceiver)
+        cls.test_Devolution(month,senderReceiver)
     elif step=="icms":
-        checkICMS(month,senderReceiver)
+        cls.test_ICMS(month,senderReceiver)
     elif step=="remit":
-        checkRemit(month,senderReceiver)
+        cls.test_Remit(month,senderReceiver)
     elif step=="icmstax":
-        checkIcmsTax(month,senderReceiver)
+        cls.test_IcmsTax(month,senderReceiver)
     elif step=="tax":
-        checkTax(month,senderReceiver)
+        cls.test_Tax(month,senderReceiver)
                     
                                                       
 if __name__ == "__main__":

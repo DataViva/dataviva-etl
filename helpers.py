@@ -195,7 +195,9 @@ def runCountQuery(step, table, sql,cursor,count=None):
         size=len(values)
     else:
         size=values[0][0]
-    errorMessage(step, table, size)
+    errorMessage(step, table+" - SQL: "+sql, size)
+    return size
+    
 
 '''
 
