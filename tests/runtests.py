@@ -25,7 +25,15 @@ from  nfe.check.step_2_aggs import NfeAggs
 from  nfe.check.step_4_sent import NfeSent
 
 
+'''
 
+    Exemplos: 
+    python -m tests.runtests -d rais > tests\rais.html
+    python -m tests.runtests -d secex > tests\secex.html
+    python -m tests.runtests -d censoescolar > tests\censoescolar.html
+    python -m tests.runtests -d educacaosuperior > tests\educacaosuperior.html
+    python -m tests.runtests -d nfe > tests\nfe.html
+'''
 class runtests(unittest.TestCase):
 
 
@@ -103,18 +111,15 @@ class runtests(unittest.TestCase):
         # check out the output
         byte_output = buf.getvalue()
         # output the main test output for debugging & demo
-        print byte_output
-        # HTMLTestRunner pumps UTF-8 output
-        output = byte_output.decode('utf-8')
+        print byte_output        
+        #output = byte_output.decode('utf-8')
 
 
 
 @click.command()
 @click.option('-d', '--database', prompt='database', help='chosse a database to run : rais, secex, censoescolar,educacaosuperior,nfe or all' ,required=False)
-def mainexec(database=None):
-    
+def mainexec(database=None):    
     argv=['runtests.py', 'runtests']
-
     unittest.main(argv=argv)
 
 

@@ -191,6 +191,7 @@ def runCountQuery(step, table, sql,cursor,count=None):
     print "---------------------------"
     cursor.execute(sql)
     values=cursor.fetchall()
+
     if not count:
         size=len(values)
     else:

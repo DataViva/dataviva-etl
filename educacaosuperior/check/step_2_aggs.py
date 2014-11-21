@@ -47,14 +47,14 @@ class EducacaoSuperiorAggs(unittest.TestCase):
         sql="SELECT * FROM ei_ymr r where length(r.bra_id_r) =3 and r.purchase_value <> \
         (SELECT sum(purchase_value) FROM ei_ymr s where length(s.bra_id_r) =9 \
          and left(s.bra_id_r,3)= r.bra_id_r and r.month=s.month and r.year=s.year)"
-        total+=runCountQuery('checkBRA_ID', 'ei_ymr: '+aggs, sql,cursor,count=True)
+        total+=runCountQuery('checkBRA_ID', 'ei_ymr', sql,cursor,count=True)
     
         #YMRP
         sql="SELECT * FROM ei_ymrp r where length(r.bra_id_r) =3 and r.purchase_value <> \
         (SELECT sum(purchase_value) FROM ei_ymrp s where length(s.bra_id_r) =9 \
         and left(s.bra_id_r,3)= r.bra_id_r and r.month=s.month and r.year=s.year \
         and r.hs_id = s.hs_id)"
-        total+=runCountQuery('checkBRA_ID', 'ei_ymr: '+aggs, sql,cursor,count=True)
+        total+=runCountQuery('checkBRA_ID', 'ei_ymrp', sql,cursor,count=True)
         
         self.assertEqual(total, 0)
         
@@ -107,7 +107,7 @@ class EducacaoSuperiorAggs(unittest.TestCase):
             sql="SELECT count(*) FROM ei_ymr r where r.purchase_value <> \
             (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
             and r.bra_id_r = p.bra_id_r  and r.cnae_id_r = p.cnae_id_r);"
-            total+=runCountQuery('checkcnae_ID', 'ei_ymr: '+aggs, sql,cursor,count=True) 
+            total+=runCountQuery('test_CNAE_ID', 'ei_ymr: '+aggs, sql,cursor,count=True) 
             
         # YMP: Check cnae aggs
         aggsP = ['ei_ymrp', 'ei_ymsp']
@@ -115,7 +115,7 @@ class EducacaoSuperiorAggs(unittest.TestCase):
             sql="SELECT count(*) FROM ei_ymp r where r.purchase_value <> \
             (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
             and r.hs_id = p.hs_id );"
-            total+=runCountQuery('checkcnae_ID', 'ei_ymr: '+aggs, sql,cursor,count=True) 
+            total+=runCountQuery('test_CNAE_ID', 'ei_ymp: '+aggs, sql,cursor,count=True) 
                 
         # YMS: Check cnae aggs
         aggsP = ['ei_ymsp', 'ei_ymsr']
@@ -123,7 +123,7 @@ class EducacaoSuperiorAggs(unittest.TestCase):
             sql="SELECT count(*) FROM ei_yms r where r.purchase_value <> \
             (select sum(purchase_value) from "+aggs+" p where r.year=p.year and r.month=p.month \
             and r.bra_id_s = p.bra_id_s  and r.cnae_id_s = p.cnae_id_s);"
-            total+=runCountQuery('checkcnae_ID', 'ei_ymr: '+aggs, sql,cursor,count=True) 
+            total+=runCountQuery('test_CNAE_ID', 'ei_yms: '+aggs, sql,cursor,count=True) 
             
         self.assertEqual(total, 0)
             

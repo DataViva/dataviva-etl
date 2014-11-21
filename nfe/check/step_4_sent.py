@@ -53,41 +53,81 @@ class NfeSent(unittest.TestCase):
         
     # ,senderReceiver = 'Sender' or 'Receiver'
     #1    Compras/Vendas    Purchases / Sales
-    def test_Purchase(self,month,senderReceiver):        
+    def tst_Purchase(self,month,senderReceiver):        
         total=prepare(month,'purchase_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',1)
         self.assertEqual(total, 0)
     
     #2    Transferências    Transfer
-    def test_Transfer(self,month,senderReceiver):
+    def tst_Transfer(self,month,senderReceiver):
         total=prepare(month,'transfer_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',2)
         self.assertEqual(total, 0)
     
     #3    Devolução    Devolution
-    def test_Devolution(self,month,senderReceiver):
+    def tst_Devolution(self,month,senderReceiver):
         total=prepare(month,'devolution_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',3)
         self.assertEqual(total, 0)
     
     #4    Crédito ICMS    ICMS credit
-    def test_ICMS(self,month,senderReceiver):
+    def tst_ICMS(self,month,senderReceiver):
         total=prepare(month,'icms_credit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',4)
         self.assertEqual(total, 0)
     
     #5    Remessas ou Retornos    Remittances or returns
-    def test_Remit(self,month,senderReceiver):
+    def tst_Remit(self,month,senderReceiver):
         total=prepare(month,'remit_value',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,'Product_Value',5)
         self.assertEqual(total, 0)
     
     #Tax
-    def test_IcmsTax(self,month,senderReceiver):
+    def tst_IcmsTax(self,month,senderReceiver):
         total=prepare(month,'icms_tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["ICMS_ST_Value", "ICMS_Value"])
         self.assertEqual(total, 0)
         
     #5    Remessas ou Retornos    Remittances or returns
-    def test_Tax(self,month,senderReceiver):
+    def tst_Tax(self,month,senderReceiver):
         total=prepare(month,'tax',getTable(senderReceiver),'Municipality_ID_'+senderReceiver,["IPI_Value", "PIS_Value", "COFINS_Value", "II_Value", "Product_Value", "ISSQN_Value"])
         self.assertEqual(total, 0) 
         
+
+    def runstepcity(self,month,city,step):
+        if city=='all':
+            self.runsteps(month,'Sender',step) 
+            runsteps(month,'Receiver',step)
+        else:
+            self.runsteps(month,city,step)
+                
+    def runsteps(self,month,senderReceiver,step):
+
+        if step=="all":
+            self.tst_Purchase(month,senderReceiver)
+            self.tst_Transfer(month,senderReceiver)
+            self.tst_Devolution(month,senderReceiver)
+            self.tst_ICMS(month,senderReceiver)
+            self.tst_Remit(month,senderReceiver)
+            self.tst_IcmsTax(month,senderReceiver)
+            self.tst_Tax(month,senderReceiver)
+        elif step=="purchase":
+            self.tst_Purchase(month,senderReceiver)
+        elif step=="transfer":
+            self.tst_Transfer(month,senderReceiver)
+        elif step=="devolution":
+            self.tst_Devolution(month,senderReceiver)
+        elif step=="icms":
+            self.tst_ICMS(month,senderReceiver)
+        elif step=="remit":
+            self.tst_Remit(month,senderReceiver)
+        elif step=="icmstax":
+            self.tst_IcmsTax(month,senderReceiver)
+        elif step=="tax":
+            self.tst_Tax(month,senderReceiver)
+
+    def test_main(self):                    
+        step='all'  
+        city='all'  
         
+        for y in ('01','02','03','04'):
+            cls.runstepcity(y,city,step)
+                
+                          
     
 def prepare(month,field,table,city,value,cfop=None):
     print "Loading : table "+ table + " value for "+field+" in "+city  
@@ -185,6 +225,8 @@ def run_check(dfDV,dfSent,groupId,month,valId):
 @click.option('-c', '--city', prompt='city', help='inform if the city is Sender or Receiver',required=False)
 def main(month=None, step=None,city=None):
 
+    cls=NfeSent()
+    
     if not step:
         step='all'        
 
@@ -195,44 +237,11 @@ def main(month=None, step=None,city=None):
         month='all'  
     elif month=='all':
         for y in ('01','02','03','04'):
-            runstepcity(y,city,step)
+            cls.runstepcity(y,city,step)
         return
-    
-    runstepcity(month,city,step)
-        
-def runstepcity(month,city,step):
-    if city=='all':
-        runsteps(month,'Sender',step) 
-        runsteps(month,'Receiver',step)
-    else:
-        runsteps(month,city,step)
-            
-def runsteps(month,senderReceiver,step):
-    cls=NfeSent()
-    if step=="all":
-        cls.test_Purchase(month,senderReceiver)
-        cls.test_Transfer(month,senderReceiver)
-        cls.test_Devolution(month,senderReceiver)
-        cls.test_ICMS(month,senderReceiver)
-        cls.test_Remit(month,senderReceiver)
-        cls.test_IcmsTax(month,senderReceiver)
-        cls.test_Tax(month,senderReceiver)
-    elif step=="purchase":
-        cls.test_Purchase(month,senderReceiver)
-    elif step=="transfer":
-        cls.test_Transfer(month,senderReceiver)
-    elif step=="devolution":
-        cls.test_Devolution(month,senderReceiver)
-    elif step=="icms":
-        cls.test_ICMS(month,senderReceiver)
-    elif step=="remit":
-        cls.test_Remit(month,senderReceiver)
-    elif step=="icmstax":
-        cls.test_IcmsTax(month,senderReceiver)
-    elif step=="tax":
-        cls.test_Tax(month,senderReceiver)
-                    
-                                                      
+
+    cls.runstepcity(month,city,step)
+                                            
 if __name__ == "__main__":
     start = time.time()
     
