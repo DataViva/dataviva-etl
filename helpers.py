@@ -64,9 +64,9 @@ def get_files_in_folder(folder, extension):
     folder -- path of folder. ex.: folder='/dados/raw/db/2013'
     extension -- extension os files without dot ex.: extension = csv
     """
-    os.chdir(folder)
-    extension.replace(".", "")
-    return glob.glob("*." + str(extension))
+    #os.chdir(folder)
+
+    return glob.glob(str(folder) + os.sep + "*." + str(extension))
 
 
 def format_runtime(x):
