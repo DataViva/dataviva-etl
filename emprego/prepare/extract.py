@@ -4,14 +4,10 @@ import os
 
 
 
-COLS_2003 = ('CAUSA DESLIG', 'CAUSA DESLIG_Fonte', 'CBO 2002', 'CB0 2002_fonte', 'CEI VINC', 'CLAS CNAE 95', 'CLAS CNAE 95_Fonte', 'EMP  EM 31/12', 'EMP EM 31/12_Fonte', 'GRAU INSTR', 'GRAU INSTR_Fonte', 'HORAS CONTR', 'IDADE', 'IDENTIFICAD', 'IND CEI VINC', 'IND CEI VINC_Fonte', 'IND PAT', 'IND PAT_Fonte', 'IND SIMPLES', 'IND SIMPLES_Fonte', 'MUNICIPIO', 'MUNICIPIO_Fonte', 'NACIONALIDAD', 'NACIONALIDAD_Fonte', 'NATUR JUR', 'NATUR JUR_Fonte', 'PIS', 'RACA_COR', 'RACA_COR_Fonte', 'RADIC CNPJ', 'REM DEZ (R$)', 'REM DEZEMBRO', 'REM MED (R$)', 'REM MEDIA', 'SUBS IBGE', 'SEXO', 'SEXO_Fonte', 'TAMESTAB', 'TAMESTAB_Fonte', 'TEMP EMPR', 'TIPO ADM', 'TIPO ADM_Fonte', 'TIPO ESTBL', 'TIPO ESTBL_Fonte', 'TP VINCULO', 'TP VINCULO_Fonte', 'DT NASCIMENT', 'DT_ADMISSAO', 'MES DESLIG', 'MES DESLIG_Fonte')
-
-COLS_2003_SEPARATOR = "|"
 
 
-COLS_2004 = ('MUNICIPIO', 'CLAS CNAE 95', 'EMP EM 31/12', 'TP VINCULO', 'CAUSA DESLIG', 'MES DESLIG', 'IND ALVARA', 'TIPO ADM', 'TIPO SAL', 'OCUPACAO 94', 'GRAU INSTR', 'SEXO', 'NACIONALIDAD', 'RACA_COR', 'PORT DEFIC', 'TAMESTAB', 'NATUR JUR', 'IND CEI VINC', 'TIPO ESTBL', 'IND PAT', 'IND SIMPLES', 'DT ADMISSAO', 'REM MED ($)', 'REM DEZ ($)', 'TEMP EMPR', 'HORAS CONTR', 'ULT REM', 'SAL CONTR', 'PIS', 'DT NASCIMENT', 'NUME CTPS', 'CPF', 'CEI VINC', 'IDENTIFICAD', 'RADIC CNPJ', 'TIPO ESTB ID', 'NOME', 'DIA DESL', 'OCUP 2002')
 
-COLS_2004_SEPARATOR = ";"
+
 
 
 COLS_2005 = ('MUNICIPIO', 'CLAS CNAE 95', 'EMP EM 31/12', 'TP VINCULO', 'CAUSA DESLIG', 'MES DESLIG', 'IND ALVARA', 'TIPO ADM', 'TIPO SAL', 'OCUPACAO 94', 'GRAU INSTR', 'GENERO', 'NACIONALIDAD', 'RACA_COR', 'PORT DEFIC', 'TAMESTAB', 'NATUR JUR', 'IND CEI VINC', 'TIPO ESTBL', 'IND PAT', 'IND SIMPLES', 'DT ADMISSAO', 'REM MEDIA', 'REM MED ($)', 'REM DEZEMBRO', 'REM DEZ (R$)' 'TEMP EMPR', 'HORAS CONTR', 'ULT REM', 'SAL CONTR', 'PIS', 'DT NASCIMENT', 'NUME CTPS', 'CPF', 'CEI VINC', 'IDENTIFICAD', 'RADIC CNPJ', 'TIPO ESTB ID', 'NOME', 'DIA DESL', 'OCUP 2002')
@@ -74,8 +70,6 @@ def extract(year):
 
     if year == 2002:
 
-
-
         source_file = 'dados/rais/raw/' + str(year) + '/' + 'RAIS2002TOTAL_CORTE' + '.txt'
 
         cols =  ('CAUSA DESLI', 'CAUSA DESLI_Fonte', 'OCUPACAO', 'OCUPACAO_desc', 'IND CEI VINC', 'CLAS CNAE 95', 'CLAS CNAE 95_Fonte', 'GRAU INSTR', 'GRAU INSTR_Fonte', 'HORAS CONTR', 'IDADE', 'IDENTIFICAD', 'IND PAT', 'IND PAT_Fonte', 'IND SIMPLES', 'IND SIMPLES_Fonte', 'MUNICIPIO', 'MUNICIPIO_Fonte', 'NACIONALIDAD', 'NACIONALIDAD_Fonte', 'NATUR JUR', 'NATUR JUR_Fonte', 'PIS', 'RACA_COR OR', 'RACA_COR OR_Fonte', 'RADIC CNPJ', 'REM DEZ (R$)', 'REM DEZEMBRO', 'REM MED (R$)', 'SUBS IBGE', 'SEXO', 'SEXO_Fonte', 'TAMESTAB', 'TAMESTAB_Fonte', 'TEMP EMPR', 'TIPO ADM', 'TIPO ADM_Fonte', 'TIPO ESTBL', 'TIPO ESTBL_Fonte', 'TP VINCL', 'DT NASCIMENT', 'MES DESLIG', 'MES DESLIG_Fonte', 'DT ADMISSAO' )
@@ -120,10 +114,9 @@ def extract(year):
 
         df['OCUPACAO'] = df.apply(CBOConversion, axis=1)
 
-        """CNAE CONVERSION"""
+        #Make CNAE Conversion
         cnae = openCNAE10x20()
 
-        """ Make CNAE Conversion """
         def cnaeConversion(row):
             converted = cnae['CNAE 20'][cnae['CNAE 10'] == row['CLAS CNAE 95_Fonte']]
             if len(converted) > 0:
@@ -145,8 +138,7 @@ def extract(year):
 
         df_to_csv(df, export_file, None)
 
-    elif year > 2002 and year < 2005:
-        """ Maps: CNAE, MapGenero """
+    elif year == 2003:
 
         folder = "dados/rais/raw/" + str(year) + '/'
 
@@ -159,28 +151,74 @@ def extract(year):
 
             useCols = ('CBO 2002_Fonte', 'CLAS CNAE 95_Fonte', 'GRAU INSTR_Fonte', 'IDADE', 'IDENTIFICAD', 'IND SIMPLES_Fonte', 'MUNICIPIO_Fonte', 'PIS', 'RACA_COR_Fonte', 'REM DEZ (R$)', 'REM MED (R$)', 'SEXO_Fonte', 'TAMESTAB_Fonte')
 
-            df = read_from_csv(source_file, 2,"|", COLS_2003, None, useCols)
+            cols = ('CAUSA DESLIG', 'CAUSA DESLIG_Fonte', 'CBO 2002', 'CB0 2002_fonte', 'CEI VINC', 'CLAS CNAE 95', 'CLAS CNAE 95_Fonte', 'EMP  EM 31/12', 'EMP EM 31/12_Fonte', 'GRAU INSTR', 'GRAU INSTR_Fonte', 'HORAS CONTR', 'IDADE', 'IDENTIFICAD', 'IND CEI VINC', 'IND CEI VINC_Fonte', 'IND PAT', 'IND PAT_Fonte', 'IND SIMPLES', 'IND SIMPLES_Fonte', 'MUNICIPIO', 'MUNICIPIO_Fonte', 'NACIONALIDAD', 'NACIONALIDAD_Fonte', 'NATUR JUR', 'NATUR JUR_Fonte', 'PIS', 'RACA_COR', 'RACA_COR_Fonte', 'RADIC CNPJ', 'REM DEZ (R$)', 'REM DEZEMBRO', 'REM MED (R$)', 'REM MEDIA', 'SUBS IBGE', 'SEXO', 'SEXO_Fonte', 'TAMESTAB', 'TAMESTAB_Fonte', 'TEMP EMPR', 'TIPO ADM', 'TIPO ADM_Fonte', 'TIPO ESTBL', 'TIPO ESTBL_Fonte', 'TP VINCULO', 'TP VINCULO_Fonte', 'DT NASCIMENT', 'DT_ADMISSAO', 'MES DESLIG', 'MES DESLIG_Fonte')
 
-            """ CNAE CONVERSION """
+
+            df = read_from_csv(source_file, 2,"|", cols, None, useCols)
+
+            #Make CNAE Conversion
+            cnae = openCNAE10x20()
+
             def cnaeConversion(row):
                 converted = cnae['CNAE 20'][cnae['CNAE 10'] == row['CLAS CNAE 95_Fonte']]
-                if len(converted) > 1:
-                    converted = converted.head(1)
+                if len(converted) > 0:
+                    return int(converted.head(1))
+                return int(converted)
 
-            def toString(row):
-                return str(row['SEXO_Fonte'])
+            df['CLAS CNAE 95_Fonte'] = df.apply(cnaeConversion, axis=1)
 
-            df['SEXO_Fonte'] = df.apply(toString, axis=1)
+            df['SEXO_Fonte'] = df.apply(lambda x : str(x['SEXO_Fonte']), axis=1)
 
-            """MapGenero"""
+            # MapGenero
             df['SEXO_Fonte'] [df['SEXO_Fonte'] == "MASCULINO"]= 1
             df['SEXO_Fonte'] [df['SEXO_Fonte'] == "FEMININO"]= 0
             df['SEXO_Fonte'] [df['SEXO_Fonte'] == "2" ]= 0
             df['SEXO_Fonte'] [df['SEXO_Fonte'] == "02" ]= 0
             df['SEXO_Fonte'] [df['SEXO_Fonte'] == "01" ]= 1
 
+            export_file = 'dados/rais/sent/' + str(year) + '_extract.csv'
+
+            df_to_csv(df, export_file, None)
+
+
+    elif year == 2004:
+
+        folder = "dados/rais/raw/" + str(year) + '/'
+
+        arr = get_files_in_folder(folder, 'TXT')
+
+        for x in arr:
+
+            source_file = x
+            export_file =  os.path.splitext(x)[0] + '.csv'
+
+            useCols = ('CBO 2002_Fonte', 'CLAS CNAE 95_Fonte', 'GRAU INSTR_Fonte', 'IDADE', 'IDENTIFICAD', 'IND SIMPLES_Fonte', 'MUNICIPIO_Fonte', 'PIS', 'RACA_COR_Fonte', 'REM DEZ (R$)', 'REM MED (R$)', 'SEXO_Fonte', 'TAMESTAB_Fonte')
+
+            cols = ('MUNICIPIO', 'CLAS CNAE 95', 'EMP EM 31/12', 'TP VINCULO', 'CAUSA DESLIG', 'MES DESLIG', 'IND ALVARA', 'TIPO ADM', 'TIPO SAL', 'OCUPACAO 94', 'GRAU INSTR', 'SEXO', 'NACIONALIDAD', 'RACA_COR', 'PORT DEFIC', 'TAMESTAB', 'NATUR JUR', 'IND CEI VINC', 'TIPO ESTBL', 'IND PAT', 'IND SIMPLES', 'DT ADMISSAO', 'REM MED ($)', 'REM DEZ ($)', 'TEMP EMPR', 'HORAS CONTR', 'ULT REM', 'SAL CONTR', 'PIS', 'DT NASCIMENT', 'NUME CTPS', 'CPF', 'CEI VINC', 'IDENTIFICAD', 'RADIC CNPJ', 'TIPO ESTB ID', 'NOME', 'DIA DESL', 'OCUP 2002')
+
+            df = read_from_csv(source_file, 2,";", cols, None, useCols)
+
+            #Make CNAE Conversion
+            cnae = openCNAE10x20()
+
+            def cnaeConversion(row):
+                converted = cnae['CNAE 20'][cnae['CNAE 10'] == row['CLAS CNAE 95_Fonte']]
+                if len(converted) > 0:
+                    return int(converted.head(1))
+                return int(converted)
+
             df['CLAS CNAE 95_Fonte'] = df.apply(cnaeConversion, axis=1)
 
+            df['SEXO_Fonte'] = df.apply(lambda x : str(x['SEXO_Fonte']), axis=1)
+
+            # MapGenero
+            df['SEXO_Fonte'] [df['SEXO_Fonte'] == "MASCULINO"]= 1
+            df['SEXO_Fonte'] [df['SEXO_Fonte'] == "FEMININO"]= 0
+            df['SEXO_Fonte'] [df['SEXO_Fonte'] == "2" ]= 0
+            df['SEXO_Fonte'] [df['SEXO_Fonte'] == "02" ]= 0
+            df['SEXO_Fonte'] [df['SEXO_Fonte'] == "01" ]= 1
+
+            export_file = 'dados/rais/sent/' + str(year) + '_extract.csv'
 
             df_to_csv(df, export_file, None)
 
@@ -448,6 +486,6 @@ def extract(year):
 
 if __name__ == '__main__':
     start = time.time()
-    extract(2002)
+    extract(2003)
     total_run_time = time.time() - start
     print "Total runtime: " + format_runtime(total_run_time)
