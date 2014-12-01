@@ -126,7 +126,7 @@ def read_from_csv(file,header=None,delimiter=None,cols=None,converters=None,usec
     dataframe -- python object containing data from the CSV file
     """
     if not header:
-        header=0
+        header=None
     df = pd.read_csv(file, index_col=False,delimiter =delimiter,names=cols, converters=converters,header=header,usecols=usecols);  #, header=header
 
     return df
@@ -237,7 +237,7 @@ def to_number(s):
         s1 = float(s)
         return s1
     except ValueError:
-        print "Erro to_number"+str(s)
+        print "Erro to_number: "+str(s)
         return 0
 
 def fill_zeros(s):

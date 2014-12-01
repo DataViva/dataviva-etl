@@ -82,7 +82,7 @@ class runtests(unittest.TestCase):
 
         if educacaosuperior:
             self.suite.addTests([            
-                unittest.defaultTestLoader.loadTestsFromTestCase(EducacaoSuperiorAggs),
+                #unittest.defaultTestLoader.loadTestsFromTestCase(EducacaoSuperiorAggs),
                 unittest.defaultTestLoader.loadTestsFromTestCase(EducacaoSuperiorSent)
                 ])
             

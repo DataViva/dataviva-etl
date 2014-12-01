@@ -71,8 +71,9 @@ def run_check(dfDV,dfSent,groupId,month,valId):
         if not id:
             continue
         
-        valDV = dfDV[(dfDV['id']==id)]['val'].values[0]
-
+        valDV = dfDV[(dfDV['id']==id)][valId].values[0]
+        
+        total=0
         valCSV=get_valueGroup(dfGroup,id,valId)
         if valCSV==False:
             valCSV=get_valueGroup(dfGroup,idint,valId)
@@ -80,6 +81,7 @@ def run_check(dfDV,dfSent,groupId,month,valId):
         if valCSV==False:
             if valDV>1:
                 print "Not found in CSV a value for "+str(id)+" - "+str(idint)+"  : Exports of value  "+ str(valDV)+ " in the month "+str(month)
+                total+=1
             continue 
 
          
@@ -89,17 +91,19 @@ def run_check(dfDV,dfSent,groupId,month,valId):
         if valDV!=valCSV and (diffDVCSV>1 or diffDVCSV<-1):
             txt= "ERROR in groupId ("+str(month)+"): "+str(id)+" / "+str(idint)+" - Value in CSV "+ str(valCSV)+ " <> Value in DV "+str(valDV) + " - Difference: "+str(diffDVCSV)
             print txt
+            total+=1
         else:
             txt="OK "+str(id)
             print txt
 
+        return total
 
 class EducacaoSuperiorSent(unittest.TestCase):  
     
     def test_main(self):
 
         #"Brasil;;;2.314;"
-        cols=['bra','bra_sub1','bra_sub2','value']    
+        cols=['bra','bra_sub1','bra_sub2','value',5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]    
         idsites=['bra','bra_sub1','bra_sub2','value']
         
         dfSent = read_from_csv("docs\\check\\educacaosuperior\\sinopse_da_educacao_superior_2009-1.1.csv",delimiter=";",cols=cols,usecols=cols)
@@ -114,9 +118,13 @@ class EducacaoSuperiorSent(unittest.TestCase):
         dfSent['value'] = dfSent['value'].astype(np.float64)
         
     
-        sql="SELECT bra_id,sum(enrolled) as value FROM hedu_ybucd where bra_id='4mg' and bra_id_len=3 AND d_id in ('A','B') and course_id_len=6 group by 1"
+        sql="SELECT bra_id as id,sum(enrolled) as value FROM hedu_ybucd where bra_id='4mg' and bra_id_len=3 AND d_id in ('A','B') and course_id_len=6 group by 1"
         dfDV = sql_to_df(sql,db)
         dfDV['value'] = dfDV['value'].astype(np.float64)
+        
+        total=run_check(dfDV,dfSent,'bra',0,'value')
+        
+        self.assertEqual(total, 0)
         
 ##########################
 #

@@ -47,6 +47,7 @@ class ExportAggs(unittest.TestCase):
     def test_BRA_ID(self):
     
         print "Entering in checkBRA_ID"
+        total=0
         
         # YMB: Check aggs 2 with 4 (2,7,8)
         sql="SELECT * FROM secex_ymb as b where left(bra_id,2)<>'xx' and b.bra_id_len=2 and \
@@ -54,7 +55,7 @@ class ExportAggs(unittest.TestCase):
             (SELECT sum(import_val) FROM secex_ymb \
             where bra_id_len=8 and left(bra_id,2)=b.bra_id and month=b.month  and year=b.year \
             group by left(bra_id,2))"  
-        runCountQuery('checkBRA_ID', 'secex_ymb', sql,cursor,count=True)   
+        total+=runCountQuery('checkBRA_ID', 'secex_ymb', sql,cursor,count=True)   
     
     
         
@@ -66,7 +67,7 @@ class ExportAggs(unittest.TestCase):
                         where bra_id_len=8 and left(bra_id,2)=b.bra_id \
                         and hs_id=b.hs_id and year=b.year and month=b.month \
                         group by left(bra_id,2),hs_id_len,year)"
-        runCountQuery('checkBRA_ID', 'secex_ymbp', sql,cursor,count=True) 
+        total+=runCountQuery('checkBRA_ID', 'secex_ymbp', sql,cursor,count=True) 
     
         #YMBW
         sql="SELECT * FROM secex_ymbw as b \
@@ -76,20 +77,22 @@ class ExportAggs(unittest.TestCase):
                         where bra_id_len=8 and left(bra_id,2)=b.bra_id \
                         and wld_id=b.wld_id and year=b.year and month=b.month \
                         group by left(bra_id,2),wld_id_len,year)    "
-        runCountQuery('checkBRA_ID', 'secex_ymbw', sql,cursor,count=True) 
+        total+=runCountQuery('checkBRA_ID', 'secex_ymbw', sql,cursor,count=True) 
         
-    
+        self.assertEqual(total, 0)
                     
     '''
         BRA_ID x Planning Regions
     '''
     def test_BRA_IDPR(self):    
+        total=0
+        
         #YB 
         sql="SELECT count(*) FROM secex_ymb as b where left(bra_id,2)<>'xx' and b.bra_id_len=7 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
             (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymb s, attrs_bra_pr p \
             where p.bra_id = s.bra_id and p.pr_id = b.bra_id and s.bra_id_len=8 and \
                 left(s.bra_id,4)=b.bra_id  and s.year=b.year and s.month=b.month group by left(s.bra_id,4))"
-        runCountQuery('checkBRA_IDPR', 'secex_ymb', sql,cursor,count=True) 
+        total+=runCountQuery('checkBRA_IDPR', 'secex_ymb', sql,cursor,count=True) 
     
             
         #YBP - bra_id 2 x 4
@@ -99,7 +102,7 @@ class ExportAggs(unittest.TestCase):
                         where p.bra_id = s.bra_id and  p.pr_id = b.bra_id and s.bra_id_len=8 and left(s.bra_id,4)=b.bra_id \
                         and s.hs_id=b.hs_id and s.year=b.year and s.month=b.month \
                         group by left(s.bra_id,4),s.hs_id_len,year)"
-        runCountQuery('checkBRA_IDPR', 'secex_ymbp', sql,cursor,count=True) 
+        total+=runCountQuery('checkBRA_IDPR', 'secex_ymbp', sql,cursor,count=True) 
         
     
         #YBW
@@ -110,12 +113,14 @@ class ExportAggs(unittest.TestCase):
                         and s.wld_id=b.wld_id and s.year=b.year and s.month=b.month \
                         group by left(s.bra_id,4),s.wld_id_len,s.year)    "
         
-    
+        self.assertEqual(total, 0)
     
         #YBPW ??
     
     def test_HS_ID(self):
         print "Entering in checkHS_ID"
+        total=0
+        
         aggsP = [(2, 6)]#2,6  [(2, 4),(4, 6)]
         for aggs in aggsP:    
             
@@ -124,7 +129,7 @@ class ExportAggs(unittest.TestCase):
                    (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymp \
                 where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and month=b.month  and year=b.year \
                 group by left(hs_id,"+str(aggs[0])+"))" 
-            runCountQuery('checkHS_ID', 'secex_ymp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            total+=runCountQuery('checkHS_ID', 'secex_ymp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
                 
             
             # YBP: Check HS aggs 2 with 4
@@ -132,7 +137,7 @@ class ExportAggs(unittest.TestCase):
                    (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbp \
                 where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and month=b.month and year=b.year \
                 group by left(hs_id,"+str(aggs[0])+"),bra_id_len,year)"   
-            runCountQuery('checkHS_ID', 'secex_ymbp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            total+=runCountQuery('checkHS_ID', 'secex_ymbp:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
                         
     
             # YPW: Check HS aggs 2 with 4
@@ -141,7 +146,7 @@ class ExportAggs(unittest.TestCase):
                 where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and wld_id=b.wld_id and month=b.month  and year=b.year \
                 group by left(hs_id,"+str(aggs[0])+"),wld_id_len,year)"  
             
-            runCountQuery('checkHS_ID', 'secex_ympw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            total+=runCountQuery('checkHS_ID', 'secex_ympw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
     
             # YBPW: Check HS aggs 2 with 4
             sql="SELECT count(*) FROM secex_ymbpw as b where b.hs_id_len="+str(aggs[0])+" and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
@@ -149,18 +154,20 @@ class ExportAggs(unittest.TestCase):
                 where hs_id_len="+str(aggs[1])+" and left(hs_id,"+str(aggs[0])+")=b.hs_id and bra_id=b.bra_id and wld_id=b.wld_id and month=b.month  and year=b.year \
                 group by left(hs_id,"+str(aggs[0])+"),wld_id_len,bra_id_len,year)"           
             #runCountQuery('checkHS_ID', 'secex_ymbpw:'+str(aggs[0])+":"+str(aggs[1]), sql,cursor,count=True) 
+            
+        self.assertEqual(total, 0)
         
     
     def test_WLD_ID(self):
         
         print "Entering in checkWLD_ID"
-        
+        total=0
         # YMW: Check WLD aggs 2 with 5
         sql="SELECT count(*) FROM secex_ymw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
                (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymw \
             where wld_id_len=5 and left(wld_id,2)=b.wld_id and month=b.month  and year=b.year \
             group by left(wld_id,2))"    
-        runCountQuery('checkWLD_ID', 'secex_ymw', sql,cursor,count=True)
+        total+=runCountQuery('checkWLD_ID', 'secex_ymw', sql,cursor,count=True)
             
     
         # YMBW: Check WLD aggs 2 with 5
@@ -168,14 +175,14 @@ class ExportAggs(unittest.TestCase):
                (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ymbw \
             where wld_id_len=5 and left(wld_id,2)=b.wld_id and bra_id=b.bra_id and month=b.month  and year=b.year \
             group by left(wld_id,2),bra_id_len,year)"   
-        runCountQuery('checkWLD_ID', 'secex_ymbw', sql,cursor,count=True) 
+        total+=runCountQuery('checkWLD_ID', 'secex_ymbw', sql,cursor,count=True) 
     
         # YMPW:  Check WLD aggs 2 with 5
         sql="SELECT count(*) FROM secex_ympw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
                (SELECT concat(CAST(import_val AS CHAR),CAST(export_val AS CHAR )) FROM secex_ympw \
             where wld_id_len=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and month=b.month  and year=b.year \
             group by left(hs_id,2),hs_id_len,year)"   
-        runCountQuery('checkWLD_ID', 'secex_ympw', sql,cursor,count=True)     
+        total+=runCountQuery('checkWLD_ID', 'secex_ympw', sql,cursor,count=True)     
                 
         #YMPBW Check WLD aggs 2 with 5
         sql="SELECT count(*) FROM secex_ymbpw as b where b.wld_id_len=2 and concat(CAST(b.import_val AS CHAR),CAST(b.export_val AS CHAR )) <> \
@@ -183,6 +190,8 @@ class ExportAggs(unittest.TestCase):
             where wld_id_len=5 and left(wld_id,2)=b.wld_id and hs_id=b.hs_id and bra_id=b.bra_id and month=b.month  and year=b.year \
             group by left(wld_id,2),bra_id_len,hs_id_len,year)"   
         #runCountQuery('checkWLD_ID', 'secex_ymbpw', sql,cursor,count=True) 
+        
+        self.assertEqual(total, 0)
 
 @click.command()
 @click.option('-m', '--method', prompt='Method', help='chosse a specific method to run: BRAID , HSID ,WLDID ',required=False)
