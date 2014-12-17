@@ -15,11 +15,11 @@ SET padraoNomeArquivo='';
 
 
 
-SET executarExtracao='N';
+SET executarExtracao='S';
 
-SET executarAgrupar='N';
+SET executarAgrupar='S';
 
-SET executarTransformacao='N';
+SET executarTransformacao='S';
 
 SET executarExportar='S';
 
