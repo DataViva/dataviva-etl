@@ -1,14 +1,26 @@
-import sys, os, click, magic
+import sys, os, click, MySQLdb, magic, codecs, re
+
+'''
+
+USAGE EXAMPLE:
+python extract_IES.py data/IES.txt
+
+'''
 
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
-@click.argument('output_path', type=click.Path(), required=True)
-def main(file_path, output_path):
-​
-    # This should create the folder if it's not there yet
-    if not os.path.exists(output_path): os.makedirs(output_path)
-​
-    with open(file_path) as fp:
+def main(file_path):
+
+    connection = MySQLdb.connect(host='localhost', user='root', passwd='', db='dataviva_raw')
+
+    # Discover encoding type of file
+    blob = open(file_path).read()
+    m = magic.Magic(mime_encoding=True)
+    encoding = m.from_buffer(blob)
+
+    data_list = []
+
+    with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
             CO_IES = line[0:8]
             CO_MANTENEDORA = line[8:16]
@@ -38,8 +50,20 @@ def main(file_path, output_path):
             QT_TEC_MESTRADO_MASC = line[492:500]
             QT_TEC_DOUTORADO_FEM = line[500:508]
             QT_TEC_DOUTORADO_MASC = line[508:516]
-​
-            connection = MySQLdb.connect(host='localhost', user='root', passwd='', db='dataviva_raw')
+            
+            tupla = (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA, DS_CATEGORIA_ADMINISTRATIVA, 
+                     CO_ORGANIZACAO_ACADEMICA, NO_ORGANIZACAO_ACADEMICA, CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, 
+                     CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL, IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, 
+                     QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC, QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, 
+                     QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC, QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, 
+                     QT_TEC_ESPECIALISTA_FEM, QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
+                     QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
+
+            #Substitutes empty or spaces fields for None
+            tupla = tuple([None if not str(x).strip() else x for x in tupla])
+
+            data_list.append(tupla)
+
             cursor = connection.cursor()
             cursor.executemany('''
                            INSERT INTO IES (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA,
@@ -47,26 +71,14 @@ def main(file_path, output_path):
                            CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL,
                            IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC,
                            QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC,
-                           QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM, QT_TEC_ESPECIALISTA_MASC,
-                           QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
-                           VALUES ('%s', '%s', '%s')''', listadetuplas)
+                           QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM, 
+                           QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
+                           QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
+                           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                                   %s, %s, %s, %s, %s, %s, %s, %s)''', data_list)
             connection.commit()
-            close()
-​
-    # Discover enconding type of file
-    blob = open(file_path).read()
-    m = magic.Magic(mime_encoding=True)
-    encoding = m.from_buffer(blob)
-​
-    # Reading the csv, getting a dataframe from pd.read_csv
-    data_frame = to_df(sys.argv[1], encoding)
-​
-    # Filtering data, where Municipality_ID column = 310620
-    #data_frame = data_frame[(data_frame.Month == 1)]
-​
-    # Write output
-    new_file_path = os.path.abspath(os.path.join(output_path, "fout.csv"))
-    data_frame.to_csv(open(new_file_path, 'wb+'), sep=";", index=False, float_format="%.3f", encoding="utf-8")
-​
+
+    connection.close()
+
 if __name__ == "__main__":
     main()

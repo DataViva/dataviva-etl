@@ -1,0 +1,4 @@
+click==5.1
+MySQL-python==1.2.5
+python-magic==0.4.10
+wheel==0.24.0
