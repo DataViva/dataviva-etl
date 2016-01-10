@@ -18,6 +18,10 @@ def main(file_path):
     m = magic.Magic(mime_encoding=True)
     encoding = m.from_buffer(blob)
 
+    # Set encoding to this python file
+    reload(sys)
+    sys.setdefaultencoding(encoding)
+
     data_list = []
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
@@ -64,20 +68,18 @@ def main(file_path):
 
             data_list.append(tupla)
 
-            cursor = connection.cursor()
-            cursor.executemany('''
-                           INSERT INTO IES (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA,
-                           DS_CATEGORIA_ADMINISTRATIVA, CO_ORGANIZACAO_ACADEMICA, NO_ORGANIZACAO_ACADEMICA,
-                           CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL,
-                           IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC,
-                           QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC,
-                           QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM, 
-                           QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
-                           QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
-                           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
-                                   %s, %s, %s, %s, %s, %s, %s, %s)''', data_list)
-            connection.commit()
-
+    cursor = connection.cursor()
+    cursor.executemany('''
+                   INSERT INTO IES (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA,
+                   DS_CATEGORIA_ADMINISTRATIVA, CO_ORGANIZACAO_ACADEMICA, NO_ORGANIZACAO_ACADEMICA,
+                   CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL,
+                   IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC,
+                   QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC,
+                   QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM, 
+                   QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
+                   QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
+                   VALUES (%s)''' % ('%s, '*(len(tupla)-1)+'%s'), data_list)
+    connection.commit()
     connection.close()
 
 if __name__ == "__main__":
