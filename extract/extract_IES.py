@@ -10,8 +10,9 @@ python extract_IES.py data/IES.txt
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
+    start = time.time()
 
-    connection = MySQLdb.connect(host='localhost', user='root', passwd='', db='dataviva_raw')
+    connection = MySQLdb.connect(host='10.85.16.51', user='root', passwd='dataviva', db='dataviva_raw')
 
     # Discover encoding type of file
     blob = open(file_path).read()
@@ -54,13 +55,13 @@ def main(file_path):
             QT_TEC_MESTRADO_MASC = line[492:500]
             QT_TEC_DOUTORADO_FEM = line[500:508]
             QT_TEC_DOUTORADO_MASC = line[508:516]
-            
-            tupla = (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA, DS_CATEGORIA_ADMINISTRATIVA, 
-                     CO_ORGANIZACAO_ACADEMICA, NO_ORGANIZACAO_ACADEMICA, CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, 
-                     CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL, IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, 
-                     QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC, QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, 
-                     QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC, QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, 
-                     QT_TEC_ESPECIALISTA_FEM, QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
+
+            tupla = (CO_IES, CO_MANTENEDORA, CO_CATEGORIA_ADMINISTRATIVA, DS_CATEGORIA_ADMINISTRATIVA,
+                     CO_ORGANIZACAO_ACADEMICA, NO_ORGANIZACAO_ACADEMICA, CO_MUNICIPIO_IES, NO_MUNICIPIO_IES,
+                     CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL, IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL,
+                     QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC, QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC,
+                     QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC, QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC,
+                     QT_TEC_ESPECIALISTA_FEM, QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC,
                      QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
 
             #Substitutes empty or spaces fields for None
@@ -75,12 +76,14 @@ def main(file_path):
                    CO_MUNICIPIO_IES, NO_MUNICIPIO_IES, CO_UF, SGL_UF, NO_REGIAO, IN_CAPITAL,
                    IN_ENTIDADE_BENEFICENTE, QT_TEC_TOTAL, QT_TEC_FUND_INCOMP_FEM, QT_TEC_FUND_INCOMP_MASC,
                    QT_TEC_FUND_COMP_FEM, QT_TEC_FUND_COMP_MASC, QT_TEC_MEDIO_FEM, QT_TEC_MEDIO_MASC,
-                   QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM, 
-                   QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC, 
+                   QT_TEC_SUPERIOR_FEM, QT_TEC_SUPERIOR_MASC, QT_TEC_ESPECIALISTA_FEM,
+                   QT_TEC_ESPECIALISTA_MASC, QT_TEC_MESTRADO_FEM, QT_TEC_MESTRADO_MASC,
                    QT_TEC_DOUTORADO_FEM, QT_TEC_DOUTORADO_MASC)
                    VALUES (%s)''' % ('%s, '*(len(tupla)-1)+'%s'), data_list)
     connection.commit()
     connection.close()
+
+    print("--- %s minutes ---" % str((time.time() - start)/60))
 
 if __name__ == "__main__":
     main()
