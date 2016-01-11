@@ -12,12 +12,10 @@ python count.py data/CURSO.txt
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
-    start = time.time()
-
     file_name = basename(file_path)
     table, file_ext = splitext(file_name)
 
-    connection = MySQLdb.connect(host='localhost', user='root', passwd='', db='dataviva_raw')
+    start = time.time()
 
     # Discover encoding type of file
     blob = open(file_path).read()
@@ -35,7 +33,6 @@ def main(file_path):
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
-            numero_de_linhas += 1
             row_data = {
                 'CO_IES' : line[0:8],
                 'CO_UNIDADE_FUNCIONAMENTO' : line[8:16],
@@ -103,16 +100,15 @@ def main(file_path):
 
             tuples.append(tuple([None if not str(x).strip() else x for x in row_data.values()]))
 
+
     cursor = connection.cursor()
 
     query = 'INSERT INTO ' + table + ' ('+','.join(columns)+')'
-    query += ' VALUES (' + ('%s, ' * (len(columns) - 1) + '%s')+')'
+    query += 'VALUES (' + ('%s, ' * (len(columns) - 1) + '%s')+')'
 
-    import pdb; pdb.set_trace()
     cursor.executemany(query, tuples)
     connection.commit()
     connection.close()
-
 
     print 'São %s linhas' % numero_de_linhas
     print "--- %s minutes ---" % str((time.time() - start)/60)
