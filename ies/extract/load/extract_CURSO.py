@@ -5,7 +5,7 @@ import pandas, sqlalchemy
 '''
 
 USAGE EXAMPLE:
-python ies/extract/load/extract_CURSO.py extract/data/IES_2009/CURSO.txt
+python ies/extract/load/extract_CURSO.py ies/extract/data/IES_2009/CURSO.txt
 
 '''
 
@@ -14,8 +14,10 @@ python ies/extract/load/extract_CURSO.py extract/data/IES_2009/CURSO.txt
 def main(file_path):
     file_name = basename(file_path)
     file_desc, file_ext = file_name.split('.')
-    folder = file_path.split('/')[2]
+    folder = file_path.split('/')[3]
     table = folder+'_'+file_desc
+
+    start = time.time()
 
     # Discover encoding type of file
     blob = open(file_path).read()

@@ -5,7 +5,7 @@ import pandas, sqlalchemy
 '''
 
 USAGE EXAMPLE:
-python ies/extract/load/extract_BIBLIOTECA.py extract/data/IES_2009/BIBLIOTECA.txt
+python ies/extract/load/extract_BIBLIOTECA.py ies/extract/data/IES_2009/BIBLIOTECA.txt
 
 '''
 
@@ -14,7 +14,7 @@ python ies/extract/load/extract_BIBLIOTECA.py extract/data/IES_2009/BIBLIOTECA.t
 def main(file_path):
     file_name = basename(file_path)
     file_desc, file_ext = file_name.split('.')
-    folder = file_path.split('/')[2]
+    folder = file_path.split('/')[3]
     table = folder+'_'+file_desc
 
     start = time.time()
