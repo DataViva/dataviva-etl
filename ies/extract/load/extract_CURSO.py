@@ -1,5 +1,6 @@
-import sys, os, click, magic, codecs, time
+import sys, click, magic, codecs, time
 from os.path import splitext, basename
+from write_data import write_data
 
 '''
 
