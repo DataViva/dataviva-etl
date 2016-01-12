@@ -104,7 +104,6 @@ def main(file_path):
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
 def write_data(table, tuples, columns):
-    #engine = sqlalchemy.create_engine('mysql://root@localhost/dataviva_raw')
     engine = sqlalchemy.create_engine('mysql://'+os.environ["DB_USER"]+os.environ["DB_PW"]+'@'+os.environ["DB_HOST"]+os.environ["DB_RAW"])
     data_frame = pandas.DataFrame(tuples, columns=columns)
     data_frame.to_sql(table, engine, if_exists='replace', index=False, chunksize=100)
