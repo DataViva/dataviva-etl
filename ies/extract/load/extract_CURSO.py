@@ -1,6 +1,5 @@
-import sys, os, click, magic, codecs, re, time
+import sys, os, click, magic, codecs, time
 from os.path import splitext, basename
-import pandas, sqlalchemy
 
 '''
 
@@ -99,14 +98,10 @@ def main(file_path):
 
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-    write_data(table, tuples, columns)
+    chuncksize = 100
+    write_data(table, tuples, columns, chuncksize)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
-
-def write_data(table, tuples, columns):
-    engine = sqlalchemy.create_engine('mysql://'+os.environ["DB_USER"]+":"+os.environ["DB_PW"]+'@'+os.environ["DB_HOST"]+'/'+os.environ["DB_RAW"])
-    data_frame = pandas.DataFrame(tuples, columns=columns)
-    data_frame.to_sql(table, engine, if_exists='replace', index=False, chunksize=100)
 
 if __name__ == "__main__":
     main()
