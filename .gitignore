@@ -1,6 +1,5 @@
 qvd
-dados
+data/
 *.qvd
 *.pyc
 *.log
-.settings/
