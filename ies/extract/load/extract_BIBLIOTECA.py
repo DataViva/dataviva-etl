@@ -1,18 +1,23 @@
-import sys, os, click, MySQLdb, magic, codecs, re, time
+import sys, os, click, magic, codecs, re, time
+from os.path import splitext, basename
+import pandas, sqlalchemy
 
 '''
 
 USAGE EXAMPLE:
-python extract_BIBLIOTECA.py data/BIBLIOTECA.txt
+python ies/extract/load/extract_BIBLIOTECA.py extract/data/IES_2009/BIBLIOTECA.txt
 
 '''
 
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
-    start = time.time()
+    file_name = basename(file_path)
+    file_desc, file_ext = file_name.split('.')
+    folder = file_path.split('/')[2]
+    table = folder+'_'+file_desc
 
-    connection = MySQLdb.connect(host='10.85.16.51', user='root', passwd='dataviva', db='dataviva_raw')
+    start = time.time()
 
     # Discover encoding type of file
     blob = open(file_path).read()
@@ -23,39 +28,35 @@ def main(file_path):
     reload(sys)
     sys.setdefaultencoding(encoding)
 
-    data_list = []
+    tuples = []
+    columns = ['CO_UNIDADE_FUNCIONAMENTO', 'CO_BIBLIOTECA', 'CO_TIPO_BIBLIOTECA', 'IN_REDE_WIRELESS', 'IN_CATALOGO_ONLINE', 'QT_ASSENTO', 'QT_EMPRESTIMO_DOMICILIAR', 'QT_EMPRESTIMO_BIBLIOTECA', 'QT_COMUTACAO', 'QT_USUARIO_CAPACITADO', 'QT_ACERVO']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
-            CO_UNIDADE_FUNCIONAMENTO = line[0:8]
-            CO_BIBLIOTECA = line[8:16]
-            CO_TIPO_BIBLIOTECA = line[16:24]
-            IN_REDE_WIRELESS = line[24:32]
-            IN_CATALOGO_ONLINE = line[32:40]
-            QT_ASSENTO = line[40:48]
-            QT_EMPRESTIMO_DOMICILIAR = line[48:56]
-            QT_EMPRESTIMO_BIBLIOTECA = line[56:64]
-            QT_COMUTACAO = line[64:72]
-            QT_USUARIO_CAPACITADO = line[72:80]
-            QT_ACERVO = line[80:88]
+            row = (
+                line[0:8],
+                line[8:16],
+                line[16:24],
+                line[24:32],
+                line[32:40],
+                line[40:48],
+                line[48:56],
+                line[56:64],
+                line[64:72],
+                line[72:80],
+                line[80:88]
+            )
 
-            tupla = (CO_UNIDADE_FUNCIONAMENTO, CO_BIBLIOTECA, CO_TIPO_BIBLIOTECA, IN_REDE_WIRELESS, IN_CATALOGO_ONLINE,
-                     QT_ASSENTO, QT_EMPRESTIMO_DOMICILIAR, QT_EMPRESTIMO_BIBLIOTECA, QT_COMUTACAO, QT_USUARIO_CAPACITADO, QT_ACERVO)
+            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-            #Substitutes empty or spaces fields for None
-            tupla = tuple([None if not str(x).strip() else x for x in tupla])
+    write_data(table, tuples, columns)
 
-            data_list.append(tupla)
+    print "--- %s minutes ---" % str((time.time() - start)/60)
 
-    cursor = connection.cursor()
-    cursor.executemany('''
-                   INSERT INTO BIBLIOTECA (CO_UNIDADE_FUNCIONAMENTO, CO_BIBLIOTECA, CO_TIPO_BIBLIOTECA, IN_REDE_WIRELESS, IN_CATALOGO_ONLINE,
-                   QT_ASSENTO, QT_EMPRESTIMO_DOMICILIAR, QT_EMPRESTIMO_BIBLIOTECA, QT_COMUTACAO, QT_USUARIO_CAPACITADO, QT_ACERVO)
-                   VALUES (%s)''' % ('%s, '*(len(tupla)-1)+'%s'), data_list)
-    connection.commit()
-    connection.close()
-
-    print("--- %s minutes ---" % str((time.time() - start)/60))
+def write_data(table, tuples, columns):
+    engine = sqlalchemy.create_engine('mysql://'+os.environ["DB_USER"]+":"+os.environ["DB_PW"]+'@'+os.environ["DB_HOST"]+'/'+os.environ["DB_RAW"])
+    data_frame = pandas.DataFrame(tuples, columns=columns)
+    data_frame.to_sql(table, engine, if_exists='replace', index=False, chunksize=100)
 
 if __name__ == "__main__":
     main()
