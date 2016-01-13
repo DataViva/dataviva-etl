@@ -1,18 +1,24 @@
-import sys, os, click, MySQLdb, magic, codecs, re, time
+import sys, click, magic, codecs, time
+from os.path import splitext, basename
+from write_data import write_data
 
 '''
 
 USAGE EXAMPLE:
-python extract_BIBLIOTECA.py data/BIBLIOTECA.txt
+python ies/extract/load/extract_BIBLIOTECA.py ies/extract/data/IES_2009/BIBLIOTECA.txt
 
 '''
 
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
-    start = time.time()
+    #Set table by file_path
+    file_name = basename(file_path)
+    file_desc, file_ext = splitext(file_name)
+    folder = file_path.split('/')[-2]
+    table = folder+'_'+file_desc
 
-    connection = MySQLdb.connect(host='10.85.16.51', user='root', passwd='dataviva', db='dataviva_raw')
+    start = time.time()
 
     # Discover encoding type of file
     blob = open(file_path).read()
@@ -23,39 +29,31 @@ def main(file_path):
     reload(sys)
     sys.setdefaultencoding(encoding)
 
-    data_list = []
+    tuples = []
+    columns = ['CO_UNIDADE_FUNCIONAMENTO', 'CO_BIBLIOTECA', 'CO_TIPO_BIBLIOTECA', 'IN_REDE_WIRELESS', 'IN_CATALOGO_ONLINE', 'QT_ASSENTO', 'QT_EMPRESTIMO_DOMICILIAR', 'QT_EMPRESTIMO_BIBLIOTECA', 'QT_COMUTACAO', 'QT_USUARIO_CAPACITADO', 'QT_ACERVO']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
-            CO_UNIDADE_FUNCIONAMENTO = line[0:8]
-            CO_BIBLIOTECA = line[8:16]
-            CO_TIPO_BIBLIOTECA = line[16:24]
-            IN_REDE_WIRELESS = line[24:32]
-            IN_CATALOGO_ONLINE = line[32:40]
-            QT_ASSENTO = line[40:48]
-            QT_EMPRESTIMO_DOMICILIAR = line[48:56]
-            QT_EMPRESTIMO_BIBLIOTECA = line[56:64]
-            QT_COMUTACAO = line[64:72]
-            QT_USUARIO_CAPACITADO = line[72:80]
-            QT_ACERVO = line[80:88]
+            row = (
+                line[0:8],
+                line[8:16],
+                line[16:24],
+                line[24:32],
+                line[32:40],
+                line[40:48],
+                line[48:56],
+                line[56:64],
+                line[64:72],
+                line[72:80],
+                line[80:88]
+            )
 
-            tupla = (CO_UNIDADE_FUNCIONAMENTO, CO_BIBLIOTECA, CO_TIPO_BIBLIOTECA, IN_REDE_WIRELESS, IN_CATALOGO_ONLINE,
-                     QT_ASSENTO, QT_EMPRESTIMO_DOMICILIAR, QT_EMPRESTIMO_BIBLIOTECA, QT_COMUTACAO, QT_USUARIO_CAPACITADO, QT_ACERVO)
+            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-            #Substitutes empty or spaces fields for None
-            tupla = tuple([None if not str(x).strip() else x for x in tupla])
+    chuncksize = 100
+    write_data(table, tuples, columns, chuncksize)
 
-            data_list.append(tupla)
-
-    cursor = connection.cursor()
-    cursor.executemany('''
-                   INSERT INTO BIBLIOTECA (CO_UNIDADE_FUNCIONAMENTO, CO_BIBLIOTECA, CO_TIPO_BIBLIOTECA, IN_REDE_WIRELESS, IN_CATALOGO_ONLINE,
-                   QT_ASSENTO, QT_EMPRESTIMO_DOMICILIAR, QT_EMPRESTIMO_BIBLIOTECA, QT_COMUTACAO, QT_USUARIO_CAPACITADO, QT_ACERVO)
-                   VALUES (%s)''' % ('%s, '*(len(tupla)-1)+'%s'), data_list)
-    connection.commit()
-    connection.close()
-
-    print("--- %s minutes ---" % str((time.time() - start)/60))
+    print "--- %s minutes ---" % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()
