@@ -1,4 +1,4 @@
-import os, sys, click, magic, codecs, time, itertools, math
+import os, sys, click, magic, codecs, time
 from os.path import splitext, basename
 from df_to_sql import write_sql
 
