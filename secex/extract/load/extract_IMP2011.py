@@ -5,7 +5,7 @@ from write_data import write_data
 file_path = os.path.dirname(os.path.realpath(__file__))
 
 ''' USAGE EXAMPLE:
-python extract_EXP2013.py data/EXP_2013_MUN.csv '''
+python extract_IMP2011.py data/IMP_2011_MUN.csv '''
 
 @click.command()
 @click.argument('input_file', type=click.Path(exists=True), required=True)
@@ -20,6 +20,6 @@ def main(input_file):
 
     data = pandas.read_csv(input_file, sep=',', dtype = {'CO_MES' : object, 'CO_NCM_POS': object, 'CO_PAIS': object, 'CO_UF': object, 'CO_PORTO': object, 'CO_MUN_GEO': object}, encoding = encode, nrows = 1000 )
 
-    write_data('SECEX_2013_EXP', 100, data)
+    write_data('SECEX_2011_IMP', 100, data)
 
 main()
