@@ -1,7 +1,7 @@
-CREATE TABLE SECEX_2015_EXP (
+CREATE TABLE SECEX_2011_IMP (
 	CO_ANO numeric(4),
 	CO_MES char(2),
-	CO_SH4 char(4)
+	CO_NCM_POS char(4),
 	CO_PAIS char(3),			
 	CO_UF char(2),
 	CO_PORTO char(4),		

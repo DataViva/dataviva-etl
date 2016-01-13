@@ -5,7 +5,7 @@ from write_data import write_data
 file_path = os.path.dirname(os.path.realpath(__file__))
 
 ''' USAGE EXAMPLE:
-python extract_IMP2015.py data/IMP_2015_MUN.csv '''
+python extract_EXP2004.py data/EXP_2004_MUN.csv '''
 
 @click.command()
 @click.argument('input_file', type=click.Path(exists=True), required=True)
@@ -13,17 +13,18 @@ python extract_IMP2015.py data/IMP_2015_MUN.csv '''
 def main(input_file):
     
     # Discover encoding type of file
-    blob = open(input_file).read()
+    with open(input_file, 'r') as fp:
+        first_line = fp.readline()
     m = magic.Magic(mime_encoding=True)
-    encode = m.from_buffer(blob)
+    encode = m.from_buffer(first_line)
 
     header = ['CO_ANO', 'CO_MES', 'CO_SH4', 'CO_PAIS', 'CO_UF', 'CO_PORTO', 'CO_MUN_GEO', 'KG_LIQUIDO', 'VL_FOB']
     data = pandas.read_csv(input_file, sep=';',names = header, dtype = {'CO_MES' : object, 'CO_SH4': object, 'CO_PAIS': object,
     'CO_UF': object,
     'CO_PORTO': object,
-    'CO_MUN_GEO': object}, encoding = encode )
+    'CO_MUN_GEO': object}, encoding = encode, nrows = 1000 )
 
-    write_data('SECEX_2015_IMP', 100, data)
+    write_data('SECEX_2004_EXP', 100, data)
 
 
     #import pdb; pdb.set_trace()
