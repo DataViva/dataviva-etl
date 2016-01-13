@@ -11,8 +11,6 @@ python extract_IMP2015.py data/IMP_2015_MUN.csv '''
 @click.argument('input_file', type=click.Path(exists=True), required=True)
 
 def main(input_file):
-    start = time.time()
-    connection = MySQLdb.connect(host='10.85.16.51', user='root', passwd='dataviva', db='dataviva_raw')
     
     # Discover encoding type of file
     blob = open(input_file).read()
