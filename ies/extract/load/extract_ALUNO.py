@@ -1,6 +1,6 @@
-import sys, click, magic, codecs, time, itertools
+import os, sys, click, magic, codecs, time, itertools, math
 from os.path import splitext, basename
-from write_data import write_data
+from df_to_sql import write_sql
 
 '''
 
@@ -8,6 +8,12 @@ USAGE EXAMPLE:
 python ies/extract/load/extract_ALUNO.py ies/extract/data/IES_2009/ALUNO.txt
 
 '''
+
+def input_data(table, tuples, columns, chuncksize):
+    start = time.time()
+    write_sql(table, tuples, columns, chuncksize)
+    print "%s minutes to insert" % str((time.time() - start)/60)
+    tuples = []
 
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
@@ -18,13 +24,10 @@ def main(file_path):
     folder = file_path.split('/')[-2]
     table = folder+'_'+file_desc
 
-    start = time.time()
-
     # Discover encoding type of file reading fist line
     with open(file_path, 'r') as fp:
         first_line = fp.readline()
     m = magic.Magic(mime_encoding=True)
-
     encoding = m.from_buffer(first_line)
 
     # Set encoding to this python file
@@ -34,8 +37,11 @@ def main(file_path):
     tuples = []
     columns = ['CO_IES', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_CURSO', 'NO_CURSO', 'CO_VINCULO_ALUNO', 'CO_ALUNOS_CURSO', 'CO_ALUNO_SITUACAO', 'CO_GRAU_ACADEMICO', 'CO_MODALIDADE_ENSINO', 'CO_NIVEL_ACADEMICO', 'IN_MATRICULA', 'IN_CONCLUINTE', 'IN_INGRESSO', 'ANO_INGRESSO', 'DT_INGRESSO_CURSO', 'IN_ING_PROCESSO_SELETIVO', 'IN_ING_VESTIBULAR', 'IN_ING_ENEM', 'IN_ING_OUTRA_FORMA_SELECAO', 'IN_ING_PROCESSO_OUTRAS_FORMAS', 'IN_ING_CONVENIO_PEC_G', 'IN_ING_OUTRAS_FORMAS_INGRESSO', 'CO_NACIONALIDADE_ALUNO', 'CO_PAIS_ORIGEM_ALUNO', 'IN_SEXO_ALUNO', 'NU_ANO_ALUNO_NASC', 'NU_MES_ALUNO_NASC', 'NU_DIA_ALUNO_NASC', 'NU_IDADE_ALUNO', 'CO_COR_RACA_ALUNO', 'IN_ALUNO_DEFICIENCIA', 'IN_CEGUEIRA', 'IN_BAIXA_VISAO', 'IN_SURDEZ', 'IN_DEF_AUDITIVA', 'IN_DEF_FISICA', 'IN_SURDOCEGUEIRA', 'IN_DEF_MULTIPLA', 'IN_DEF_MENTAL', 'IN_APOIO_SOCIAL', 'IN_APOIO_ALIMENTACAO', 'IN_APOIO_MORADIA', 'IN_APOIO_TRANSPORTE', 'IN_APOIO_MATERIAL_DIDATICO', 'IN_ATIVIDADE_COMPLEMENTAR', 'IN_APOIO_BOLSA_TRABALHO', 'IN_APOIO_BOLSA_PERMANENCIA', 'IN_FINANC_ESTUDANTIL', 'IN_FINANC_EXTERNAS', 'IN_FINANC_EXTERNAS_REEMB', 'IN_FINANC_IES', 'IN_FINANC_IES_REEMB', 'IN_FINANC_MUNICIPAL', 'IN_FINANC_MUNICIPAL_REEMB', 'IN_FINANC_OUTROS', 'IN_FINANC_OUTROS_REEMB', 'IN_FINANC_ESTADUAL', 'IN_FINANC_ESTADUAL_REEMB', 'IN_PROUNI_INTEGRAL', 'IN_PROUNI_PARCIAL', 'IN_FIES', 'IN_RESERVA_VAGAS', 'IN_RESERVA_ENSINO_PUBLICO', 'IN_RESERVA_ETNICO', 'IN_RESERVA_DEFICIENCIA', 'IN_RESERVA_RENDA_FAMILIAR', 'IN_RESERVA_OUTROS', 'IN_ATIV_PESQUISA_REM', 'IN_ATIV_PESQUISA_NAO_REM', 'IN_ATIV_EXTENSAO_REM', 'IN_ATIV_EXTENSAO_NAO_REM', 'IN_ATIV_MONITORIA_REM', 'IN_ATIV_MONITORIA_NAO_REM', 'IN_ATIV_ESTAG_N_OBRIG_REM', 'IN_ATIV_ESTAG_N_OBRIG_NAO_REM']
 
+    chuncksize = 10000
+    block_size = 1000000
+
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
-        for line in itertools.islice(fp, 1000):
+        for line in fp:
             row = (
                 line[0:8],
                 line[8:16],
@@ -114,15 +120,16 @@ def main(file_path):
                 line[923:931],
                 line[931:939],
                 line[939:947],
-                line[947:955],
+                line[947:955]
             )
 
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-    chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+            if sys.getsizeof(tuples) > block_size:
+                input_data(table, tuples, columns, chuncksize)
+                tuples = []
 
-    print "--- %s minutes ---" % str((time.time() - start)/60)
-
+    input_data(table, tuples, columns, chuncksize)
+        
 if __name__ == "__main__":
     main()
