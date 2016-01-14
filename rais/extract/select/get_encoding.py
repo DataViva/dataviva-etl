@@ -3,7 +3,7 @@ import click, magic
 '''
 
 USAGE EXAMPLE:
-python rais/extract/select/get_encoding.py ies/extract/data/RAIS_2002/RAIS2002TOTAL.TXT
+python rais/extract/select/get_encoding.py data/RAIS_2002/RAIS2002TOTAL.TXT
 
 '''
 
@@ -11,9 +11,10 @@ python rais/extract/select/get_encoding.py ies/extract/data/RAIS_2002/RAIS2002TO
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
     # Discover encoding type of file
-    blob = open(file_path).read()
+    with open(file_path, 'r') as fp:
+        first_line = fp.readline()
     m = magic.Magic(mime_encoding=True)
-    print m.from_buffer(blob)
+    print m.from_buffer(first_line)
 
 
 if __name__ == "__main__":
