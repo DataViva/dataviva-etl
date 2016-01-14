@@ -9,12 +9,6 @@ python ies/extract/load/extract_ALUNO.py ies/extract/data/IES_2009/ALUNO.txt
 
 '''
 
-def input_data(table, tuples, columns, chuncksize):
-    start = time.time()
-    write_sql(table, tuples, columns, chuncksize)
-    print "%s minutes to insert" % str((time.time() - start)/60)
-    tuples = []
-
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True), required=True)
 def main(file_path):
@@ -39,6 +33,10 @@ def main(file_path):
 
     chuncksize = 10000
     block_size = 1000000
+    if_exists = 'append'
+    first_insertion = True
+
+    start = time.time()
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
@@ -126,10 +124,19 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
             if sys.getsizeof(tuples) > block_size:
-                input_data(table, tuples, columns, chuncksize)
-                tuples = []
+                if first_insertion == True:
+                    write_sql(table, tuples, columns, 'replace', chuncksize)
+                    print "...importing..."
+                    tuples = []
+                    first_insertion = False
+                
+                else:
+                    write_sql(table, tuples, columns, if_exists, chuncksize)
+                    print "...importing..."
+                    tuples = []
 
-    input_data(table, tuples, columns, chuncksize)
+    write_sql(table, tuples, columns, if_exists, chuncksize)
+    print "Total time: %s minutes to insert." % str((time.time() - start)/60)
         
 if __name__ == "__main__":
     main()
