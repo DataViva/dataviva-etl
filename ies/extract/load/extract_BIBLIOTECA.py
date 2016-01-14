@@ -1,6 +1,6 @@
 import sys, click, magic, codecs, time
 from os.path import splitext, basename
-from write_data import write_data
+from df_to_sql import write_sql
 
 '''
 
@@ -51,7 +51,7 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    write_sql(table, tuples, columns, replace, chuncksize)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
