@@ -30,19 +30,8 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    dtype={'CO_UNIDADE_FUNCIONAMENTO': Numeric(8),
-       'CO_UNIDADE_FUNCIONAMENTO' : Numeric(8),
-       'CO_BIBLIOTECA' : Numeric(8),
-       'CO_TIPO_BIBLIOTECA' : Numeric(8),
-       'IN_REDE_WIRELESS' : Numeric(8),
-       'IN_CATALOGO_ONLINE' : Numeric(8),
-       'QT_ASSENTO' : Numeric(8),
-       'QT_EMPRESTIMO_DOMICILIAR' : Numeric(8),
-       'QT_EMPRESTIMO_BIBLIOTECA' : Numeric(8),
-       'QT_COMUTACAO' : Numeric(8),
-       'QT_USUARIO_CAPACITADO' : Numeric(8),
-       'QT_ACERVO' : Numeric(8)
-    }
+    dtype = {'CO_UNIDADE_FUNCIONAMENTO': Numeric(8),'CO_UNIDADE_FUNCIONAMENTO' : Numeric(8),'CO_BIBLIOTECA' : Numeric(8),'CO_TIPO_BIBLIOTECA' : Numeric(8),'IN_REDE_WIRELESS' : Numeric(8),'IN_CATALOGO_ONLINE' : Numeric(8),'QT_ASSENTO' : Numeric(8),'QT_EMPRESTIMO_DOMICILIAR' : Numeric(8),'QT_EMPRESTIMO_BIBLIOTECA' : Numeric(8),'QT_COMUTACAO' : Numeric(8),'QT_USUARIO_CAPACITADO' : Numeric(8),'QT_ACERVO' : Numeric(8)}
+    columns = ['CO_UNIDADE_FUNCIONAMENTO','CO_UNIDADE_FUNCIONAMENTO','CO_BIBLIOTECA','CO_TIPO_BIBLIOTECA','IN_REDE_WIRELESS','IN_CATALOGO_ONLINE','QT_ASSENTO','QT_EMPRESTIMO_DOMICILIAR','QT_EMPRESTIMO_BIBLIOTECA','QT_COMUTACAO','QT_USUARIO_CAPACITADO']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
@@ -64,7 +53,7 @@ def main(file_path):
 
     chuncksize = 100
     if_exists = 'replace'
-    write_sql(table, tuples, dtype.keys(), if_exists, chuncksize, dtype)
+    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
