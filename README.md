@@ -8,14 +8,27 @@ The sources of Dataviva can be found at [Dataviva GitHub](https://github.com/Dat
 
 Databases are released by Brazil government as raw data and there is some analysis to extract the information needed for the project.
 
-For each database we have a Wiki documentation that explain all the ETL process and Qlikview as a BI tool to make this process.
+For each database we have a Wiki documentation that explain all the ETL process.
 
-##Tests
+##Setup
 
-each database has a folder with a file called "test.py", file can be test with the command:
+1. You'll need [libmagic](https://github.com/threatstack/libmagic) for this project:
 
-```python
-python -m unittest {{FOLDER}}.check.test
+Mac installation
+
+```bash
+brew install libmagic
+```
+
+Ubuntu (BSD Linux) installation
+
+```bash
+apt-get install libmagic
+```
+2. Install requirements
+
+```bash
+pip install -r requirements.txt
 ```
 
 See the [Wiki](https://github.com/DataViva/datavivaetl/wiki) for more information.
