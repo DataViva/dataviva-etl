@@ -1,6 +1,7 @@
-import sys, click, magic, codecs, time
+import sys, click, codecs, time
 from sqlalchemy.types import Numeric
 from os.path import splitext, basename
+from file_encoding import file_encoding
 from df_to_sql import write_sql
 
 '''
@@ -21,10 +22,8 @@ def main(file_path):
 
     start = time.time()
 
-    # Discover encoding type of file
-    blob = open(file_path).read()
-    m = magic.Magic(mime_encoding=True)
-    encoding = m.from_buffer(blob)
+    #Set file encoding
+    encoding = file_encoding(file_path)
 
     # Set encoding to this python file
     reload(sys)
