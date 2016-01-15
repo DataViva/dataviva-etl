@@ -1,0 +1,9 @@
+CREATE TABLE IES_2010_LOCAL_OFERTA_POLO (
+CO_LOCAL_OFERTA_IES numeric(8) NULL,
+CO_IES numeric(8) NULL,
+CO_MUNICIPIO numeric(8) NULL,
+CO_UF numeric(8) NULL,
+IN_SEDE numeric(8) NULL,
+CO_CURSO_POLO numeric(8) NULL,
+CO_CURSO numeric(8) NULL
+);
