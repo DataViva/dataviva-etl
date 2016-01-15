@@ -1,7 +1,8 @@
-import sys, click, magic, codecs, time, itertools
+import sys, click, magic, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
-from write_data import write_data
-
+from file_encoding import file_encoding
+from df_to_sql import write_sql
 '''
 
 USAGE EXAMPLE:
@@ -32,9 +33,11 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_UNIDADE_FUNCIONAMENTO', 'CO_TIPO_UNIDADE', 'IN_POLO_EXTERIOR', 'IN_POSSUI_NEAD', 'IN_POLO_COMPARTILHADO', 'IN_SUBTIPO_UNIDADE', 'CO_IES', 'CO_UNIDADE_IES', 'CO_MUNICIPIO', 'QT_SALA_AULA', 'IN_AC_RAMPAS', 'IN_AC_EQUIP_ELETROMECANICO', 'IN_AC_BANHEIRO_ADAPTADO', 'IN_AC_MOBILIARIO_ADAPTADO', 'IN_INST_NENHUMA', 'IN_INST_RESTAURANTE_UNIV [121-128]IN_INST_QUADRA', 'IN_INST_TEATRO', 'IN_INST_CINEMA', 'IN_INST_SERVICOS', 'IN_COND_ACESSIBILIDADE', 'IN_POSSUI_LABORATORIO', 'IN_POSSUI_BIBLIOTECA']
+    dtype = {'CO_UNIDADE_FUNCIONAMENTO' : Numeric (8), 'CO_TIPO_UNIDADE' : Numeric (8), 'IN_POLO_EXTERIOR' : Numeric (8), 'CO_IES' : Numeric (8), 'CO_UNIDADE_IES' : Numeric (8), 'CO_MUNICIPIO' : Numeric (8), 'QT_SALA_AULA' : Numeric (8), 'IN_AC_RAMPAS' : Numeric (8), 'IN_AC_EQUIP_ELETROMECANICO' : Numeric (8), 'IN_AC_BANHEIRO_ADAPTADO' : Numeric (8), 'IN_AC_MOBILIARIO_ADAPTADO' : Numeric (8), 'IN_INST_NENHUMA' : Numeric (8), 'IN_INST_RESTAURANTE_UNIV' : Numeric (8), 'IN_INST_QUADRA' : Numeric (8), 'IN_INST_TEATRO' : Numeric (8), 'IN_INST_CINEMA' : Numeric (8), 'IN_INST_SERVICOS' : Numeric (8), 'IN_COND_ACESSIBILIDADE' : Numeric (8), 'IN_POSSUI_LABORATORIO' : Numeric (8), 'IN_POSSUI_BIBLIOTECA' : Numeric (8), 'DT_CADASTRO' : Numeric (8), 'DT_ATUALIZACAO' : Numeric (8)}
+    columns = ['CO_UNIDADE_FUNCIONAMENTO', 'CO_TIPO_UNIDADE', 'IN_POLO_EXTERIOR', 'CO_IES', 'CO_UNIDADE_IES', 'CO_MUNICIPIO', 'QT_SALA_AULA', 'IN_AC_RAMPAS', 'IN_AC_EQUIP_ELETROMECANICO', 'IN_AC_BANHEIRO_ADAPTADO', 'IN_AC_MOBILIARIO_ADAPTADO', 'IN_INST_NENHUMA', 'IN_INST_RESTAURANTE_UNIV', 'IN_INST_QUADRA', 'IN_INST_TEATRO', 'IN_INST_CINEMA', 'IN_INST_SERVICOS', 'IN_COND_ACESSIBILIDADE', 'IN_POSSUI_LABORATORIO', 'IN_POSSUI_BIBLIOTECA', 'DT_CADASTRO', 'DT_ATUALIZACAO']
+
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
-        for line in itertools.islice(fp, 1000):
+        for line in fp:
             row = (
                 line[0:8],
                 line[8:16],
@@ -63,7 +66,7 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 

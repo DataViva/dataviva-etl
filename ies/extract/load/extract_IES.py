@@ -1,6 +1,8 @@
 import sys, click, magic, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
-from write_data import write_data
+from file_encoding import file_encoding
+from df_to_sql import write_sql
 
 '''
 
@@ -30,7 +32,8 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_IES', 'CO_MANTENEDORA', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_MUNICIPIO_IES', 'NO_MUNICIPIO_IES', 'CO_UF', 'SGL_UF', 'NO_REGIAO', 'IN_CAPITAL', 'IN_ENTIDADE_BENEFICENTE', 'QT_TEC_TOTAL', 'QT_TEC_FUND_INCOMP_FEM', 'QT_TEC_FUND_INCOMP_MASC', 'QT_TEC_FUND_COMP_FEM', 'QT_TEC_FUND_COMP_MASC', 'QT_TEC_MEDIO_FEM', 'QT_TEC_MEDIO_MASC', 'QT_TEC_SUPERIOR_FEM', 'QT_TEC_SUPERIOR_MASC', 'QT_TEC_ESPECIALISTA_FEM', 'QT_TEC_ESPECIALISTA_MASC', 'QT_TEC_MESTRADO_FEM', 'QT_TEC_MESTRADO_MASC', 'QT_TEC_DOUTORADO_FEM', 'QT_TEC_DOUTORADO_MASC']
+    dtype = {'CO_IES' : String(8),'CO_MANTENEDORA' : String(8),'CO_CATEGORIA_ADMINISTRATIVA' : String(8),'DS_CATEGORIA_ADMINISTRATIVA' : String(50),'CO_ORGANIZACAO_ACADEMICA' : String(8),'NO_ORGANIZACAO_ACADEMICA' : String(100),'CO_MUNICIPIO_IES' : String(8),'NO_MUNICIPIO_IES' : String(150),'CO_UF' : String(8),'SGL_UF' : String(2),'NO_REGIAO' : String(30),'IN_CAPITAL' : Numeric(8),'IN_ENTIDADE_BENEFICENTE' : Numeric(8),'QT_TEC_TOTAL' : Numeric(8),'QT_TEC_FUND_INCOMP_FEM' : Numeric(8),'QT_TEC_FUND_INCOMP_MASC' : Numeric(8),'QT_TEC_FUND_COMP_FEM' : Numeric(8),'QT_TEC_FUND_COMP_MASC' : Numeric(8),'QT_TEC_MEDIO_FEM' : Numeric(8),'QT_TEC_MEDIO_MASC' : Numeric(8),'QT_TEC_SUPERIOR_FEM' : Numeric(8),'QT_TEC_SUPERIOR_MASC' : Numeric(8),'QT_TEC_ESPECIALISTA_FEM' : Numeric(8),'QT_TEC_ESPECIALISTA_MASC' : Numeric(8),'QT_TEC_MESTRADO_FEM' : Numeric(8),'QT_TEC_MESTRADO_MASC' : Numeric(8),'QT_TEC_DOUTORADO_FEM' : Numeric(8),'QT_TEC_DOUTORADO_MASC' : Numeric(8)}
+    columns = ['CO_IES','CO_MANTENEDORA','CO_CATEGORIA_ADMINISTRATIVA','DS_CATEGORIA_ADMINISTRATIVA','CO_ORGANIZACAO_ACADEMICA','NO_ORGANIZACAO_ACADEMICA','CO_MUNICIPIO_IES','NO_MUNICIPIO_IES','CO_UF','SGL_UF','NO_REGIAO','IN_CAPITAL','IN_ENTIDADE_BENEFICENTE','QT_TEC_TOTAL','QT_TEC_FUND_INCOMP_FEM','QT_TEC_FUND_INCOMP_MASC','QT_TEC_FUND_COMP_FEM','QT_TEC_FUND_COMP_MASC','QT_TEC_MEDIO_FEM','QT_TEC_MEDIO_MASC','QT_TEC_SUPERIOR_FEM','QT_TEC_SUPERIOR_MASC','QT_TEC_ESPECIALISTA_FEM','QT_TEC_ESPECIALISTA_MASC','QT_TEC_MESTRADO_FEM','QT_TEC_MESTRADO_MASC','QT_TEC_DOUTORADO_FEM','QT_TEC_DOUTORADO_MASC']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
@@ -68,7 +71,7 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
