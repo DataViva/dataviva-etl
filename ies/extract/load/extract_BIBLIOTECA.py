@@ -1,6 +1,8 @@
-import sys, click, magic, codecs, time
+import sys, click, codecs, time
+from sqlalchemy.types import Numeric
 from os.path import splitext, basename
-from write_data import write_data
+from file_encoding import file_encoding
+from df_to_sql import write_sql
 
 '''
 
@@ -20,17 +22,16 @@ def main(file_path):
 
     start = time.time()
 
-    # Discover encoding type of file
-    blob = open(file_path).read()
-    m = magic.Magic(mime_encoding=True)
-    encoding = m.from_buffer(blob)
+    #Set file encoding
+    encoding = file_encoding(file_path)
 
     # Set encoding to this python file
     reload(sys)
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_UNIDADE_FUNCIONAMENTO', 'CO_BIBLIOTECA', 'CO_TIPO_BIBLIOTECA', 'IN_REDE_WIRELESS', 'IN_CATALOGO_ONLINE', 'QT_ASSENTO', 'QT_EMPRESTIMO_DOMICILIAR', 'QT_EMPRESTIMO_BIBLIOTECA', 'QT_COMUTACAO', 'QT_USUARIO_CAPACITADO', 'QT_ACERVO']
+    dtype = {'CO_UNIDADE_FUNCIONAMENTO': Numeric(8),'CO_UNIDADE_FUNCIONAMENTO' : Numeric(8),'CO_BIBLIOTECA' : Numeric(8),'CO_TIPO_BIBLIOTECA' : Numeric(8),'IN_REDE_WIRELESS' : Numeric(8),'IN_CATALOGO_ONLINE' : Numeric(8),'QT_ASSENTO' : Numeric(8),'QT_EMPRESTIMO_DOMICILIAR' : Numeric(8),'QT_EMPRESTIMO_BIBLIOTECA' : Numeric(8),'QT_COMUTACAO' : Numeric(8),'QT_USUARIO_CAPACITADO' : Numeric(8),'QT_ACERVO' : Numeric(8)}
+    columns = ['CO_UNIDADE_FUNCIONAMENTO','CO_UNIDADE_FUNCIONAMENTO','CO_BIBLIOTECA','CO_TIPO_BIBLIOTECA','IN_REDE_WIRELESS','IN_CATALOGO_ONLINE','QT_ASSENTO','QT_EMPRESTIMO_DOMICILIAR','QT_EMPRESTIMO_BIBLIOTECA','QT_COMUTACAO','QT_USUARIO_CAPACITADO']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
@@ -51,7 +52,8 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    if_exists = 'replace'
+    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 

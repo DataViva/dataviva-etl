@@ -1,5 +1,7 @@
-import os, sys, click, magic, codecs, time
+import os, sys, click, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
+from file_encoding import file_encoding
 from df_to_sql import write_sql
 
 '''
@@ -18,22 +20,26 @@ def main(file_path):
     folder = file_path.split('/')[-2]
     table = folder+'_'+file_desc
 
-    # Discover encoding type of file reading fist line
-    with open(file_path, 'r') as fp:
-        first_line = fp.readline()
-    m = magic.Magic(mime_encoding=True)
-    encoding = m.from_buffer(first_line)
+    #Set file encoding
+    encoding = file_encoding(file_path)
 
     # Set encoding to this python file
     reload(sys)
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_IES', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_CURSO', 'NO_CURSO', 'CO_VINCULO_ALUNO', 'CO_ALUNOS_CURSO', 'CO_ALUNO_SITUACAO', 'CO_GRAU_ACADEMICO', 'CO_MODALIDADE_ENSINO', 'CO_NIVEL_ACADEMICO', 'IN_MATRICULA', 'IN_CONCLUINTE', 'IN_INGRESSO', 'ANO_INGRESSO', 'DT_INGRESSO_CURSO', 'IN_ING_PROCESSO_SELETIVO', 'IN_ING_VESTIBULAR', 'IN_ING_ENEM', 'IN_ING_OUTRA_FORMA_SELECAO', 'IN_ING_PROCESSO_OUTRAS_FORMAS', 'IN_ING_CONVENIO_PEC_G', 'IN_ING_OUTRAS_FORMAS_INGRESSO', 'CO_NACIONALIDADE_ALUNO', 'CO_PAIS_ORIGEM_ALUNO', 'IN_SEXO_ALUNO', 'NU_ANO_ALUNO_NASC', 'NU_MES_ALUNO_NASC', 'NU_DIA_ALUNO_NASC', 'NU_IDADE_ALUNO', 'CO_COR_RACA_ALUNO', 'IN_ALUNO_DEFICIENCIA', 'IN_CEGUEIRA', 'IN_BAIXA_VISAO', 'IN_SURDEZ', 'IN_DEF_AUDITIVA', 'IN_DEF_FISICA', 'IN_SURDOCEGUEIRA', 'IN_DEF_MULTIPLA', 'IN_DEF_MENTAL', 'IN_APOIO_SOCIAL', 'IN_APOIO_ALIMENTACAO', 'IN_APOIO_MORADIA', 'IN_APOIO_TRANSPORTE', 'IN_APOIO_MATERIAL_DIDATICO', 'IN_ATIVIDADE_COMPLEMENTAR', 'IN_APOIO_BOLSA_TRABALHO', 'IN_APOIO_BOLSA_PERMANENCIA', 'IN_FINANC_ESTUDANTIL', 'IN_FINANC_EXTERNAS', 'IN_FINANC_EXTERNAS_REEMB', 'IN_FINANC_IES', 'IN_FINANC_IES_REEMB', 'IN_FINANC_MUNICIPAL', 'IN_FINANC_MUNICIPAL_REEMB', 'IN_FINANC_OUTROS', 'IN_FINANC_OUTROS_REEMB', 'IN_FINANC_ESTADUAL', 'IN_FINANC_ESTADUAL_REEMB', 'IN_PROUNI_INTEGRAL', 'IN_PROUNI_PARCIAL', 'IN_FIES', 'IN_RESERVA_VAGAS', 'IN_RESERVA_ENSINO_PUBLICO', 'IN_RESERVA_ETNICO', 'IN_RESERVA_DEFICIENCIA', 'IN_RESERVA_RENDA_FAMILIAR', 'IN_RESERVA_OUTROS', 'IN_ATIV_PESQUISA_REM', 'IN_ATIV_PESQUISA_NAO_REM', 'IN_ATIV_EXTENSAO_REM', 'IN_ATIV_EXTENSAO_NAO_REM', 'IN_ATIV_MONITORIA_REM', 'IN_ATIV_MONITORIA_NAO_REM', 'IN_ATIV_ESTAG_N_OBRIG_REM', 'IN_ATIV_ESTAG_N_OBRIG_NAO_REM']
+    dtype = {'CO_IES' : String(8),'CO_CATEGORIA_ADMINISTRATIVA' : String(8),'DS_CATEGORIA_ADMINISTRATIVA' : String(50),'CO_ORGANIZACAO_ACADEMICA' : String(8),'NO_ORGANIZACAO_ACADEMICA' : String(100),'CO_CURSO' : String (8),'NO_CURSO' : String(200),'CO_VINCULO_ALUNO_CURSO' : String (8),'CO_ALUNOS' : String (13),'CO_ALUNO_SITUACAO' : String (8),'CO_GRAU_ACADEMICO' : String (8),'CO_MODALIDADE_ENSINO' : String (8),'CO_NIVEL_ACADEMICO' : String (8),'IN_MATRICULA' : Numeric (8),'IN_CONCLUINTE' :   Numeric (8),'IN_INGRESSO' : Numeric (8),'ANO_INGRESSO' : Numeric (8),'DT_INGRESSO_CURSO' : Numeric (8),'IN_ING_PROCESSO_SELETIVO' : Numeric (8),'IN_ING_VESTIBULAR' : Numeric (8),'IN_ING_ENEM' : Numeric (8),'IN_ING_OUTRA_FORMA_SELECAO' : Numeric (8),'IN_ING_PROCESSO_OUTRAS_FORMAS' : Numeric (8),'IN_ING_CONVENIO_PEC_G' : Numeric (8),'IN_ING_OUTRAS_FORMAS_INGRESSO' : Numeric (8),'CO_NACIONALIDADE_ALUNO' : String (8),'CO_PAIS_ORIGEM_ALUNO' : String (8),'IN_SEXO_ALUNO' : Numeric (8),'NU_ANO_ALUNO_NASC' : Numeric (8),'NU_MES_ALUNO_NASC' : Numeric (8),'NU_DIA_ALUNO_NASC' : Numeric (8),'NU_IDADE_ALUNO' : Numeric (8),'CO_COR_RACA_ALUNO' : String (8),'IN_ALUNO_DEFICIENCIA' : Numeric (8),'IN_CEGUEIRA' : Numeric (8),'IN_BAIXA_VISAO' : Numeric (8),'IN_SURDEZ' : Numeric (8),'IN_DEF_AUDITIVA' : Numeric (8),'IN_DEF_FISICA' : Numeric (8),'IN_SURDOCEGUEIRA' : Numeric (8),'IN_DEF_MULTIPLA' : Numeric (8),'IN_DEF_MENTAL' : Numeric (8),'IN_APOIO_SOCIAL' : Numeric (8),'IN_APOIO_ALIMENTACAO' : Numeric (8),'IN_APOIO_MORADIA' : Numeric (8),'IN_APOIO_TRANSPORTE' : Numeric (8),'IN_APOIO_MATERIAL_DIDATICO' : Numeric (8),'IN_ATIVIDADE_COMPLEMENTAR' : Numeric (8),'IN_APOIO_BOLSA_TRABALHO' : Numeric (8),'IN_APOIO_BOLSA_PERMANENCIA' : Numeric (8),'IN_FINANC_ESTUDANTIL' : Numeric (8),'IN_FINANC_EXTERNAS' : Numeric (8),'IN_FINANC_EXTERNAS_REEMB' : Numeric (8),'IN_FINANC_IES' : Numeric (8),'IN_FINANC_IES_REEMB' : Numeric (8),'IN_FINANC_MUNICIPAL' : Numeric (8),'IN_FINANC_MUNICIPAL_REEMB' : Numeric (8),'IN_FINANC_OUTROS' : Numeric (8),'IN_FINANC_OUTROS_REEMB' : Numeric (8),'IN_FINANC_ESTADUAL' : Numeric (8),'IN_FINANC_ESTADUAL_REEMB' : Numeric (8),'IN_PROUNI_INTEGRAL' : Numeric (8),'IN_PROUNI_PARCIAL' : Numeric (8),'IN_FIES' : Numeric (8),'IN_RESERVA_VAGAS' : Numeric (8),'IN_RESERVA_ENSINO_PUBLICO' :  Numeric (8),'IN_RESERVA_ETNICO' :  Numeric (8),'IN_RESERVA_DEFICIENCIA' :  Numeric (8),'IN_RESERVA_RENDA_FAMILIAR' :  Numeric (8),'IN_RESERVA_OUTROS' :  Numeric (8),'IN_ATIV_PESQUISA_REM' :  Numeric (8),'IN_ATIV_PESQUISA_NAO_REM' :  Numeric (8),'IN_ATIV_EXTENSAO_REM' :  Numeric (8),'IN_ATIV_EXTENSAO_NAO_REM' :  Numeric (8),'IN_ATIV_MONITORIA_REM' :  Numeric (8),'IN_ATIV_MONITORIA_NAO_REM' :  Numeric (8),'IN_ATIV_ESTAG_N_OBRIG_REM' :  Numeric (8),'IN_ATIV_ESTAG_N_OBRIG_NAO_REM' :  Numeric (8)}
+    columns = ['CO_IES','CO_CATEGORIA_ADMINISTRATIVA','DS_CATEGORIA_ADMINISTRATIVA','CO_ORGANIZACAO_ACADEMICA','NO_ORGANIZACAO_ACADEMICA','CO_CURSO','NO_CURSO','CO_VINCULO_ALUNO_CURSO','CO_ALUNOS','CO_ALUNO_SITUACAO','CO_GRAU_ACADEMICO','CO_MODALIDADE_ENSINO','CO_NIVEL_ACADEMICO','IN_MATRICULA','IN_CONCLUINTE','IN_INGRESSO','ANO_INGRESSO','DT_INGRESSO_CURSO','IN_ING_PROCESSO_SELETIVO','IN_ING_VESTIBULAR','IN_ING_ENEM','IN_ING_OUTRA_FORMA_SELECAO','IN_ING_PROCESSO_OUTRAS_FORMAS','IN_ING_CONVENIO_PEC_G','IN_ING_OUTRAS_FORMAS_INGRESSO','CO_NACIONALIDADE_ALUNO','CO_PAIS_ORIGEM_ALUNO','IN_SEXO_ALUNO','NU_ANO_ALUNO_NASC','NU_MES_ALUNO_NASC','NU_DIA_ALUNO_NASC','NU_IDADE_ALUNO','CO_COR_RACA_ALUNO','IN_ALUNO_DEFICIENCIA','IN_CEGUEIRA','IN_BAIXA_VISAO','IN_SURDEZ','IN_DEF_AUDITIVA','IN_DEF_FISICA','IN_SURDOCEGUEIRA','IN_DEF_MULTIPLA','IN_DEF_MENTAL','IN_APOIO_SOCIAL','IN_APOIO_ALIMENTACAO','IN_APOIO_MORADIA','IN_APOIO_TRANSPORTE','IN_APOIO_MATERIAL_DIDATICO','IN_ATIVIDADE_COMPLEMENTAR','IN_APOIO_BOLSA_TRABALHO','IN_APOIO_BOLSA_PERMANENCIA','IN_FINANC_ESTUDANTIL','IN_FINANC_EXTERNAS','IN_FINANC_EXTERNAS_REEMB','IN_FINANC_IES','IN_FINANC_IES_REEMB','IN_FINANC_MUNICIPAL','IN_FINANC_MUNICIPAL_REEMB','IN_FINANC_OUTROS','IN_FINANC_OUTROS_REEMB','IN_FINANC_ESTADUAL','IN_FINANC_ESTADUAL_REEMB','IN_PROUNI_INTEGRAL','IN_PROUNI_PARCIAL','IN_FIES','IN_RESERVA_VAGAS','IN_RESERVA_ENSINO_PUBLICO','IN_RESERVA_ETNICO','IN_RESERVA_DEFICIENCIA','IN_RESERVA_RENDA_FAMILIAR','IN_RESERVA_OUTROS','IN_ATIV_PESQUISA_REM','IN_ATIV_PESQUISA_NAO_REM','IN_ATIV_EXTENSAO_REM','IN_ATIV_EXTENSAO_NAO_REM','IN_ATIV_MONITORIA_REM','IN_ATIV_MONITORIA_NAO_REM','IN_ATIV_ESTAG_N_OBRIG_REM','IN_ATIV_ESTAG_N_OBRIG_NAO_REM']
 
+    #max_allowed_packet to mysql insert 16777216
+    max_allowed_packet = 1000000
+
+    #number of rows will be written in batches of this size at a time
     chuncksize = 10000
-    block_size = 1000000
+
+    #If table exists, insert data. Create if does not exist.
     if_exists = 'append'
+
     first_insertion = True
 
     start = time.time()
@@ -123,20 +129,20 @@ def main(file_path):
 
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-            if sys.getsizeof(tuples) > block_size:
+            if sys.getsizeof(tuples) > max_allowed_packet:
                 if first_insertion == True:
-                    write_sql(table, tuples, columns, 'replace', chuncksize)
+                    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
                     print "...importing..."
                     tuples = []
                     first_insertion = False
-                
+
                 else:
-                    write_sql(table, tuples, columns, if_exists, chuncksize)
+                    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
                     print "...importing..."
                     tuples = []
 
-    write_sql(table, tuples, columns, if_exists, chuncksize)
+    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
     print "Total time: %s minutes to insert." % str((time.time() - start)/60)
-        
+
 if __name__ == "__main__":
     main()

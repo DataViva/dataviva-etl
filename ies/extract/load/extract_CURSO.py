@@ -1,6 +1,9 @@
-import sys, click, magic, codecs, time
+import sys, click, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
-from write_data import write_data
+from file_encoding import file_encoding
+from df_to_sql import write_sql
+from collections import OrderedDict
 
 '''
 
@@ -20,21 +23,19 @@ def main(file_path):
 
     start = time.time()
 
-    # Discover encoding type of file
-    blob = open(file_path).read()
-    m = magic.Magic(mime_encoding=True)
-    encoding = m.from_buffer(blob)
+    #Set file encoding
+    encoding = file_encoding(file_path)
 
     # Set encoding to this python file
     reload(sys)
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_IES', 'CO_UNIDADE_FUNCIONAMENTO', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_NIVEL_ACADEMICO', 'CO_MODALIDADE_ENSINO', 'CO_GRAU_ACADEMICO', 'CO_CURSO', 'NO_CURSO', 'CO_MUNICIPIO_CURSO', 'NO_MUNICIPIO_CURSO', 'CO_UF_CURSO', 'NO_REGIAO_CURSO', 'CO_OCDE_AREA_GERAL', 'NO_AREA_GERAL', 'CO_OCDE_AREA_ESPECIFICA', 'NO_AREA_ESPECIFICA', 'CO_OCDE_AREA_DETALHADA', 'NO_AREA_DETALHADA', 'CO_OCDE', 'NO_OCDE', 'IN_MATUTINO', 'IN_VESPERTINO', 'IN_NOTURNO', 'IN_INTEGRAL', 'QT_MATRICULA', 'QT_CONCLUINTE', 'QT_INSCRITOS_ANO', 'QT_VAGAS_INTEGRAL', 'QT_VAGAS_MATUTINO', 'QT_VAGAS_NOTURNO', 'QT_VAGAS_VESPERTINO', 'QT_INGRESSO_CURSO', 'QT_PROCESSO_SELETIVO', 'IN_ENEM', 'IN_VESTIBULAR', 'IN_OUTRA_FORMA_SELECAO', 'QT_PROCESSO_OUTRA_FORMA', 'IN_CONVENIO_PEC_G', 'IN_OUTRAS_FORMAS_INGRESSO', 'NU_CARGA_HORARIA', 'NU_PRAZO_INTEGRALIZACAO', 'IN_PERMITE_CONCLUINTE', 'IN_UTILIZA_LABORATORIO', 'IN_AJUDA_DEFICIENTE', 'IN_ALTO_RELEVO', 'IN_BRAILLE', 'IN_CARACTER_AMPLIADO', 'IN_GUIA_INTERPRETE', 'IN_TRADUTOR_LIBRAS', 'IN_AUDIO', 'IN_DISCIPLINA_LIBRAS', 'IN_MATERIAL_LIBRAS', 'IN_SINTESE_VOZ', 'IN_OFERECE_DISC_DISTANCIA', 'IN_PARTICIPA_UAB', 'NU_PERC_CARGA_HOR_DISTANCIA']
+    dtype = {'CO_IES' : String(8), 'CO_UNIDADE_FUNCIONAMENTO' : String(8), 'CO_CATEGORIA_ADMINISTRATIVA' : String(8), 'DS_CATEGORIA_ADMINISTRATIVA' : String(50), 'CO_ORGANIZACAO_ACADEMICA' : String(8), 'NO_ORGANIZACAO_ACADEMICA' : String(100), 'CO_NIVEL_ACADEMICO' : String(8), 'CO_MODALIDADE_ENSINO' : String(8), 'CO_GRAU_ACADEMICO' : String(8), 'CO_CURSO' : String (8), 'NO_CURSO' : String(200), 'CO_MUNICIPIO_CURSO' : String(120), 'NO_MUNICIPIO_CURSO' : String(120), 'CO_UF_CURSO' : String(120), 'NO_REGIAO_CURSO' : String(120), 'CO_OCDE_AREA_GERAL' : String(8), 'NO_AREA_GERAL' : String(120), 'CO_OCDE_AREA_ESPECIFICA' : String(8), 'NO_AREA_ESPECIFICA' : String(120), 'CO_OCDE_AREA_DETALHADA' : String(8), 'NO_AREA_DETALHADA' : String(120), 'CO_OCDE' : String(12), 'NO_OCDE' : String(120), 'IN_MATUTINO' : Numeric(8) , 'IN_VESPERTINO' : Numeric(8), 'IN_NOTURNO' : Numeric(8), 'IN_INTEGRAL' : Numeric(8), 'QT_MATRICULA' : Numeric(8), 'QT_CONCLUINTE' : Numeric(8), 'QT_INSCRITOS_ANO' : Numeric(8), 'QT_VAGAS_INTEGRAL' : Numeric(8), 'QT_VAGAS_MATUTINO' : Numeric(8), 'QT_VAGAS_NOTURNO' : Numeric(8), 'QT_VAGAS_VESPERTINO' : Numeric(8), 'QT_INGRESSO_CURSO' : Numeric(8), 'QT_PROCESSO_SELETIVO' : Numeric(8), 'IN_ENEM' : Numeric(8), 'IN_VESTIBULAR' : Numeric(8), 'IN_OUTRA_FORMA_SELECAO' : Numeric(8), 'QT_PROCESSO_OUTRA_FORMA' : Numeric(8), 'IN_CONVENIO_PEC_G' : Numeric(8), 'IN_OUTRAS_FORMAS_INGRESSO' : Numeric(8), 'NU_CARGA_HORARIA' : Numeric(8), 'NU_PRAZO_INTEGRALIZACAO' : Numeric(8), 'IN_PERMITE_CONCLUINTE' : Numeric(8), 'IN_UTILIZA_LABORATORIO' : Numeric(8), 'IN_AJUDA_DEFICIENTE' : Numeric(8), 'IN_ALTO_RELEVO' : Numeric(8), 'IN_BRAILLE' : Numeric(8), 'IN_CARACTER_AMPLIADO' : Numeric(8), 'IN_GUIA_INTERPRETE' : Numeric(8), 'IN_TRADUTOR_LIBRAS' : Numeric(8), 'IN_AUDIO' : Numeric(8), 'IN_DISCIPLINA_LIBRAS' : Numeric(8), 'IN_MATERIAL_LIBRAS' : Numeric(8), 'IN_SINTESE_VOZ' : Numeric(8), 'IN_OFERECE_DISC_DISTANCIA' : Numeric(8), 'IN_PARTICIPA_UAB' : Numeric(8), 'NU_PERC_CARGA_HOR_DISTANCIA' : Numeric(8)}
+    columns = ['CO_IES', 'CO_UNIDADE_FUNCIONAMENTO', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_NIVEL_ACADEMICO', 'CO_MODALIDADE_ENSINO', 'CO_GRAU_ACADEMICO', 'CO_CURSO', 'NO_CURSO', 'CO_MUNICIPIO_CURSO', 'NO_MUNICIPIO_CURSO', 'CO_UF_CURSO', 'NO_REGIAO_CURSO', 'CO_OCDE_AREA_GERAL', 'NO_AREA_GERAL', 'CO_OCDE_AREA_ESPECIFICA', 'NO_AREA_ESPECIFICA', 'CO_OCDE_AREA_DETALHADA', 'NO_AREA_DETALHADA', 'CO_OCDE', 'NO_OCDE', 'IN_MATUTINO' , 'IN_VESPERTINO', 'IN_NOTURNO', 'IN_INTEGRAL', 'QT_MATRICULA', 'QT_CONCLUINTE', 'QT_INSCRITOS_ANO', 'QT_VAGAS_INTEGRAL', 'QT_VAGAS_MATUTINO', 'QT_VAGAS_NOTURNO', 'QT_VAGAS_VESPERTINO', 'QT_INGRESSO_CURSO', 'QT_PROCESSO_SELETIVO', 'IN_ENEM', 'IN_VESTIBULAR', 'IN_OUTRA_FORMA_SELECAO', 'QT_PROCESSO_OUTRA_FORMA', 'IN_CONVENIO_PEC_G', 'IN_OUTRAS_FORMAS_INGRESSO', 'NU_CARGA_HORARIA', 'NU_PRAZO_INTEGRALIZACAO', 'IN_PERMITE_CONCLUINTE', 'IN_UTILIZA_LABORATORIO', 'IN_AJUDA_DEFICIENTE', 'IN_ALTO_RELEVO', 'IN_BRAILLE', 'IN_CARACTER_AMPLIADO', 'IN_GUIA_INTERPRETE', 'IN_TRADUTOR_LIBRAS', 'IN_AUDIO', 'IN_DISCIPLINA_LIBRAS', 'IN_MATERIAL_LIBRAS', 'IN_SINTESE_VOZ', 'IN_OFERECE_DISC_DISTANCIA', 'IN_PARTICIPA_UAB', 'NU_PERC_CARGA_HOR_DISTANCIA']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
-
             row = (
                 line[0:8],
                 line[8:16],
@@ -100,7 +101,8 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    if_exists = 'replace'
+    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
