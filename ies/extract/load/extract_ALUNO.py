@@ -35,10 +35,12 @@ def main(file_path):
     max_allowed_packet = 1000000
 
     #number of rows will be written in batches of this size at a time
-    chuncksize = None
+    chuncksize = 10000
 
     #If table exists, insert data. Create if does not exist.
     if_exists = 'append'
+
+    first_insertion = True
 
     start = time.time()
 
@@ -125,13 +127,19 @@ def main(file_path):
                 line[947:955]
             )
 
-            if sys.getsizeof(tuples) + sys.getsizeof(row) > max_allowed_packet:
-                import pdb; pdb.set_trace()
-                write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-                print "...importing..."
-                tuples = []
-
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
+
+            if sys.getsizeof(tuples) > max_allowed_packet:
+                if first_insertion == True:
+                    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
+                    print "...importing..."
+                    tuples = []
+                    first_insertion = False
+
+                else:
+                    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
+                    print "...importing..."
+                    tuples = []
 
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
     print "Total time: %s minutes to insert." % str((time.time() - start)/60)
