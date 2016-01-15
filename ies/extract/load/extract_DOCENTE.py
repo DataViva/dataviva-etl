@@ -1,6 +1,8 @@
 import sys, click, magic, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
-from write_data import write_data
+from file_encoding import file_encoding
+from df_to_sql import write_sql
 
 '''
 
@@ -30,6 +32,7 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
+    dtype = {'CO_IES' : String(8),'CO_CATEGORIA_ADMINISTRATIVA' : String(8),'DS_CATEGORIA_ADMINISTRATIVA' : String(50),'CO_ORGANIZACAO_ACADEMICA' : String(8),'NO_ORGANIZACAO_ACADEMICA' : String(100),'CO_MUNICIPIO_IES' : String(8),'NO_MUNICIPIO_IES' : String(150),'CO_UF' : String(8),'NO_REGIAO' : String(30),'CO_VINCULO_IES_DOCENTE' : String(8),'CO_DOCENTE' : String(8),'CO_SITUACAO_DOCENTE' : String(8),'CO_ESCOLARIDADE_DOCENTE' : String(8),'CO_REGIME_TRABALHO' : String(8),'IN_SEXO_DOCENTE' : Numeric(8),'NU_ANO_DOCENTE_NASC' : Numeric(8),'NU_MES_DOCENTE_NASC' : Numeric(8),'NU_DIA_DOCENTE_NASC' : Numeric(8),'NU_IDADE_DOCENTE' : Numeric(8),'CO_COR_RACA_DOCENTE' : String(8),'CO_PAIS_DOCENTE' : String(8),'CO_NACIONALIDADE_DOCENTE' : String(8),'NO_NACIONALIDADE_DOCENTE' : String(50),'IN_DOCENTE_DEFICIENCIA' : Numeric(8),'IN_CEGUEIRA' : Numeric(8),'IN_BAIXA_VISAO' : Numeric(8),'IN_SURDEZ' : Numeric(8),'IN_DEFICIENCIA_AUDITIVA' : Numeric(8),'IN_DEFICIENCIA_FISICA' : Numeric(8),'IN_SURDOCEGUEIRA' : Numeric(8),'IN_DEFICIENCIA_MULTIPLA' : Numeric(8),'IN_DEFICIENCIA_MENTAL' : Numeric(8),'IN_ATU_EAD' : Numeric(8),'IN_ATU_EXTENSAO' : Numeric(8),'IN_ATU_GESTAO' : Numeric(8),'IN_ATU_GRAD_PRESENCIAL' : Numeric(8),'IN_ATU_POS_EAD' : Numeric(8),'IN_ATU_POS_PRESENCIAL' : Numeric(8),'IN_ATU_SEQUENCIAL' : Numeric(8),'IN_BOLSA_PESQUISA' : Numeric(8),'IN_SUBSTITUTO' : Numeric(8)}
     columns = ['CO_IES', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_MUNICIPIO_IES', 'NO_MUNICIPIO_IES', 'CO_UF', 'NO_REGIAO', 'CO_VINCULO_IES_DOCENTE', 'CO_DOCENTE', 'CO_SITUACAO_DOCENTE', 'CO_ESCOLARIDADE_DOCENTE', 'CO_REGIME_TRABALHO', 'IN_SEXO_DOCENTE', 'NU_ANO_DOCENTE_NASC', 'NU_MES_DOCENTE_NASC', 'NU_DIA_DOCENTE_NASC', 'NU_IDADE_DOCENTE', 'CO_COR_RACA_DOCENTE', 'CO_PAIS_DOCENTE', 'CO_NACIONALIDADE_DOCENTE', 'NO_NACIONALIDADE_DOCENTE', 'IN_DOCENTE_DEFICIENCIA', 'IN_CEGUEIRA', 'IN_BAIXA_VISAO', 'IN_SURDEZ', 'IN_DEFICIENCIA_AUDITIVA', 'IN_DEFICIENCIA_FISICA', 'IN_SURDOCEGUEIRA', 'IN_DEFICIENCIA_MULTIPLA', 'IN_DEFICIENCIA_MENTAL', 'IN_ATU_EAD', 'IN_ATU_EXTENSAO', 'IN_ATU_GESTAO', 'IN_ATU_GRAD_PRESENCIAL', 'IN_ATU_POS_EAD', 'IN_ATU_POS_PRESENCIAL', 'IN_ATU_SEQUENCIAL', 'IN_BOLSA_PESQUISA', 'IN_SUBSTITUTO']
 
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
@@ -81,7 +84,8 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    if_exists = 'replace'
+    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 

@@ -1,7 +1,8 @@
-import sys, click, magic, codecs, time, itertools
+import sys, click, magic, codecs, time
+from sqlalchemy.types import Numeric, String
 from os.path import splitext, basename
-from write_data import write_data
-
+from file_encoding import file_encoding
+from df_to_sql import write_sql
 '''
 
 USAGE EXAMPLE:
@@ -32,9 +33,11 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    columns = ['CO_IES', 'CO_CATEGORIA_ADMINISTRATIVA', 'DS_CATEGORIA_ADMINISTRATIVA', 'CO_ORGANIZACAO_ACADEMICA', 'NO_ORGANIZACAO_ACADEMICA', 'CO_MUNICIPIO_IES', 'NO_MUNICIPIO_IES', 'SGL_UF_IES', 'CO_CURSO_EAD', 'NO_CURSO_EAD', 'CO_GRAU_ACADEMICO', 'CO_NIVEL_ACADEMICO', 'CO_OCDE', 'NU_VAGAS_OFERECIDAS_EAD', 'QT_INSCRITOS_ANO_EAD']
+    dtype = {'CO_IES' : Numeric(8),'CO_CATEGORIA_ADMINISTRATIVA' : Numeric(8),'DS_CATEGORIA_ADMINISTRATIVA' : String(50),'CO_ORGANIZACAO_ACADEMICA' : Numeric(8),'NO_ORGANIZACAO_ACADEMICA' : String(100),'CO_CURSO' : Numeric (8),'NO_CURSO' : String(200),'SGL_UF_IES' : String(2),'CO_CURSO_EAD' : Numeric(8),'NO_CURSO_EAD' : String(200),'CO_GRAU_ACADEMICO' : Numeric (8),'CO_NIVEL_ACADEMICO' : Numeric (8),'CO_OCDE' : String(12),'NU_VAGAS_OFERECIDAS_EAD' : Numeric (8),'QT_INSCRITOS_ANO_EAD' : Numeric (8)}
+    columns = ['CO_IES','CO_CATEGORIA_ADMINISTRATIVA','DS_CATEGORIA_ADMINISTRATIVA','CO_ORGANIZACAO_ACADEMICA','NO_ORGANIZACAO_ACADEMICA','CO_CURSO','NO_CURSO','SGL_UF_IES','CO_CURSO_EAD','NO_CURSO_EAD','CO_GRAU_ACADEMICO','CO_NIVEL_ACADEMICO','CO_OCDE','NU_VAGAS_OFERECIDAS_EAD','QT_INSCRITOS_ANO_EAD']
+
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
-        for line in itertools.islice(fp, 1000):
+        for line in fp:
             row = (
                 line[0:8],
                 line[8:16],
@@ -56,7 +59,7 @@ def main(file_path):
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
-    write_data(table, tuples, columns, chuncksize)
+    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
 
     print "--- %s minutes ---" % str((time.time() - start)/60)
 
