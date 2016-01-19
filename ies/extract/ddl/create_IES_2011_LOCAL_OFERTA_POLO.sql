@@ -1,7 +1,9 @@
-CO_LOCAL_OFERTA_IES	
-CO_IES				
-CO_MUNICIPIO		
-CO_UF				
-IN_SEDE				
-CO_CURSO_POLO		
-CO_CURSO			
+ dtype = {
+'CO_LOCAL_OFERTA_IES': Numeric (8),
+'CO_IES': Numeric (8),
+'CO_MUNICIPIO': Numeric (8),
+'CO_UF': Numeric (8),
+'IN_SEDE': Numeric (8),
+'CO_CURSO_POLO': Numeric (8),
+'CO_CURSO': Numeric (8),
+}
