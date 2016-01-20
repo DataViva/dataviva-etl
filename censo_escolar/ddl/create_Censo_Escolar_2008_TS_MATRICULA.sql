@@ -9,13 +9,13 @@ dtype = {
 'TP_SEXO': String(1),
 'TP_COR_RACA': String(1),
 'TP_NACIONALIDADE': String(1),
-'FK_COD_PAIS_ORIGEM': Numeric (3),
+'FK_COD_PAIS_ORIGEM': Numeric (7),
 'FK_COD_ESTADO_NASC': Numeric (2),
 'SGL_UF_NASCIMENTO': String(2),
 'FK_COD_MUNICIPIO_DNASC': Numeric (7),
 'FK_COD_ESTADO_END': Numeric (2),
 'SIGLA_END': String(2),
-'FK_COD_MUNICIPIO_END': umeric (7),
+'FK_COD_MUNICIPIO_END': Numeric (7),
 'ID_ZONA_RESIDENCIAL': String(1),
 'ID_TIPO_ATENDIMENTO': String(1),
 'ID_N_T_E_P': String(1),
@@ -47,6 +47,7 @@ dtype = {
 'ID_DEPENDENCIA_ADM_ESC': String(1),
 'DESC_CATA_ESCOLA_PRIV': String(1),
 'ID_CONVENIADA_PP_ESC': String(1),
+'ID_TIPO_CONVENIO_PODER_PUBLICO': Numeric (1),
 'ID_MANT_ESCOLA_PRIVADA_EMP': String(1),
 'ID_MANT_ESCOLA_PRIVADA_ONG': String(1),
 'ID_MANT_ESCOLA_PRIVADA_SIND': String(1),
@@ -55,4 +56,3 @@ dtype = {
 'ID_LOCALIZACAO_DIFERENCIADA': String(1),
 'ID_EDUCACAO_INDIGENA': String(1)
 }
-
