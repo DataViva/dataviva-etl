@@ -114,5 +114,5 @@ dtype = {
 'ID_EDUCACAO_INDIGENA':  String (1),
 'ID_LINGUA_INDIGENA':  String (1),
 'FK_COD_LINGUA_INDIGENA': Numeric (4),
-'ID_LINGUA_PORTUGUESA': String (1),
+'ID_LINGUA_PORTUGUESA': String (1)
 }
