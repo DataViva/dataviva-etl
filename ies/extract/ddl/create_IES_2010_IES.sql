@@ -38,5 +38,5 @@ dtype = {
 'VL_DES_CUSTEIO': numeric(8),
 'VL_DES_INVESTIMENTO': numeric(8),
 'VL_DES_PESQUISA': numeric(8),
-'VL_DES_OUTRAS': numeric(8),
+'VL_DES_OUTRAS': numeric(8)
 }

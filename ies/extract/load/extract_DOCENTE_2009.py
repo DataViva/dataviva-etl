@@ -7,7 +7,7 @@ from df_to_sql import write_sql
 '''
 
 USAGE EXAMPLE:
-python ies/extract/load/extract_DOCENTE.py ies/extract/data/IES_2009/DOCENTE.txt
+python ies/extract/load/extract_DOCENTE_2009.py ies/extract/data/IES_2009/DOCENTE.txt
 
 '''
 

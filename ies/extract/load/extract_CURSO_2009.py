@@ -8,7 +8,7 @@ from collections import OrderedDict
 '''
 
 USAGE EXAMPLE:
-python ies/extract/load/extract_CURSO.py ies/extract/data/IES_2009/CURSO.txt
+python ies/extract/load/extract_CURSO_2009.py ies/extract/data/IES_2009/CURSO.txt
 
 '''
 

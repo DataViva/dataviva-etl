@@ -12,5 +12,5 @@ dtype = {
 'IN_LOCAL_OFERTA_UAB' : Numeric (8),
 'IN_LOCAL_OFERTA_REITORIA' : Numeric (8),
 'IN_LOCAL_OFERTA_POLO' : Numeric (8),
-'IN_LOCAL_OFERTA_UNID_ACADEMICA' : Numeric (8),
+'IN_LOCAL_OFERTA_UNID_ACADEMICA' : Numeric (8)
 }

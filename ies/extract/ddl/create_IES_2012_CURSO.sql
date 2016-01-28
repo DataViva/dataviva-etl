@@ -72,5 +72,5 @@ dtype = {
 'QT_CONCLUINTE_CURSO' : Numeric (8),
 'QT_INGRESSO_CURSO' : Numeric (8),
 'QT_INGRESSO_PROCESSO_SELETIVO' : Numeric (8),
-'QT_INGRESSO_OUTRA_FORMA' : Numeric (8),
+'QT_INGRESSO_OUTRA_FORMA' : Numeric (8)
 }

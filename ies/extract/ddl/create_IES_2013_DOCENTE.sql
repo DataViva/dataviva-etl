@@ -22,30 +22,30 @@ dtype = {
 'NU_IDADE_DOCENTE': Numeric (8),
 'CO_COR_RACA_DOCENTE': Numeric (8),
 'DS_COR_RACA_DOCENTE' : String (100),
-'CO_PAIS_DOCENTE':  Numeric (8)
-'CO_NACIONALIDADE_DOCENTE' : Numeric (8)
-'CO_UF_NASCIMENTO' : Numeric (8)
-'CO_MUNICIPIO_NASCIMENTO' : Numeric (8)
-'IN_DOCENTE_DEFICIENCIA' : Numeric (8)
-'IN_CEGUEIRA' : Numeric (8)
-'IN_BAIXA_VISAO' : Numeric (8)
-'IN_SURDEZ' : Numeric (8)
-'IN_DEFICIENCIA_AUDITIVA' : Numeric (8)
-'IN_DEFICIENCIA_FISICA' : Numeric (8)
-'IN_SURDOCEGUEIRA' : Numeric (8)
-'IN_DEFICIENCIA_MULTIPLA' : Numeric (8)
-'IN_DEFICIENCIA_INTELECTUAL' : Numeric (8)
-'IN_ATU_EAD' : Numeric (8)
-'IN_ATU_EXTENSAO' : Numeric (8)
-'IN_ATU_GESTAO' : Numeric (8)
-'IN_ATU_GRAD_PRESENCIAL' : Numeric (8)
-'IN_ATU_POS_EAD' : Numeric (8)
-'IN_ATU_POS_PRESENCIAL' : Numeric (8)
-'IN_ATU_SEQUENCIAL' : Numeric (8)
-'IN_ATU_PESQUISA' : Numeric (8)
-'IN_BOLSA_PESQUISA' : Numeric (8)
-'IN_SUBSTITUTO' : Numeric (8)
-'IN_EXERCICIO_DT_REF' : Numeric (8)
-'IN_VISITANTE' : Numeric (8)
+'CO_PAIS_DOCENTE':  Numeric (8),
+'CO_NACIONALIDADE_DOCENTE' : Numeric (8),
+'CO_UF_NASCIMENTO' : Numeric (8),
+'CO_MUNICIPIO_NASCIMENTO' : Numeric (8),
+'IN_DOCENTE_DEFICIENCIA' : Numeric (8),
+'IN_CEGUEIRA' : Numeric (8),
+'IN_BAIXA_VISAO' : Numeric (8),
+'IN_SURDEZ' : Numeric (8),
+'IN_DEFICIENCIA_AUDITIVA' : Numeric (8),
+'IN_DEFICIENCIA_FISICA' : Numeric (8),
+'IN_SURDOCEGUEIRA' : Numeric (8),
+'IN_DEFICIENCIA_MULTIPLA' : Numeric (8),
+'IN_DEFICIENCIA_INTELECTUAL' : Numeric (8),
+'IN_ATU_EAD' : Numeric (8),
+'IN_ATU_EXTENSAO' : Numeric (8),
+'IN_ATU_GESTAO' : Numeric (8),
+'IN_ATU_GRAD_PRESENCIAL' : Numeric (8),
+'IN_ATU_POS_EAD' : Numeric (8),
+'IN_ATU_POS_PRESENCIAL' : Numeric (8),
+'IN_ATU_SEQUENCIAL' : Numeric (8),
+'IN_ATU_PESQUISA' : Numeric (8),
+'IN_BOLSA_PESQUISA' : Numeric (8),
+'IN_SUBSTITUTO' : Numeric (8),
+'IN_EXERCICIO_DT_REF' : Numeric (8),
+'IN_VISITANTE' : Numeric (8),
 'IN_VISITANTE_IFES_VINCULO' : Numeric (8)
 }

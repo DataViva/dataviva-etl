@@ -46,5 +46,5 @@ dtype = {
 'IN_SUBSTITUTO' : Numeric (8),
 'IN_EXERCICIO_DT_REF' : Numeric (8),
 'IN_VISITANTE' : Numeric (8),
-'IN_VISITANTE_IFES_VINCULO' : Numeric (8),
+'IN_VISITANTE_IFES_VINCULO' : Numeric (8)
 }

@@ -95,5 +95,5 @@ dtype = {
 'IN_INGRESSO_TOTAL ' : Numeric (8), 
 'IN_INGRESSO_PROCESSO_SELETIVO ' : Numeric (8), 
 'IN_INGRESSO_OUTRAS_FORMAS ' : Numeric (8), 
-'ANO_INGRESSO ' : Numeric (4), 
+'ANO_INGRESSO ' : Numeric (4)
 }

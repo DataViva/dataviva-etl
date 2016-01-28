@@ -1,5 +1,5 @@
 dtype = {
-'CO_IES	numeric(8)':,
+'CO_IES' numeric(8):,
 'CO_CATEGORIA_ADMINISTRATIVA':	numeric(8),
 'DS_CATEGORIA_ADMINISTRATIVA':	String(100),
 'CO_ORGANIZACAO_ACADEMICA':	numeric(8),
