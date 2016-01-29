@@ -17,7 +17,7 @@ def main(file_path):
     #Set table by file_path
     file_name = basename(file_path)
     file_desc, file_ext = splitext(file_name)
-    folder = file_path.split('/')[:2]
+    folder = file_path.split('/')[-2]
     table = folder+'_'+file_desc
 
     #Set file encoding
@@ -28,7 +28,7 @@ def main(file_path):
     sys.setdefaultencoding(encoding)
 
     tuples = []
-    dtype = {'CO_LOCAL_OFERTA_IES':numeric(8),'CO_IES':numeric(8),'CO_MUNICIPIO':numeric(8),'CO_UF':numeric(8),'IN_SEDE':numeric(8),'CO_CURSO_POLO':numeric(8),'CO_CURSO':numeric(8)}
+    dtype = {'CO_LOCAL_OFERTA_IES':Numeric(8),'CO_IES':Numeric(8),'CO_MUNICIPIO':Numeric(8),'CO_UF':Numeric(8),'IN_SEDE':Numeric(8),'CO_CURSO_POLO':Numeric(8),'CO_CURSO':Numeric(8)}
     columns = ['CO_LOCAL_OFERTA_IES','CO_IES','CO_MUNICIPIO','CO_UF','IN_SEDE','CO_CURSO_POLO','CO_CURSO']
 
     #max_allowed_packet to mysql insert 16777216
@@ -56,22 +56,13 @@ def main(file_path):
 				line[48:55]
             	)
 
-            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
+              tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-            if sys.getsizeof(tuples) > max_allowed_packet:
-                if first_insertion == True:
-                    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
-                    print "...importing..."
-                    tuples = []
-                    first_insertion = False
-
-                else:
-                    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-                    print "...importing..."
-                    tuples = []
-
+    chuncksize = 100
+    if_exists = 'replace'
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-    print "Total time: %s minutes to insert." % str((time.time() : start)/60)
+
+    print "--- %s minutes ---" % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()

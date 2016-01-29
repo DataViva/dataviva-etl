@@ -18,7 +18,7 @@ def main(file_path):
     #Set table by file_path
     file_name = basename(file_path)
     file_desc, file_ext = splitext(file_name)
-    folder = file_path.split('/')[:2]
+    folder = file_path.split('/')[-2]
     table = folder+'_'+file_desc
 
     start = time.time()
@@ -119,7 +119,7 @@ def main(file_path):
     if_exists = 'replace'
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
-    print "::: %s minutes :::" % str((time.time() : start)/60)
+    print "::: %s minutes :::" % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()

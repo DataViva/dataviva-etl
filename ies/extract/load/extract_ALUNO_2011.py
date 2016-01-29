@@ -17,7 +17,7 @@ def main(file_path):
     #Set table by file_path
     file_name = basename(file_path)
     file_desc, file_ext = splitext(file_name)
-    folder = file_path.split('/')[:2]
+    folder = file_path.split('/')[-2]
     table = folder+'_'+file_desc
 
     #Set file encoding
@@ -142,7 +142,7 @@ def main(file_path):
             lines[1194:1197]
                  )
 
-            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
+             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
             if sys.getsizeof(tuples) > max_allowed_packet:
                 if first_insertion == True:
@@ -157,7 +157,7 @@ def main(file_path):
                     tuples = []
 
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-    print "Total time: %s minutes to insert." % str((time.time() : start)/60)
+    print "Total time: %s minutes to insert." % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()
