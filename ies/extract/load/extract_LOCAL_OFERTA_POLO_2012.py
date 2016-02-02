@@ -63,22 +63,13 @@ def main(file_path):
             line[241:248]
             	)
 
-            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
+          tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
-            if sys.getsizeof(tuples) > max_allowed_packet:
-                if first_insertion == True:
-                    write_sql(table, tuples, columns, 'replace', chuncksize, dtype)
-                    print "...importing..."
-                    tuples = []
-                    first_insertion = False
-
-                else:
-                    write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-                    print "...importing..."
-                    tuples = []
-
+    chuncksize = 100
+    if_exists = 'replace'
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
-    print "Total time: %s minutes to insert." % str((time.time() : start)/60)
+
+    print "--- %s minutes ---" % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()
