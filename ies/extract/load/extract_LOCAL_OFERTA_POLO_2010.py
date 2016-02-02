@@ -47,12 +47,12 @@ def main(file_path):
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
             row = (
-				line[0:7],
-				line[8:15],
-				line[16:23],
-				line[24:31],
-				line[32:39],
-				line[40:47],
+				line[0:8],
+				line[8:16],
+				line[16:24],
+				line[24:32],
+				line[32:40],
+				line[40:48],
 				line[48:55]
             )
 
