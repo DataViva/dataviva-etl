@@ -53,7 +53,7 @@ def main(file_path):
 				line[24:32],
 				line[32:40],
 				line[40:48],
-				line[48:55]
+				line[48:56]
             )
 
             tuples.append(tuple([None if not str(x).strip() else x for x in row]))
