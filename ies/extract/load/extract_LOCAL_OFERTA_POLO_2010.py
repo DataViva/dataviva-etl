@@ -54,9 +54,9 @@ def main(file_path):
 				line[32:39],
 				line[40:47],
 				line[48:55]
-            	)
+            )
 
-              tuples.append(tuple([None if not str(x).strip() else x for x in row]))
+            tuples.append(tuple([None if not str(x).strip() else x for x in row]))
 
     chuncksize = 100
     if_exists = 'replace'
