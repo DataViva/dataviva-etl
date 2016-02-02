@@ -95,7 +95,7 @@ def main(file_path):
     if_exists = 'replace'
     write_sql(table, tuples, columns, if_exists, chuncksize, dtype)
 
-    print "::: %s minutes :::" % str((time.time() - start)/60)],
+    print "::: %s minutes :::" % str((time.time() - start)/60)
 
 if __name__ == "__main__":
     main()
