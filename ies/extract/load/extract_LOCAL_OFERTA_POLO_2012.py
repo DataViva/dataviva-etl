@@ -47,20 +47,20 @@ def main(file_path):
     with codecs.open(file_path, mode='r', encoding=encoding) as fp:
         for line in fp:
             row = (
-            line[1:8],
-            line[9:16],
-            line[17:24],
-            line[25:174],
-            line[175:182],
-            line[183:184],
-            line[185:192],
-            line[193:200],
-            line[201:208],
-            line[209:216],
-            line[217:224],
-            line[225:232],
-            line[233:240],
-            line[241:248]
+            line[0:8],
+            line[8:16],
+            line[16:24],
+            line[24:174],
+            line[174:182],
+            line[182:184],
+            line[184:192],
+            line[192:200],
+            line[200:208],
+            line[208:216],
+            line[216:224],
+            line[224:232],
+            line[232:240],
+            line[240:248]
             	)
 
           tuples.append(tuple([None if not str(x).strip() else x for x in row]))
