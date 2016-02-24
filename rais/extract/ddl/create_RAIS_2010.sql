@@ -63,4 +63,5 @@ create table RAIS_2010(
     DT_NASCIMENT  varchar(8),
     DT_ADMISSAO  varchar(8),
     MES_DESLIG varchar(20),
-    MES_DESLIG_FONTE  varchar(20));
+    MES_DESLIG_FONTE  varchar(20)
+    );

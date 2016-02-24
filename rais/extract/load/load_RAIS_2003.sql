@@ -1,3 +1,4 @@
+
 load data local infile 'H:/RAIS/Dados/2003/RAISCOMPL_SE_31122003.txt'
 into table RAIS_2003
 character set 'latin1'

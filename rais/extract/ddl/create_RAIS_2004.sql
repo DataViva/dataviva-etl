@@ -1,5 +1,4 @@
-
-create table RAIS2004(
+create table RAIS_2004(
  CAUSA_DESLI varchar(50),
  CAUSA_DESLI_FONTE varchar(50),
  CBO_2002 varchar(20),

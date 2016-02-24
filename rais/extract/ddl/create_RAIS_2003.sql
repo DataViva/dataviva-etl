@@ -1,5 +1,3 @@
-drop table if exists RAIS_2003;
-
 create table RAIS_2003(
  CAUSA_DESLI varchar(200),
  CAUSA_DESLI_FONTE varchar(200),
@@ -52,3 +50,4 @@ create table RAIS_2003(
  MES_DESLIG varchar(200),
  MES_DESLIG_FONTE  varchar(200)
 );
+

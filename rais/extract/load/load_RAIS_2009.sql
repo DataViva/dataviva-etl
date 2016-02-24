@@ -1,41 +1,20 @@
-load data local infile 'H:/RAIS/Dados/2009/norte09.txt'
+load data local infile 'H:/RAIS/Dados/2009/RAISCOMPL_NO_NE_CO_SU_31122009.txt'
 into table RAIS_2009
-fields terminated by ';'
+character set 'latin1'
+fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile 'H:/RAIS/Dados/2009/nordeste09.txt'
+load data local infile 'H:/RAIS/Dados/2009/RAISCOMPL_SE_31122009.txt'
 into table RAIS_2009
-fields terminated by ';'
+character set 'latin1'
+fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile 'H:/RAIS/Dados/2009/centrooeste09.txt'
+load data local infile 'H:/RAIS/Dados/2009/RAISCOMPLINATIVOS2009.txt'
 into table RAIS_2009
-fields terminated by ';'
-lines terminated by '\n'
-ignore 1 lines;
-
-load data local infile 'H:/RAIS/Dados/2009/sudeste09.txt'
-into table RAIS_2009
-fields terminated by ';'
-lines terminated by '\n'
-ignore 1 lines;
-
-load data local infile 'H:/RAIS/Dados/2009/sul09.txt'
-into table RAIS_2009
-fields terminated by ';'
-lines terminated by '\n'
-ignore 1 lines;
-
-load data local infile 'H:/RAIS/Dados/2009/sp09.txt'
-into table RAIS_2009
-fields terminated by ';'
-lines terminated by '\n'
-ignore 1 lines;
-
-load data local infile 'H:/RAIS/Dados/2009/sp09 1.txt'
-into table RAIS_2009
-fields terminated by ';'
+character set 'latin1'
+fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;

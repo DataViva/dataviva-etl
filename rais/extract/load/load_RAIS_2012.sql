@@ -1,213 +1,213 @@
-load data local infile 'H:/RAIS/Dados/2007/AC2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/AC2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/AL2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/AL2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/AM2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/AM2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/AP2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/AP2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/BA2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/BA2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/CE2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/CE2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/DF2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/DF2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/ES2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/ES2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/GO2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/GO2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/MA2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/MA2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/MG2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/MG2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/MS2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/MS2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/MT2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/MT2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/PA2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/PA2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/PB2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/PB2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/PE2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/PE2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/PI2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/PI2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/PR2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/PR2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/RJ2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/RJ2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/RN2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/RN2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/RO2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/RO2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/RR2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/RR2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/RS2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/RS2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/SC2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/SC2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/SE2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/SE2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/SP2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/SP2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
 
-load data local infile 'H:/RAIS/Dados/2007/TO2007.txt'
-into table RAIS_2007
+load data local infile 'H:/RAIS/Dados/2012/TO2012.txt'
+into table RAIS_2012
 character set 'latin1'
 fields terminated by ';'
 lines terminated by '\n'
