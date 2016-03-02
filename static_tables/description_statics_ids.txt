@@ -1,0 +1,142 @@
+OCUPAÇÃO
+
+    Renda Média Mensal -- wage_avg
+    Massa Salarial -- wage
+    Total de Empregos -- num_jobs
+    Total de Estabelecimentos -- num_est
+
+    Principal Município por empregos (nome e valor) -- main_municipality_jobs
+    Município com maior renda média mensal -- main_municipality_monthly_income
+    Atividade com maior renda média mensal -- main_economic_activity_monthly_income
+    Principal Atividade por Empregos -- main_economic_activity_jobs
+
+ATIVIDADES ECONÔMICAS
+
+    Renda Média mensal -- wage_avg
+    Massa Salarial -- wage
+    Total de Empregos -- num_jobs
+    Total de Estabelecimentos -- num_est
+    RCA doméstico -- rca
+    Distância -- distance
+    Ganho de Oportunidade -- opp_gain
+
+    Município com maior número de empregos -- municipality_with_more_jobs
+    Município com maior renda média mensal -- municipality_with_more_monthly_income
+    Ocupação com maior número de empregos -- occupation_highest_jobs
+    Ocupação com maior renda média mensal -- occupation_highest_monthly_income
+
+PRODUTOS
+
+    Saldo da Balança Comercial -- trade_balance
+    Valor Total Exportado -- export_val
+    Relação Peso Líquido(kg)/Valor Total Exportado -- weigth_value_export
+    Valor Total Importado -- import_val
+    Relação Peso Líquido(kg)/Valor Total Importado -- weight_value_import
+    Índice de Complexidade do Produto -- pci
+    RCA internacional (se definida uma região, menos Brasil) -- rca
+    Distância internacional (se definida uma região, menos Brasil) -- distance
+    Ganho de Oportunidade internacional (se definida uma região, menos Brasil) -- opp_gain
+
+    Principal Município por valor total exportado -- main_municipality_export
+    Principal Município por valor total importado -- main_municipality_import
+    Principal Destino por valor total exportado -- main_export_destiny
+    Principal Origem por valor total importado -- main_import_origin
+
+PARCEIROS COMERCIAIS
+
+    Saldo da Balança Comercial -- trade_balance
+    Valor Total Exportado -- export_val
+    Relação Peso Líquido(kg)/Valor Total Exportado -- weight_value_export
+    Valor Total Importado -- import_val
+    Relação Peso Líquido(kg)/Valor Total Importado -- weight_value_import
+
+    Principal Município por valor total exportado -- main_municipality_export
+    Principal Município por valor total importado -- main_municipality_import
+
+    Principal Produto por valor total exportado -- main_product_export
+    Principal Produto por valor total importado -- main_product_import
+    Produto com maior Saldo da Balança Comercial -- product_higher_trade_balance
+    Produto com menor Saldo da Balança Comercial -- product_lower_trade_balance
+
+UNIVERSIDADES
+
+    Número de Matrículas -- enrollment
+    Número de Ingressantes -- entrant
+    Número de Concluintes -- graduates
+
+    Principal Curso por Número de Alunos Matriculados -- main_course_enrollment
+    Principal Curso por Número de Alunos Ingressantes -- main_course_entrant
+    Principal Curso por Número de Alunos Concluintes -- main_course_graduates
+
+CURSOS DE ENSINO SUPERIOR
+
+    Número de Matrículas -- enrollment
+    Número de Ingressantes -- entrant
+    Número de Concluintes -- graduates
+
+    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollment
+    Principal Município por Número de Alunos Ingressantes -- main_municipality_entrant
+    Principal Município por Número de Alunos Concluintes -- main_municipality_graduates
+
+    Principal Universidade por Número de Alunos Matriculados -- main_university_enrollment
+    Principal Universidade por Número de Alunos Ingressantes -- main_university_entrant
+    Principal Universidade por Número de Alunos Concluintes -- main_university_graduates
+
+EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
+
+    Número de Matrículas -- enrollment
+    Número de Turmas -- classes
+    Número de Escolas -- school
+    Tamanho Médio das Turmas -- average_class_size
+    Idade Média -- average_age
+
+    Principal Escola por Número de Alunos Matriculados -- main_school_enrollment
+    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollment
+
+LOCATIONS
+
+PIB; -- 'gdp'
+Esperança de vida ao nascer; -- 'life_exp'
+População (Censo 2010); -- 'pop'
+PIB per capta; -- 'gdp_pc'
+IDHM; -- 'hdi'
+Índice de Complexidade Econômica -- economic_complexity_index
+
+Comércio Internacional:
+
+    Principal produto por valor total exportado -- main_product_export
+    Principal produto por valor total importado -- main_product_import
+    Total de Exportações -- value_export
+    Total de Importações -- value_import
+    Principal destino por valor exportado -- main_export_destiny
+    Principal origem por valor importado -- main_import_origin
+
+Salário e Emprego:
+
+    Principal Atividade Econômica por número de empregos -- main_economic_activity
+    Principal Ocupação por número de empregos -- main_occupation_jobs
+    Salário Médio -- average_wage
+    Massa Salarial -- salary_mass
+    Total de empregos -- 'employers'
+
+Oportunidades Econômicas:
+
+    Produto com menor distância -- product_less_distance
+    Atividade Econômica com menor distância -- economic_activity_less_distance
+    Produto com maior ganho de oportunidade -- product_highest_opp_gain
+    Atividade Econômica com maior ganho de oportunidade -- economic_activity_opp_gain
+
+Educação:
+
+    Universidade com maior número de matrícula -- main_university_enrollment
+    Curso Superior com maior número de matrícula -- main_course_hedu_enrollment
+    Escola com maior número de matrícula em Cursos Técnicos -- main_school_enrollment
+    Curso Técnico com maior número de matrículas -- main_course_sc_enrollment
+
+
+'gini', 'Índice de Gini'
+'hdi_edu', 'IDH Educação'
+'hdi_income', 'IDHM Renda'
+'hdi_life', 'IDHM Longevidade'
+'theil', 'Índice de Theil - L'
+'theiltrab', 'Índice de Theil-L dos rendimentos do trabalho - 18 anos ou mais'
