@@ -1,0 +1,45 @@
+id |name_en |keywords_en |name_pt |desc_pt |keywords_pt |gender_pt |plural_pt |article_pt |color
+average_monthly_income |\N|\N|Renda Média Mensal|\N|\N|\N|\N|\N|\N
+wage_avg|\N|\N| Renda Média Mensal|\N|\N|\N|\N|\N|\N
+wage|\N|\N| Massa Salarial|\N|\N|\N|\N|\N|\N
+num_jobs|\N|\N| Total de Empregos|\N|\N|\N|\N|\N|\N
+num_est|\N|\N| Estabelecimentos|\N|\N|\N|\N|\N|\N
+main_municipality_jobs|\N|\N| Principal Município por empregos|\N|\N|\N|\N|\N|\N
+main_municipality_monthly_income|\N|\N| Município com maior renda média mensal|\N|\N|\N|\N|\N|\N
+main_economic_activity_monthly_income|\N|\N| Atividade com maior renda média mensal|\N|\N|\N|\N|\N|\N
+main_economic_activity_jobs|\N|\N| Principal Atividade por Empregos|\N|\N|\N|\N|\N|\N
+rca|\N|\N| RCA|\N|\N|\N|\N|\N|\N
+distance|\N|\N| Distância|\N|\N|\N|\N|\N|\N
+opp_gain|\N|\N| Ganho de Oportunidade|\N|\N|\N|\N|\N|\N
+municipality_with_more_jobs|\N|\N| Município com maior número de empregos|\N|\N|\N|\N|\N|\N
+municipality_with_more_monthly_income|\N|\N| Município com maior renda média mensal|\N|\N|\N|\N|\N|\N
+occupation_highest_jobs|\N|\N| Ocupação com maior número de empregos|\N|\N|\N|\N|\N|\N
+occupation_highest_monthly_income|\N|\N| Ocupação com maior renda média mensal|\N|\N|\N|\N|\N|\N
+trade_balance|\N|\N| Saldo da Balança Comercial|\N|\N|\N|\N|\N|\N
+export_val|\N|\N| Valor Total Exportado|\N|\N|\N|\N|\N|\N
+weight_value_export|\N|\N| Relação Peso Líquido(kg)/Valor Total Exportado|\N|\N|\N|\N|\N|\N
+import_val |\N|\N| Valor Total Importado|\N|\N|\N|\N|\N|\N
+weight_value_import|\N|\N| Relação Peso Líquido(kg)/Valor Total Importado|\N|\N|\N|\N|\N|\N
+main_municipality_export|\N|\N| Principal Município por valor total exportado|\N|\N|\N|\N|\N|\N
+main_municipality_import|\N|\N| Principal Município por valor total importado|\N|\N|\N|\N|\N|\N
+main_product_export|\N|\N| Principal Produto por valor total exportado |\N|\N|\N|\N|\N|\N
+main_product_import|\N|\N| Principal Produto por valor total importado|\N|\N|\N|\N|\N|\N
+product_higher_trade_balance|\N|\N| Produto com maior Saldo da Balança Comercial|\N|\N|\N|\N|\N|\N
+product_lower_trade_balance|\N|\N| Produto com menor Saldo da Balança Comercial|\N|\N|\N|\N|\N|\N
+enrollment|\N|\N| Número de Matrículas|\N|\N|\N|\N|\N|\N
+entrant|\N|\N| Número de Ingressantes|\N|\N|\N|\N|\N|\N
+graduates|\N|\N| Número de Concluintes |\N|\N|\N|\N|\N|\N
+main_course_enrollment|\N|\N| Principal Curso por Número de Alunos Matriculados|\N|\N|\N|\N|\N|\N
+main_course_entrant|\N|\N| Principal Curso por Número de Alunos Ingressantes|\N|\N|\N|\N|\N|\N
+main_course_graduates|\N|\N| Principal Curso por Número de Alunos Concluintes|\N|\N|\N|\N|\N|\N
+main_municipality_enrollment|\N|\N| Principal Município por Número de Alunos Matriculados|\N|\N|\N|\N|\N|\N
+main_municipality_entrant|\N|\N| Principal Município por Número de Alunos Ingressantes|\N|\N|\N|\N|\N|\N
+main_municipality_graduates|\N|\N| Principal Município por Número de Alunos Concluintes|\N|\N|\N|\N|\N|\N
+main_university_enrollment|\N|\N| Principal Universidade por Número de Alunos Matriculados|\N|\N|\N|\N|\N|\N
+main_university_entrant|\N|\N| Principal Universidade por Número de Alunos Ingressantes|\N|\N|\N|\N|\N|\N
+main_university_graduates|\N|\N| Principal Universidade por Número de Alunos Concluintes|\N|\N|\N|\N|\N|\N
+classes|\N|\N| Número de Turmas|\N|\N|\N|\N|\N|\N
+school|\N|\N| Número de Escolas|\N|\N|\N|\N|\N|\N
+average_class_size|\N|\N| Tamanho Médio das Turmas|\N|\N|\N|\N|\N|\N
+average_age|\N|\N| Idade Média|\N|\N|\N|\N|\N|\N
+main_school_enrollment|\N|\N| Principal Escola por Número de Alunos Matriculados|\N|\N|\N|\N|\N|\N
