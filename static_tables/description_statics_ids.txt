@@ -22,8 +22,8 @@ ATIVIDADES ECONÔMICAS
 
     Município com maior número de empregos -- top_municipality_employment -- Top municipality employment
     Município com maior renda média mensal -- top_municipality_monthly_wage -- Municipality with the highest average monthly wage
-    Ocupação com maior número de empregos -- occupation_highest_jobs --
-    Ocupação com maior renda média mensal -- occupation_highest_monthly_wage
+    Ocupação com maior número de empregos -- occupation_highest_jobs -- Occupations with the highest number of jobs
+    Ocupação com maior renda média mensal -- occupation_highest_monthly_wage -- Occupations with the highest average monthly wage
 
 PRODUTOS
 
