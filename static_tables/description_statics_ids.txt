@@ -1,29 +1,29 @@
 OCUPAÇÃO
 
-    Renda Média Mensal -- wage_avg
-    Massa Salarial -- wage
-    Total de Empregos -- num_jobs
-    Total de Estabelecimentos -- num_est
+    Renda Média Mensal -- wage_avg -- Wage average monthly
+    Massa Salarial -- wage -- Salary mass
+    Total de Empregos -- num_jobs -- Total jobs
+    Total de Estabelecimentos -- num_est -- Total stores / Total establishments
 
-    Município com maior número de empregos -- main_municipality_jobs
-    Município com maior renda média mensal -- main_municipality_monthly_income
-    Atividade com maior número de empregos -- economic_activity_highest_jobs
-    Atividade com maior renda média mensal -- economic_activity_highest_monthly_income
+    Município com maior número de empregos -- top_municipality_employment -- Top municipality employment
+    Município com maior renda média mensal -- top_municipality_monthly_wage -- Municipality with the highest average monthly wage
+    Atividade com maior número de empregos -- economic_activity_highest_jobs -- Activity with more jobs
+    Atividade com maior renda média mensal -- economic_activity_highest_monthly_wage -- Activity with the highest average monthly wage
 
 ATIVIDADES ECONÔMICAS
 
-    Renda Média mensal -- wage_avg
-    Massa Salarial -- wage
-    Total de Empregos -- num_jobs
-    Total de Estabelecimentos -- num_est
-    RCA doméstico -- rca
-    Distância -- distance
-    Ganho de Oportunidade -- opp_gain
+    Renda Média mensal -- wage_avg -- Wage average monthly
+    Massa Salarial -- wage -- Salary mass
+    Total de Empregos -- num_jobs -- Total jobs
+    Total de Estabelecimentos -- num_est -- Total stores / Total establishments
+    VCR doméstico -- rca -- Domestic RCA
+    Distância -- distance -- Distance
+    Ganho de Oportunidade -- opp_gain -- Opportnity gain
 
-    Município com maior número de empregos -- main_municipality_jobs
-    Município com maior renda média mensal -- main_municipality_monthly_income
-    Ocupação com maior número de empregos -- occupation_highest_jobs
-    Ocupação com maior renda média mensal -- occupation_highest_monthly_income
+    Município com maior número de empregos -- top_municipality_employment -- Top municipality employment
+    Município com maior renda média mensal -- top_municipality_monthly_wage -- Municipality with the highest average monthly wage
+    Ocupação com maior número de empregos -- occupation_highest_jobs --
+    Ocupação com maior renda média mensal -- occupation_highest_monthly_wage
 
 PRODUTOS
 
@@ -95,12 +95,12 @@ EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 
 LOCATIONS
 
-PIB; -- 'gdp'
-Esperança de vida ao nascer; -- 'life_exp'
-População (Censo 2010); -- 'pop'
-PIB per capta; -- 'gdp_pc'
-IDHM; -- 'hdi'
-Índice de Complexidade Econômica -- economic_complexity_index
+    PIB; -- 'gdp'
+    Esperança de vida ao nascer; -- 'life_exp'
+    População (Censo 2010); -- 'pop'
+    PIB per capta; -- 'gdp_pc'
+    IDHM; -- 'hdi'
+    Índice de Complexidade Econômica -- economic_complexity_index
 
 Comércio Internacional:
 
