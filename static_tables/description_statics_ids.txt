@@ -5,10 +5,10 @@ OCUPAÇÃO
     Total de Empregos -- num_jobs
     Total de Estabelecimentos -- num_est
 
-    Principal Município por empregos (nome e valor) -- main_municipality_jobs
+    Município com maior número de empregos -- main_municipality_jobs
     Município com maior renda média mensal -- main_municipality_monthly_income
-    Atividade com maior renda média mensal -- main_economic_activity_monthly_income
-    Principal Atividade por Empregos -- main_economic_activity_jobs
+    Atividade com maior número de empregos -- economic_activity_highest_jobs
+    Atividade com maior renda média mensal -- economic_activity_highest_monthly_income
 
 ATIVIDADES ECONÔMICAS
 
@@ -20,8 +20,8 @@ ATIVIDADES ECONÔMICAS
     Distância -- distance
     Ganho de Oportunidade -- opp_gain
 
-    Município com maior número de empregos -- municipality_with_more_jobs
-    Município com maior renda média mensal -- municipality_with_more_monthly_income
+    Município com maior número de empregos -- main_municipality_jobs
+    Município com maior renda média mensal -- main_municipality_monthly_income
     Ocupação com maior número de empregos -- occupation_highest_jobs
     Ocupação com maior renda média mensal -- occupation_highest_monthly_income
 
@@ -60,31 +60,31 @@ PARCEIROS COMERCIAIS
 
 UNIVERSIDADES
 
-    Número de Matrículas -- enrollment
-    Número de Ingressantes -- entrant
+    Número de Matrículas -- enrollments
+    Número de Ingressantes -- entrants
     Número de Concluintes -- graduates
 
-    Principal Curso por Número de Alunos Matriculados -- main_course_enrollment
-    Principal Curso por Número de Alunos Ingressantes -- main_course_entrant
+    Principal Curso por Número de Alunos Matriculados -- main_course_enrollments
+    Principal Curso por Número de Alunos Ingressantes -- main_course_entrants
     Principal Curso por Número de Alunos Concluintes -- main_course_graduates
 
 CURSOS DE ENSINO SUPERIOR
 
-    Número de Matrículas -- enrollment
-    Número de Ingressantes -- entrant
+    Número de Matrículas -- enrollments
+    Número de Ingressantes -- entrants
     Número de Concluintes -- graduates
 
-    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollment
-    Principal Município por Número de Alunos Ingressantes -- main_municipality_entrant
+    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollments
+    Principal Município por Número de Alunos Ingressantes -- main_municipality_entrants
     Principal Município por Número de Alunos Concluintes -- main_municipality_graduates
 
-    Principal Universidade por Número de Alunos Matriculados -- main_university_enrollment
-    Principal Universidade por Número de Alunos Ingressantes -- main_university_entrant
+    Principal Universidade por Número de Alunos Matriculados -- main_university_enrollments
+    Principal Universidade por Número de Alunos Ingressantes -- main_university_entrants
     Principal Universidade por Número de Alunos Concluintes -- main_university_graduates
 
 EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 
-    Número de Matrículas -- enrollment
+    Número de Matrículas -- enrollments
     Número de Turmas -- classes
     Número de Escolas -- school
     Tamanho Médio das Turmas -- average_class_size
@@ -106,8 +106,8 @@ Comércio Internacional:
 
     Principal produto por valor total exportado -- main_product_export
     Principal produto por valor total importado -- main_product_import
-    Total de Exportações -- value_export
-    Total de Importações -- value_import
+    Total de Exportações -- export_val
+    Total de Importações -- import_val
     Principal destino por valor exportado -- main_export_destiny
     Principal origem por valor importado -- main_import_origin
 
@@ -132,11 +132,3 @@ Educação:
     Curso Superior com maior número de matrícula -- main_course_hedu_enrollment
     Escola com maior número de matrícula em Cursos Técnicos -- main_school_enrollment
     Curso Técnico com maior número de matrículas -- main_course_sc_enrollment
-
-
-'gini', 'Índice de Gini'
-'hdi_edu', 'IDH Educação'
-'hdi_income', 'IDHM Renda'
-'hdi_life', 'IDHM Longevidade'
-'theil', 'Índice de Theil - L'
-'theiltrab', 'Índice de Theil-L dos rendimentos do trabalho - 18 anos ou mais'
