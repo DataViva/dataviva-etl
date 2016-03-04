@@ -14,7 +14,7 @@ ATIVIDADES ECONÔMICAS
 
 1    Renda Média mensal -- wage_avg -- Wage average monthly
 2    Massa Salarial -- wage -- Salary mass
-3    Total de Empregos -- 'employers' -- Employers
+3    Total de Empregos -- 'employers' -- num_jobs
 4    Total de Estabelecimentos -- num_est -- Total stores / Total establishments
 5    VCR doméstico -- rca -- Domestic RCA
 6    Distância -- distance -- Distance
@@ -29,7 +29,7 @@ PRODUTOS
 
 1    Saldo da Balança Comercial -- trade_balance -- Trade balance
 2    Valor Total Exportado -- export_val -- Total exports
-3    Relação Peso Líquido(kg)/Valor Total Exportado -- weigth_value_export -- Ratio net weight(kg)/Total value exported
+3    Relação Peso Líquido(kg)/Valor Total Exportado -- weight_value_export -- Ratio net weight(kg)/Total value exported
 4    Valor Total Importado -- import_val - Total imports
 5    Relação Peso Líquido(kg)/Valor Total Importado -- weight_value_import -- Ratio net weight(kg)/Total value imported
 6    Índice de Complexidade do Produto -- pci -- Product Complexity Index
@@ -37,10 +37,10 @@ PRODUTOS
 8    Distância internacional (se definida uma região, menos Brasil) -- distance -- International distance
 9    Ganho de Oportunidade internacional (se definida uma região, menos Brasil) -- opp_gain -- International opportunity gain
 
-10    Principal Município por valor total exportado -- main_municipality_export -- Main municipality of total exports
-11    Principal Município por valor total importado -- main_municipality_import -- Main municipality of total imports
-12    Principal Destino por valor total exportado -- main_export_destiny -- Main destination for total exports
-13    Principal Origem por valor total importado -- main_import_origin -- Main origin for total imports
+10    Principal Município por valor total exportado -- top_municipality_export -- Main municipality of total exports
+11    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
+12    Principal Destino por valor total exportado -- top_export_destiny -- Main destination for total exports
+13    Principal Origem por valor total importado -- top_import_origin -- Main origin for total imports
 
 PARCEIROS COMERCIAIS
 
@@ -50,11 +50,11 @@ PARCEIROS COMERCIAIS
 4    Valor Total Importado -- import_val -- Total imports
 5    Relação Peso Líquido(kg)/Valor Total Importado -- weight_value_import -- Ratio net weight(kg)/Total value imported
 
-6    Principal Município por valor total exportado -- main_municipality_export -- Main municipality of total exports
-7    Principal Município por valor total importado -- main_municipality_import -- Main municipality of total imports
+6    Principal Município por valor total exportado -- top_municipality_export -- Main municipality of total exports
+7    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
 
-8    Principal Produto por valor total exportado -- main_exported_product -- Main exported product
-9    Principal Produto por valor total importado -- main_imported_product -- Main imported product
+8    Principal Produto por valor total exportado -- top_exported_product -- Main exported product
+9    Principal Produto por valor total importado -- top_imported_product -- Main imported product
 10    Produto com maior Saldo da Balança Comercial -- product_higher_trade_balance -- Product with the highest Trade Balance
 11    Produto com menor Saldo da Balança Comercial -- product_lower_trade_balance -- Product with lower Trade Balance
 
@@ -64,21 +64,21 @@ UNIVERSIDADES
 2    Número de Ingressantes -- entrants -- Number of Entrants
 3    Número de Concluintes -- graduates -- Number of Graduates
 
-4    Principal Curso por Número de Alunos Matriculados -- main_course_enrollments -- Main course by Number of Students Enrolled
-5    Principal Curso por Número de Alunos Ingressantes -- main_course_entrants -- Main course by Number of Entrants Students
-6    Principal Curso por Número de Alunos Concluintes -- main_course_graduates -- Main course by Number of Students Graduates
+4    Principal Curso por Número de Alunos Matriculados -- top_course_enrollments -- Main course by Number of Students Enrolled
+5    Principal Curso por Número de Alunos Ingressantes -- top_course_entrants -- Main course by Number of Entrants Students
+6    Principal Curso por Número de Alunos Concluintes -- top_course_graduates -- Main course by Number of Students Graduates
 
 CURSOS DE ENSINO SUPERIOR
 
 1    Número de Matrículas -- enrollments -- Number of Enrollments
 2    Número de Ingressantes -- entrants -- Number of Entrants
 3    Número de Concluintes -- graduates -- Number of Graduates
-4    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollments --  Main municipality by Number of Students Enrolled
-5    Principal Município por Número de Alunos Ingressantes -- main_municipality_entrants -- Main municipality by Number of Entrants Students
-6    Principal Município por Número de Alunos Concluintes -- main_municipality_graduates -- Main municipality by Number of Students Graduates
-7    Principal Universidade por Número de Alunos Matriculados -- main_university_enrollments --  Main university by Number of Students Enrolled
-8    Principal Universidade por Número de Alunos Ingressantes -- main_university_entrants -- Main university by Number of Entrants Students
-9    Principal Universidade por Número de Alunos Concluintes -- main_university_graduates -- Main university by Number of Students Graduates
+4    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments --  Main municipality by Number of Students Enrolled
+5    Principal Município por Número de Alunos Ingressantes -- top_municipality_entrants -- Main municipality by Number of Entrants Students
+6    Principal Município por Número de Alunos Concluintes -- top_municipality_graduates -- Main municipality by Number of Students Graduates
+7    Principal Universidade por Número de Alunos Matriculados -- top_university_enrollments --  Main university by Number of Students Enrolled
+8    Principal Universidade por Número de Alunos Ingressantes -- top_university_entrants -- Main university by Number of Entrants Students
+9    Principal Universidade por Número de Alunos Concluintes -- top_university_graduates -- Main university by Number of Students Graduates
 
 EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 
@@ -87,8 +87,8 @@ EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 3    Número de Escolas -- school
 4    Tamanho Médio das Turmas -- average_class_size
 5    Idade Média -- average_age
-6    Principal Escola por Número de Alunos Matriculados -- main_school_enrollment
-7    Principal Município por Número de Alunos Matriculados -- main_municipality_enrollment
+6    Principal Escola por Número de Alunos Matriculados -- top_school_enrollment
+7    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments
 
 LOCATIONS
 
@@ -101,31 +101,31 @@ LOCATIONS
 
 Comércio Internacional:
 
-1    Principal produto por valor total exportado -- main_product_export -- Main product for total exports
-2    Principal produto por valor total importado -- main_product_import -- Main product for total imports
-3    Total de Exportações -- export_val -- Total exports
-4    Total de Importações -- import_val -- Total imports
-5    Principal destino por valor exportado -- main_export_destiny -- Main destination for total exports
-6    Principal origem por valor importado -- main_import_origin -- Main origin for total imports
+7    Principal produto por valor total exportado -- top_product_export -- Main product for total exports
+8    Principal produto por valor total importado -- top_product_import -- Main product for total imports
+9    Total de Exportações -- export_val -- Total exports
+10    Total de Importações -- import_val -- Total imports
+11    Principal destino por valor exportado -- top_export_destiny -- Main destination for total exports
+12    Principal origem por valor importado -- top_import_origin -- Main origin for total imports
 
 Salário e Emprego:
 
-1    Principal Atividade Econômica por número de empregos -- main_economic_activity -- Main Economic Activity by number of jobs
-2    Principal Ocupação por número de empregos -- main_occupation_jobs -- Main Occupation by number of jobs
-3    Salário Médio -- average_wage -- Average wage
-4    Massa Salarial -- wage -- Salary Mass
-5    Total de empregos -- 'employers' -- Employers
+13    Principal Atividade Econômica por número de empregos -- top_economic_activity -- Main Economic Activity by number of jobs
+14    Principal Ocupação por número de empregos -- top_occupation_jobs -- Main Occupation by number of jobs
+15    Salário Médio -- average_wage -- Average wage
+16    Massa Salarial -- wage -- Salary Mass
+17    Total de empregos -- 'employers' -- Employers
 
 Oportunidades Econômicas:
 
-1    Produto com menor distância -- product_less_distance -- Product with less distance
-2    Atividade Econômica com menor distância -- economic_activity_less_distance -- Econonmic Activity with less distance
-3    Produto com maior ganho de oportunidade -- product_highest_opp_gain -- Product with highest opportunity gain
-4    Atividade Econômica com maior ganho de oportunidade -- economic_activity_opp_gain -- Economic Activity with highest opportunity gain
+18    Produto com menor distância -- product_less_distance -- Product with less distance
+19    Atividade Econômica com menor distância -- economic_activity_less_distance -- Econonmic Activity with less distance
+20    Produto com maior ganho de oportunidade -- product_highest_opp_gain -- Product with highest opportunity gain
+21    Atividade Econômica com maior ganho de oportunidade -- economic_activity_opp_gain -- Economic Activity with highest opportunity gain
 
 Educação:
 
-1    Principal Universidade por Número de Alunos Matriculados -- main_university_enrollments --  Main university by Number of Students Enrolled
-2    Principal Curso por Número de Alunos Matriculados -- main_course_enrollments -- Main course by Number of Students Enrolled (hedu)
-3    Principal Escola por Número de Alunos Matriculados -- main_school_enrollment (sc)
-4    Principal Curso por Número de Alunos Matriculados -- main_course_enrollments -- Main course by Number of Students Enrolled (sc)
+22    Principal Universidade por Número de Alunos Matriculados -- top_university_enrollments --  Main university by Number of Students Enrolled
+23    Principal Curso por Número de Alunos Matriculados -- top_course_enrollments -- Main course by Number of Students Enrolled (hedu)
+24    Principal Escola por Número de Alunos Matriculados -- top_school_enrollment (sc)
+25    Principal Curso por Número de Alunos Matriculados -- top_course_enrollments -- Main course by Number of Students Enrolled (sc)
