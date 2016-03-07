@@ -87,3 +87,54 @@ update stat_ybi sybi set top_municipality_monthly_wage = (
 )where bra_id = '0';
 
 
+
+
+
+/*
+
+select * from stat_ybi_tmp;
+
+
+-- Município com maior número de empregos (caso seja selecionado localidade diferente de Brasil)
+
+update stat_ybi_tmp sybi set top_municipality_employment = (
+
+    select ybi.num_jobs from dataviva.rais_ybi ybi
+    where ybi.cnae_id = sybi.cnae_id and
+    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(sybi.bra_id+'%') and
+    ybi.year = '2013'
+    order by ybi.num_jobs desc
+    limit 1
+
+)where bra_id != '0';
+
+
+
+
+select name_pt, num_jobs from rais_ybi ybi
+inner join attrs_bra bra on bra.id = ybi.bra_id  
+where cnae_id = 'g47113' and
+bra_id_len = 9 and bra_id LIKE '4mg%' and
+year = (select max(year) from rais_ybi where cnae_id = 'g47113' and bra_id LIKE '4mg%')
+order by num_jobs desc
+limit 1;
+
+select * from stat_ybi_tmp where cnae_id='g47113' and bra_id = '4mg';
+
+
+
+-- -------------------------------
+
+
+
+-- Município com maior renda média mensal (caso não seja Brasil) :
+update stat_ybi sybi set top_municipality_monthly_wage = (
+    select  ybi.wage_avg from dataviva.rais_ybi ybi
+    where ybi.cnae_id = sybi.cnae_id and
+    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(sybi.bra_id+'%') and
+    ybi.year = "2013"
+    order by ybi.wage_avg desc
+    limit 1
+
+)where bra_id != '0';
+*/
