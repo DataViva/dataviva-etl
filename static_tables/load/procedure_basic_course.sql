@@ -16,3 +16,16 @@ BEGIN
             ORDER BY enrolled desc LIMIT 1;
         END LOOP;
 END
+
+
+update dataviva_client.TbTeste set enrolled=(SELECT enrolled FROM dataviva.sc_yc src where TbTeste.course_sc_id = src.course_sc_id and year = 2014);
+
+
+
+
+            SELECT
+                year, school_id, bra_id, course_sc_id, enrolled FROM dataviva.sc_ybsc
+                WHERE course_sc_id = course and
+                bra_id like '4mg%' and
+                year IN (select max(year) from dataviva.sc_ybsc where course_sc_id = course and bra_id = '4mg')
+            ORDER BY enrolled desc LIMIT 1;
