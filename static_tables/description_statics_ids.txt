@@ -84,11 +84,13 @@ EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 
 1    Número de Matrículas -- enrollments -- Number of Enrollments
 2    Número de Turmas -- classes --
-3    Número de Escolas -- school
+3    Número de Escolas -- total_schools
 4    Tamanho Médio das Turmas -- average_class_size
 5    Idade Média -- average_age
-6    Principal Escola por Número de Alunos Matriculados -- top_school_enrollment
-7    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments
+6    Principal Escola por Número de Alunos Matriculados -- top_school_enrollments
+7    Número de matrículas da Principal Escola por número de alunos matriculados -- school_enrollments
+8    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments
+9    Número de matrículas do Principal Município por Número de Alunos Matriculados -- municipality_enrollments
 
 LOCATIONS
 
