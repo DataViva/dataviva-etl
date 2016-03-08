@@ -73,12 +73,18 @@ CURSOS DE ENSINO SUPERIOR
 1    Número de Matrículas -- enrollments -- Number of Enrollments
 2    Número de Ingressantes -- entrants -- Number of Entrants
 3    Número de Concluintes -- graduates -- Number of Graduates
-4    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments --  Main municipality by Number of Students Enrolled
-5    Principal Município por Número de Alunos Ingressantes -- top_municipality_entrants -- Main municipality by Number of Entrants Students
-6    Principal Município por Número de Alunos Concluintes -- top_municipality_graduates -- Main municipality by Number of Students Graduates
-7    Principal Universidade por Número de Alunos Matriculados -- top_university_enrollments --  Main university by Number of Students Enrolled
+4    Principal Universidade por Número de Alunos Matriculados -- top_university_enrollments --  Main university by Number of Students Enrolled
+5    Números de alunos do Principal Universidade por Número de Alunos Matriculados -- university_enrollments --
+6    Principal Município por Número de Alunos Matriculados -- top_municipality_enrollments --  Main municipality by Number of Students Enrolled
+7    Números de alunos do Principal Município por Número de Alunos Matriculados -- municipality_enrollments --
 8    Principal Universidade por Número de Alunos Ingressantes -- top_university_entrants -- Main university by Number of Entrants Students
-9    Principal Universidade por Número de Alunos Concluintes -- top_university_graduates -- Main university by Number of Students Graduates
+9    Números de alunos do Principal Universidade por Número de Alunos Ingressantes -- university_entrants --
+10   Principal Município por Número de Alunos Ingressantes -- top_municipality_entrants -- Main municipality by Number of Entrants Students
+11   Números de alunos do Principal Município por Número de Alunos Ingressantes -- municipality_entrants --
+12   Principal Universidade por Número de Alunos Concluintes -- top_university_graduates -- Main university by Number of Students Graduates
+13   Números de alunos do Principal Universidade por Número de Alunos Concluintes -- university_graduates --
+14   Principal Município por Número de Alunos Concluintes -- top_municipality_graduates -- Main municipality by Number of Students Graduates
+15   Números de alunos do Principal Município por Número de Alunos Concluintes -- municipality_graduates --
 
 EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 
