@@ -1,3 +1,4 @@
+drop table stat_ybi;
 create table stat_ybi(
     year varchar(4),
     bra_id varchar(9),
@@ -19,6 +20,8 @@ create table stat_ybi(
     top_municipality_monthly_wage_id varchar(10)
     
 );
+
+drop table stat_ybo;
 create table stat_ybo(
     year varchar(4),
     bra_id varchar(9),
@@ -31,9 +34,9 @@ create table stat_ybo(
     top_municipality_employment_id varchar(10),
     top_municipality_monthly_wage float,
     top_municipality_monthly_wage_id varchar(10),
-    economic_activity_highest_jobs  int,
-    economic_activity_highest_jobs_id varchar(10),
-    economic_activity_highest_monthly_wage float,
-    economic_activity_highest_monthly_wage_id varchar(10)
+    industry_highest_jobs  int,
+    industry_highest_jobs_id varchar(10),
+    industry_highest_monthly_wage float,
+    industry_highest_monthly_wage_id varchar(10)
     
 );
