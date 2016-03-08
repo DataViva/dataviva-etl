@@ -65,8 +65,11 @@ UNIVERSIDADES
 3    Número de Concluintes -- graduates -- Number of Graduates
 
 4    Principal Curso por Número de Alunos Matriculados -- top_course_enrollments -- Main course by Number of Students Enrolled
-5    Principal Curso por Número de Alunos Ingressantes -- top_course_entrants -- Main course by Number of Entrants Students
-6    Principal Curso por Número de Alunos Concluintes -- top_course_graduates -- Main course by Number of Students Graduates
+5    Número de alunos do Principal Curso por Número de Alunos Matriculados -- course_enrollments -- Number of Students Enrolled
+6    Principal Curso por Número de Alunos Ingressantes -- top_course_entrants -- Main course by Number of Entrants Students
+7    Número de alunos do Principal Curso por Número de Alunos Ingressantes -- course_entrants -- Number of Entrants Students
+8    Principal Curso por Número de Alunos Concluintes -- top_course_graduates -- Main course by Number of Students Graduates
+9    Número de alunos do Principal Curso por Número de Alunos Concluintes -- course_graduates -- Number of Students Graduates
 
 CURSOS DE ENSINO SUPERIOR
 
