@@ -90,7 +90,7 @@ update stat_ybi sybi set top_municipality_monthly_wage = (
 
 
 
-/*
+/* resolver 
 
 select * from stat_ybi_tmp;
 
