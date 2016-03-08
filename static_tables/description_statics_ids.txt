@@ -7,8 +7,8 @@ OCUPAÇÃO
 
 5    Município com maior número de empregos -- top_municipality_employment -- Top municipality employment
 6    Município com maior renda média mensal -- top_municipality_monthly_wage -- Municipality with the highest average monthly wage
-7    Atividade com maior número de empregos -- economic_activity_highest_jobs -- Activity with more jobs
-8    Atividade com maior renda média mensal -- economic_activity_highest_monthly_wage -- Activity with the highest average monthly wage
+7    Atividade com maior número de empregos -- industry_highest_jobs -- Activity with more jobs
+8    Atividade com maior renda média mensal -- industry_highest_monthly_wage -- Activity with the highest average monthly wage
 
 ATIVIDADES ECONÔMICAS
 
@@ -121,7 +121,7 @@ Comércio Internacional:
 
 Salário e Emprego:
 
-13    Principal Atividade Econômica por número de empregos -- top_economic_activity -- Main Economic Activity by number of jobs
+13    Principal Atividade Econômica por número de empregos -- top_industry -- Main Economic Activity by number of jobs
 14    Principal Ocupação por número de empregos -- top_occupation_jobs -- Main Occupation by number of jobs
 15    Salário Médio -- average_wage -- Average wage
 16    Massa Salarial -- wage -- Salary Mass
@@ -130,9 +130,9 @@ Salário e Emprego:
 Oportunidades Econômicas:
 
 18    Produto com menor distância -- product_less_distance -- Product with less distance
-19    Atividade Econômica com menor distância -- economic_activity_less_distance -- Econonmic Activity with less distance
+19    Atividade Econômica com menor distância -- industry_less_distance -- Econonmic Activity with less distance
 20    Produto com maior ganho de oportunidade -- product_highest_opp_gain -- Product with highest opportunity gain
-21    Atividade Econômica com maior ganho de oportunidade -- economic_activity_opp_gain -- Economic Activity with highest opportunity gain
+21    Atividade Econômica com maior ganho de oportunidade -- industry_opp_gain -- Economic Activity with highest opportunity gain
 
 Educação:
 

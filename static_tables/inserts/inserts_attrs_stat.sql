@@ -21,10 +21,10 @@ INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, articl
 VALUES ("top_municipality_monthly_wage", NULL, NULL,"Município com maior renda média mensal", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
-VALUES ("economic_activity_highest_jobs", NULL, NULL,"Atividade com maior renda média mensal", NULL, NULL, NULL);
+VALUES ("industy_highest_jobs", NULL, NULL,"Atividade com maior renda média mensal", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
-VALUES ("economic_activity_highest_monthly_wage", NULL, NULL,"Principal Atividade por Empregos", NULL, NULL, NULL);
+VALUES ("industy_highest_monthly_wage", NULL, NULL,"Principal Atividade por Empregos", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
 VALUES ("rca", NULL, NULL,"RCA", NULL, NULL, NULL);
@@ -144,7 +144,7 @@ VALUES ("economic_complexity_index", NULL, NULL,"Índice de Complexidade Econôm
 -- LOCATIONS
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
-VALUES ("economic_activity_less_distance", NULL, NULL,"Atividade Econômica com menor distância", NULL, NULL, NULL);
+VALUES ("industy_less_distance", NULL, NULL,"Atividade Econômica com menor distância", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
 VALUES ("product_less_distance", NULL, NULL,"Produto com menor distância", NULL, NULL, NULL);
@@ -153,7 +153,7 @@ INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, articl
 VALUES ("product_highest_opp_gain", NULL, NULL,"Produto com maior ganho de oportunidade", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
-VALUES ("economic_activity_opp_gain", NULL, NULL,"Atividade Econômica com maior ganho de oportunidade", NULL, NULL, NULL);
+VALUES ("industy_opp_gain", NULL, NULL,"Atividade Econômica com maior ganho de oportunidade", NULL, NULL, NULL);
 
 INSERT INTO attrs_stat (id, name_en,desc_en, name_pt, desc_pt, plural_pt, article_pt)
 VALUES ("top_course_enrollments", NULL, NULL,"Principal Curso por Número de Alunos Matriculados", NULL, NULL, NULL);
