@@ -11,11 +11,11 @@ create table stat_ybi(
     opp_gain float
 );
 
-CREATE TABLE `dataviva_client`.`stat_yb` (
+CREATE TABLE `dataviva_client`.`stat_ybsc` (
   `year` YEAR NOT NULL COMMENT '',
   `bra_id` VARCHAR(45) NULL COMMENT '',
   `course_sc_id` VARCHAR(45) NULL COMMENT '',
-  `course_enrollemnts` INT NULL COMMENT '',
+  `enrollemnts` INT NULL COMMENT '',
   `classes` INT NULL COMMENT '',
   `total_school` INT NULL COMMENT '',
   `average_class_size` DECIMAL NULL COMMENT '',
