@@ -1,0 +1,1 @@
+inserts_stat_ybo.sql
