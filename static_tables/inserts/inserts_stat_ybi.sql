@@ -101,7 +101,7 @@ update stat_ybi_tmp sybi set top_municipality_employment = (
 
     select ybi.num_jobs from dataviva.rais_ybi ybi
     where ybi.cnae_id = sybi.cnae_id and
-    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(sybi.bra_id+'%') and
+    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(@sybi.bra_id,'%') and
     ybi.year = '2013'
     order by ybi.num_jobs desc
     limit 1
@@ -131,7 +131,7 @@ select * from stat_ybi_tmp where cnae_id='g47113' and bra_id = '4mg';
 update stat_ybi sybi set top_municipality_monthly_wage = (
     select  ybi.wage_avg from dataviva.rais_ybi ybi
     where ybi.cnae_id = sybi.cnae_id and
-    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(sybi.bra_id+'%') and
+    ybi.bra_id_len = 9 and ybi.bra_id LIKE concat(@sybi.bra_id,'%') and
     ybi.year = "2013"
     order by ybi.wage_avg desc
     limit 1
