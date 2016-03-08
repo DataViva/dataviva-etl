@@ -1,0 +1,15 @@
+-- INSERT BRAZIL
+
+INSERT INTO stat_ybu (year, bra_id, university_id, enrollments, entrants, graduates, top_course_enrollments, course_enrollments, top_course_entrants, course_entrants, top_course_graduates, course_graduates)
+SELECT year, 0 as Brasil, university_id as Universidade,
+        enrolled as Matrículas_Curso,
+        entrants as Ingressantes,
+        graduates as Concluintes,
+        (select course_hedu_id from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by enrolled desc limit 1) as Top_Course_Enrollments,
+        (select enrolled from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by enrolled desc limit 1) as Course_Enrollments,
+        (select course_hedu_id from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by entrants desc limit 1) as Top_Course_Entrants,
+        (select entrants from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by entrants desc limit 1) as Course_Entrants,
+        (select course_hedu_id from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by graduates desc limit 1) as Top_Course_Graduates,
+        (select graduates from dataviva.hedu_yuc where year = '2013' and university_id = dataviva.hedu_yu.university_id and length(course_hedu_id) = 6 order by graduates desc limit 1) as Course_Graduates
+        FROM dataviva.hedu_yu
+        where year = '2013';
