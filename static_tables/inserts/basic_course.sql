@@ -1,6 +1,6 @@
 -- INSERT BRAZIL
 
-INSERT INTO stat_ybsc (year,  bra_id,  course_sc_id,  enrollemnts,  classes,  total_schools,  average_class_size,  average_age,  top_school_enrollments,  school_enrollments,  top_municipality_enrollments,  municipality_enrollments)
+INSERT INTO stat_ybsc (year,  bra_id,  course_sc_id,  enrollemnts,  classes,  total_school,  average_class_size,  average_age,  top_school_enrollments,  school_enrollments,  top_municipality_enrollments,  municipality_enrollments)
 SELECT year, 0 as Brasil, course_sc_id as Curso,
         enrolled as Matrículas_Curso,
         classes as Turmas,
@@ -16,7 +16,7 @@ SELECT year, 0 as Brasil, course_sc_id as Curso,
 
 -- INSERT LOCATIONS
 
-INSERT INTO stat_ybsc (year,  bra_id,  course_sc_id,  enrollemnts,  classes,  total_schools,  average_class_size,  average_age,  top_school_enrollments,  school_enrollments,  top_municipality_enrollments,  municipality_enrollments)
+INSERT INTO stat_ybsc (year,  bra_id,  course_sc_id,  enrollemnts,  classes,  total_school,  average_class_size,  average_age,  top_school_enrollments,  school_enrollments,  top_municipality_enrollments,  municipality_enrollments)
 SELECT year, bra_id as Brasil, course_sc_id as Curso,
         enrolled as Matrículas_Curso,
         classes as Turmas,
