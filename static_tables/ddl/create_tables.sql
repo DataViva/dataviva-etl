@@ -57,3 +57,25 @@ CREATE TABLE `dataviva_client`.`stat_ybu` (
   `course_entrants` INT(10) NULL COMMENT '',
   `top_course_graduates` VARCHAR(9) NULL COMMENT '',
   `course_graduates` INT(10) NULL COMMENT '');
+
+CREATE TABLE `dataviva_client`.`stat_ybhs` (
+  `year` YEAR NOT NULL COMMENT '',
+  `bra_id` VARCHAR(11) NULL COMMENT '',
+  `hs_id` VARCHAR(9) NULL COMMENT '',
+  `trade_balance` BIGINT NULL COMMENT '',
+  `export_val` BIGINT COMMENT '',
+  `weight_value_export` DECIMAL NULL COMMENT '',
+  `import_val` BIGINT NULL COMMENT '',
+  `weight_value_import` DECIMAL NULL COMMENT '',
+  `pci` DECIMAL NULL COMMENT '',
+  `rca` DECIMAL NULL COMMENT '',
+  `distance` DECIMAL NULL COMMENT '',
+  `opp_gain` DECIMAL NULL COMMENT '',
+  `top_municipality_export` VARCHAR(45) NULL COMMENT '',
+  `municipality_export` BIGINT NULL COMMENT '',
+  `top_municipality_import` VARCHAR(45) NULL COMMENT '',
+  `municipality_import` BIGINT NULL COMMENT '',
+  `top_export_destiny` VARCHAR(7) NULL COMMENT '',
+  `top_export_value` BIGINT NULL COMMENT '',
+  `top_import_origin` VARCHAR(7) NULL COMMENT '',
+  `top_import_value` BIGINT NULL COMMENT '');
