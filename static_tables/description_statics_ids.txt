@@ -55,12 +55,18 @@ PARCEIROS COMERCIAIS
 5    Relação Peso Líquido(kg)/Valor Total Importado -- weight_value_import -- Ratio net weight(kg)/Total value imported
 
 6    Principal Município por valor total exportado -- top_municipality_export -- Main municipality of total exports
-7    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
+7    Valor total do Principal Município por valor total exportado -- municipality_export -- Value of Main municipality of total exports
+8    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
+9    Valor total do Principal Município por valor total importado -- municipality_import -- Value of Main municipality of total imports
 
-8    Principal Produto por valor total exportado -- top_exported_product -- Main exported product
-9    Principal Produto por valor total importado -- top_imported_product -- Main imported product
-10    Produto com maior Saldo da Balança Comercial -- product_higher_trade_balance -- Product with the highest Trade Balance
-11    Produto com menor Saldo da Balança Comercial -- product_lower_trade_balance -- Product with lower Trade Balance
+10    Principal Produto por valor total exportado -- top_export_product -- Main exported product
+11    Valor do Principal Produto por valor total exportado -- top_export_product_value -- Value of Main exported product
+12    Principal Produto por valor total importado -- top_import_product -- Main imported product
+13    Valor do Principal Produto por valor total importado -- top_import_product_value -- Valor of Main imported product
+14    Produto com maior Saldo da Balança Comercial -- product_higher_trade_balance -- Product with the highest Trade Balance
+15    Valor do Produto com maior Saldo da Balança Comercial -- product_higher_value -- Value of Product with the highest Trade Balance
+16    Produto com menor Saldo da Balança Comercial -- product_lower_trade_balance -- Product with lower Trade Balance
+17    Valor do Produto com menor Saldo da Balança Comercial -- product_lower_value -- Value of Product with lower Trade Balance
 
 UNIVERSIDADES
 
