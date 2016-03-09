@@ -22,6 +22,7 @@ SELECT year, 0 as Brasil, course_hedu_id as Curso,
 
 -- INSERT LOCATIONS
 
+INSERT INTO stat_ybhedu (year, bra_id, course_hedu_id, enrollemnts, entrants, graduates, top_university_enrollments, university_enrollments, top_municipality_enrollments, municipality_enrollments, top_university_entrants, university_entrants, top_municipality_entrants, municipality_entrants, top_university_graduates, university_graduates, top_municipality_graduates, municipality_graduates)
 SELECT year, bra_id as Location, course_hedu_id as Curso,
         enrolled as Matrículas_Curso,
         entrants as Ingressantes,
