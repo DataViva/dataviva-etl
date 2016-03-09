@@ -108,11 +108,11 @@ EDUCAÇÃO BÁSICA E ENSINO TÉCNICO
 LOCATIONS
 
 1    PIB; -- 'gdp' -- GDP
-2    Esperança de vida ao nascer; -- 'life_exp' -- Life expectancy
+2    -- Esperança de vida ao nascer; -- 'life_exp' -- Life expectancy , N Brasil
 3    População (Censo 2010); -- 'pop' -- Population
 4    PIB per capta; -- 'gdp_pc' -- GDP per capita
-5    IDHM; -- 'hdi' -- HDI
-6    Índice de Complexidade Econômica -- economic_complexity_index -- Economic complexity index
+5    -- IDHM; -- 'hdi' -- HDI , N Brasil
+6    -- Índice de Complexidade Econômica -- economic_complexity_index -- Economic complexity index, N Brasil
 
 Comércio Internacional:
 

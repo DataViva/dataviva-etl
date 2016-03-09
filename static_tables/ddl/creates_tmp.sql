@@ -40,3 +40,27 @@ create table stat_ybo(
     industry_highest_monthly_wage_id varchar(10)
     
 );
+
+
+-- products 
+drop table stat_yb;
+create table stat_ybp(
+    year varchar(4),
+    bra_id varchar(9),
+    trade_balance float,
+    export_val float,
+    weight_value_export float,
+    import_val float,
+    weight_value_import float,
+    pci float,
+    rca float,
+    distance float,
+    opp_gain float,
+    occupation_highest_monthly_wage float,
+    occupation_highest_monthly_wage_id varchar(10),
+    top_municipality_employment int ,
+    top_municipality_employment_id varchar(10) ,
+    top_municipality_monthly_wage float,
+    top_municipality_monthly_wage_id varchar(10)
+    
+);
