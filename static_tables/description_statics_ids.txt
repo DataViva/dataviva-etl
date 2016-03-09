@@ -38,9 +38,13 @@ PRODUTOS
 9    Ganho de Oportunidade internacional (se definida uma região, menos Brasil) -- opp_gain -- International opportunity gain
 
 10    Principal Município por valor total exportado -- top_municipality_export -- Main municipality of total exports
-11    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
-12    Principal Destino por valor total exportado -- top_export_destiny -- Main destination for total exports
-13    Principal Origem por valor total importado -- top_import_origin -- Main origin for total imports
+11    Valor total do Principal Município por valor total exportado -- municipality_export -- Value of Main municipality of total exports
+12    Principal Município por valor total importado -- top_municipality_import -- Main municipality of total imports
+13    Valor total do Principal Município por valor total importado -- municipality_import -- Value of Main municipality of total imports
+14    Principal Destino por valor total exportado -- top_export_destiny -- Main destination for total exports
+15    Valor total do Principal Destino por valor total exportado -- top_export_value -- Value of Main destination for total exports
+16    Principal Origem por valor total importado -- top_import_origin -- Main origin for total imports
+17    Valor total do Principal Origem por valor total importado -- top_import_value -- Value of Main origin for total imports
 
 PARCEIROS COMERCIAIS
 
