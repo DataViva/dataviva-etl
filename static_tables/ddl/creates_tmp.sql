@@ -71,7 +71,6 @@ create table stat_ybpw(
     top_import_origin_id varchar(10)
 );
 
----- falta
 
 -- Salário e Emprego
 create table stat_ybio(
@@ -95,9 +94,12 @@ create table stat_ybip(
     industry_less_distance  varchar(255),
     industry_less_distance_id  varchar(10),
     product_highest_opp_gain  varchar(255),
+    product_highest_opp_gain_id  varchar(255),
     industry_opp_gain  varchar(255),
     industry_opp_gain_id  varchar(10)
 );
+
+---- falta
 
 -- Educação
 create table stat_ybuc(

@@ -196,12 +196,179 @@ select id from dataviva.attrs_bra;
         limit 1
     );
 
+-- Salário e Emprego --ano 2013 rais
+    insert into stat_ybio (bra_id) 
+        select id from dataviva.attrs_bra;
 
 
+    update stat_ybio sybio set 
+    year = '2013',
+    top_industry = (
+    -- Principal Atividade Econômica por número de empregos;
+        select num_emp from dataviva.rais_ybi
+        where bra_id = sybio.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_industry_id = (
+    -- Principal Atividade Econômica por número de empregos;
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybio.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_occupation_jobs = (
+    -- Principal Ocupação por número de empregos;
+        select num_jobs from dataviva.rais_ybo
+        where bra_id = sybio.bra_id
+        and cbo_id_len = 4
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_occupation_jobs_id = (
+    -- Principal Ocupação por número de empregos;
+        select cbo_id from dataviva.rais_ybo
+        where bra_id = sybio.bra_id
+        and cbo_id_len = 4
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    average_wage = (
+    -- Salário Médio;
+        select wage_avg from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    ),
+    wage = (
+    -- Massa Salarial;
+        select wage from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    ),
+    employers = (
+    -- Total de empregos;
+        select num_jobs from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    );
 
+-- Oportunidades Econômicas 
+    insert into stat_ybip (bra_id) 
+        select id from dataviva.attrs_bra;
 
-
-
+   update stat_ybip sybip set 
+   product_less_distance = ( 
+   -- Produto com menor distância
+        select distance_wld from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and distance_wld is not null
+        and year = '2014'
+        order by distance_wld asc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a maio oportunidade (opp_gain_wld)
+    ),
+    product_less_distance_id = ( 
+   -- Produto com menor distância
+        select hs_id from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and distance_wld is not null
+        and year = '2014'
+        order by distance_wld asc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a maio oportunidade (opp_gain_wld)
+    ),
+    industry_less_distance = (
+    -- Atividade Econômica com menor distância
+        select distance from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and distance is not null
+        order by distance asc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior oportunidade. (opp_gain_wld)
+    ),industry_less_distance_id = (
+    -- Atividade Econômica com menor distância
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and distance is not null
+        order by distance asc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior oportunidade. (opp_gain_wld)
+    ),
+    product_highest_opp_gain = (
+    -- Produto com maior ganho de oportunidade
+        select opp_gain_wld from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and opp_gain_wld is not null
+        and year = (select max(year) from dataviva.secex_ymbp)
+        order by opp_gain_wld desc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a menor distancia (distance_wld)
+    ), product_highest_opp_gain_id = (
+    -- Produto com maior ganho de oportunidade
+        select hs_id from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and opp_gain_wld is not null
+        and year = (select max(year) from dataviva.secex_ymbp)
+        order by opp_gain_wld desc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a menor distancia (distance_wld)
+    ),
+    industry_opp_gain = (
+    -- Atividade Econômica com maior ganho de oportunidade
+        select opp_gain from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and opp_gain is not null
+        and opp_gain = (
+            select max(opp_gain) from dataviva.rais_ybi
+            where bra_id = sybip.bra_id
+            and year = '2013'
+            and opp_gain is not null
+        )
+        order by opp_gain desc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
+    ),
+    industry_opp_gain_id = (
+    -- Atividade Econômica com maior ganho de oportunidade
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and opp_gain is not null
+        and opp_gain = (
+            select max(opp_gain) from dataviva.rais_ybi
+            where bra_id = sybip.bra_id
+            and year = '2013'
+            and opp_gain is not null
+        )
+        order by opp_gain desc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
+    );
 
 
 
@@ -209,87 +376,6 @@ select id from dataviva.attrs_bra;
 
 /*
 
-Salário e Emprego {
-    Principal Atividade Econômica por número de empregos;
-        select name_pt from rais_ybi
-        inner join attrs_cnae on rais_ybi.cnae_id = attrs_cnae.id
-        where bra_id = '1ac'
-        and cnae_id_len = 6
-        and year = (select max(year) from rais_ybi)
-        and num_jobs is not null
-        order by num_jobs desc
-        limit 1;
-    Principal Ocupação por número de empregos;
-        select name_pt, num_jobs from rais_ybo
-        inner join attrs_cbo on rais_ybo.cbo_id = attrs_cbo.id
-        where bra_id = '1ac'
-        and cbo_id_len = 4
-        and year = (select max(year) from rais_ybo)
-        and num_jobs is not null
-        order by num_jobs desc
-        limit 40;
-    Salário Médio;
-        select wage_avg from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-    Massa Salarial;
-        select wage from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-    Total de empregos;
-        select num_jobs from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-}
-Oportunidades Econômicas {
-    Produto com menor distância
-        select name_pt, hs_id, distance_wld from secex_ymbp secex
-        inner join attrs_hs hs on hs.id = secex.hs_id
-        where bra_id = '1ac'
-        and month = 0
-        and hs_id_len = 6
-        and distance_wld is not null
-        and year = (select max(year) from secex_ymbp)
-        order by distance_wld asc
-        limit 1;
-        -- Em caso de empate, olhar ao produto com a maio oportunidade (opp_gain_wld)
-    Atividade Econômica com menor distância
-        select name_pt, distance from rais_ybi
-        inner join attrs_cnae on rais_ybi.cnae_id = attrs_cnae.id
-        where bra_id = '4mg'
-        and cnae_id_len = 6
-        and year = (select max(year) from rais_ybi)
-        and distance is not null
-        order by distance asc
-        limit 1;
-        -- Em caso de empate, olhar a atividade com maior oportunidade. (opp_gain_wld)
-    Produto com maior ganho de oportunidade
-        select name_pt, hs_id, opp_gain_wld from secex_ymbp secex
-        inner join attrs_hs hs on hs.id = secex.hs_id
-        where bra_id = '1ac'
-        and month = 0
-        and hs_id_len = 6
-        and opp_gain_wld is not null
-        and year = (select max(year) from secex_ymbp)
-        order by opp_gain_wld desc
-        limit 1;
-        -- Em caso de empate, olhar ao produto com a menor distancia (distance_wld)
-    Atividade Econômica com maior ganho de oportunidade
-        select name_pt, opp_gain, num_jobs from rais_ybi
-        inner join attrs_cnae on rais_ybi.cnae_id = attrs_cnae.id
-        where bra_id = '1ac'
-        and cnae_id_len = 6
-        and year = (select max(year) from rais_ybi)
-        and opp_gain is not null
-        and opp_gain = (
-            select max(opp_gain) from rais_ybi
-            where bra_id = '1ac'
-            and year = (select max(year) from rais_ybi)
-            and opp_gain is not null
-        )
-        order by opp_gain desc;
-        -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
-}
 Educação {
     Universidade com maior número de matrícula
         select name_en, enrolled from hedu_ybu
