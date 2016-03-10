@@ -1,4 +1,4 @@
-insert into stat_yb (year, bra_id) values ('2014', 0);
+insert into stat_yb (year, bra_id) values ('2010', 0);
 
 -- Brasil 
     -- Headers 
