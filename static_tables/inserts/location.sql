@@ -196,10 +196,73 @@ select id from dataviva.attrs_bra;
         limit 1
     );
 
+-- Salário e Emprego --ano 2013 rais
+    insert into stat_ybio (bra_id) 
+        select id from dataviva.attrs_bra;
 
 
+    update stat_ybio sybio set 
+    year = '2013',
+    top_industry = (
+    -- Principal Atividade Econômica por número de empregos;
+        select num_emp from dataviva.rais_ybi
+        where bra_id = sybio.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_industry_id = (
+    -- Principal Atividade Econômica por número de empregos;
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybio.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_occupation_jobs = (
+    -- Principal Ocupação por número de empregos;
+        select num_jobs from dataviva.rais_ybo
+        where bra_id = sybio.bra_id
+        and cbo_id_len = 4
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    top_occupation_jobs_id = (
+    -- Principal Ocupação por número de empregos;
+        select cbo_id from dataviva.rais_ybo
+        where bra_id = sybio.bra_id
+        and cbo_id_len = 4
+        and year = '2013'
+        and num_jobs is not null
+        order by num_jobs desc
+        limit 1
+    ),
+    average_wage = (
+    -- Salário Médio;
+        select wage_avg from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    ),
+    wage = (
+    -- Massa Salarial;
+        select wage from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    ),
+    employers = (
+    -- Total de empregos;
+        select num_jobs from dataviva.rais_yb
+        where bra_id = sybio.bra_id
+        and year = '2013'
+    );
 
-
+-- Oportunidades Econômicas 
 
 
 
@@ -209,38 +272,6 @@ select id from dataviva.attrs_bra;
 
 /*
 
-Salário e Emprego {
-    Principal Atividade Econômica por número de empregos;
-        select name_pt from rais_ybi
-        inner join attrs_cnae on rais_ybi.cnae_id = attrs_cnae.id
-        where bra_id = '1ac'
-        and cnae_id_len = 6
-        and year = (select max(year) from rais_ybi)
-        and num_jobs is not null
-        order by num_jobs desc
-        limit 1;
-    Principal Ocupação por número de empregos;
-        select name_pt, num_jobs from rais_ybo
-        inner join attrs_cbo on rais_ybo.cbo_id = attrs_cbo.id
-        where bra_id = '1ac'
-        and cbo_id_len = 4
-        and year = (select max(year) from rais_ybo)
-        and num_jobs is not null
-        order by num_jobs desc
-        limit 40;
-    Salário Médio;
-        select wage_avg from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-    Massa Salarial;
-        select wage from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-    Total de empregos;
-        select num_jobs from rais_yb
-        where bra_id = '1ac'
-        and year = (select max(year) from rais_ybo);
-}
 Oportunidades Econômicas {
     Produto com menor distância
         select name_pt, hs_id, distance_wld from secex_ymbp secex

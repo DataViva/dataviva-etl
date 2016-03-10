@@ -71,7 +71,6 @@ create table stat_ybpw(
     top_import_origin_id varchar(10)
 );
 
----- falta
 
 -- Salário e Emprego
 create table stat_ybio(
@@ -85,6 +84,8 @@ create table stat_ybio(
     wage  varchar(255),
     employers varchar(255)
 );
+
+---- falta
 
 -- Oportunidades Econômicas
 create table stat_ybip(
