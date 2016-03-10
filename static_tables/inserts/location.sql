@@ -369,47 +369,87 @@ select id from dataviva.attrs_bra;
         limit 1
         -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
     );
+    
 -- Educação
     insert into stat_ybuc (bra_id) 
         select id from dataviva.attrs_bra;
 
-    
-
-
-
-
-/*
-
-Educação {
-    Universidade com maior número de matrícula
-        select name_en, enrolled from hedu_ybu
-        inner join attrs_university on hedu_ybu.university_id = attrs_university.id
-        where bra_id = '4sp'
-        and year = (select max(year) from hedu_ybu)
-        order by enrolled desc;
-    Curso Superior com maior número de matrícula
-        select name_pt, enrolled from hedu_ybc
-        inner join attrs_course_hedu on hedu_ybc.course_hedu_id = attrs_course_hedu.id
-        where bra_id = '4mg'
+    update stat_ybuc sybu set 
+    top_university_enrollments = (
+    -- Universidade com maior número de matrícula
+        select enrolled from dataviva.hedu_ybu
+        where bra_id = sybu.bra_id
+        and year = '2013'
+        order by enrolled desc
+        limit 1
+    ),
+    top_university_enrollments_id = (
+    -- Universidade com maior número de matrícula
+        select university_id from dataviva.hedu_ybu
+        where bra_id = sybu.bra_id
+        and year = '2013'
+        order by enrolled desc
+        limit 1
+    ),
+    top_course_enrollments = (
+    -- Curso Superior com maior número de matrícula
+        select enrolled from dataviva.hedu_ybc
+        where bra_id = sybu.bra_id
         and course_hedu_id_len = 6
-        and year = (select max(year) from hedu_ybc)
-        order by enrolled desc;
-    Escola com maior número de matrícula em Cursos Técnicos
-        select name_pt, sum(enrolled) from sc_ybsc
-        inner join attrs_school on sc_ybsc.school_id = attrs_school.id
-        where bra_id = '4mg'
+        and year = '2013'
+        order by enrolled desc
+        limit 1
+    ),
+    top_course_enrollments_id = (
+    -- Curso Superior com maior número de matrícula
+        select course_hedu_id from dataviva.hedu_ybc
+        where bra_id = sybu.bra_id
+        and course_hedu_id_len = 6
+        and year = '2013'
+        order by enrolled desc
+        limit 1
+    ),
+    top_school_enrollment = (        
+    --  Escola com maior número de matrícula em Cursos Técnicos
+        select sum(enrolled) from dataviva.sc_ybsc
+        where bra_id = sybu.bra_id
         and course_sc_id not like 'xx%'
-        and year = (select max(year) from sc_ybsc)
-        group by sc_ybsc.school_id, name_pt
-        order by sum(enrolled) desc;
-    Curso Técnico com maior número de matrículas
-        select name_pt, sum(enrolled) from sc_ybsc
-        inner join attrs_course_sc on sc_ybsc.course_sc_id = attrs_course_sc.id
-        where bra_id = '4mg'
+        and year = '2014'
+        group by sc_ybsc.school_id
+        order by sum(enrolled) desc
+        limit 1
+    ),
+    top_school_enrollment_id = (        
+    --  Escola com maior número de matrícula em Cursos Técnicos
+        select school_id from dataviva.sc_ybsc
+        where bra_id = sybu.bra_id
         and course_sc_id not like 'xx%'
-        and year = (select max(year) from sc_ybsc)
-        group by sc_ybsc.course_sc_id, name_pt
-        order by sum(enrolled) desc;
-}
-*/
+        and year = '2014'
+        group by sc_ybsc.school_id
+        order by sum(enrolled) desc
+        limit 1
+    ),
+    technical_course_enrollment = (
+    -- Curso Técnico com maior número de matrículas
+        select sum(enrolled) from dataviva.sc_ybsc
+        where bra_id = sybu.bra_id
+        and course_sc_id not like 'xx%'
+        and year = '2014'
+        group by sc_ybsc.course_sc_id
+        order by sum(enrolled) desc
+        limit 1
+    ),
+     technical_course_enrollment_id = (
+    -- Curso Técnico com maior número de matrículas
+        select course_sc_id from dataviva.sc_ybsc
+        where bra_id = sybu.bra_id
+        and course_sc_id not like 'xx%'
+        and year = '2014'
+        group by sc_ybsc.course_sc_id
+        order by sum(enrolled) desc
+        limit 1
+    );
+
+
+
 

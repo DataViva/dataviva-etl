@@ -417,3 +417,116 @@ CASE WHEN dataviva.secex_ymbw.bra_id_len = 9 THEN null ELSE (SELECT import_val f
 (SELECT hs_id from dataviva.secex_ympw where year = '2014' and month = '0' and hs_id_len = 6 and wld_id = World and bra_id like concat(Location, '%') order by CASE WHEN export_val is null THEN 0 ELSE export_val END - CASE WHEN import_val is null THEN 0 ELSE import_val END asc limit 1) as Min_product_balance,
 (SELECT CASE WHEN export_val is null THEN 0 ELSE export_val END - CASE WHEN import_val is null THEN 0 ELSE import_val END as trade_balance from dataviva.secex_ymbpw where year = '2014' and month = '0' and hs_id_len = 6 and wld_id = World and bra_id like concat(Location, '%') order by trade_balance asc limit 1) as Min_product_balance_value
 from dataviva.secex_ymbw where year = '2014' and month = '0' and bra_id not like '0%';
+
+
+
+/**************************************************************************/
+ -- locations 
+
+ -- Oportunidades Econômicas -- rodar remoto
+    insert into stat_ybip (bra_id) 
+        select id from dataviva.attrs_bra;
+
+   update stat_ybip sybip set 
+   product_less_distance = ( 
+   -- Produto com menor distância
+        select distance_wld from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and distance_wld is not null
+        and year = '2014'
+        order by distance_wld asc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a maio oportunidade (opp_gain_wld)
+    ),
+    product_less_distance_id = ( 
+   -- Produto com menor distância
+        select hs_id from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and distance_wld is not null
+        and year = '2014'
+        order by distance_wld asc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a maio oportunidade (opp_gain_wld)
+    ),
+    industry_less_distance = (
+    -- Atividade Econômica com menor distância
+        select distance from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and distance is not null
+        order by distance asc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior oportunidade. (opp_gain_wld)
+    ),industry_less_distance_id = (
+    -- Atividade Econômica com menor distância
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and distance is not null
+        order by distance asc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior oportunidade. (opp_gain_wld)
+    ),
+    product_highest_opp_gain = (
+    -- Produto com maior ganho de oportunidade
+        select opp_gain_wld from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and opp_gain_wld is not null
+        and year = (select max(year) from dataviva.secex_ymbp)
+        order by opp_gain_wld desc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a menor distancia (distance_wld)
+    ), product_highest_opp_gain_id = (
+    -- Produto com maior ganho de oportunidade
+        select hs_id from dataviva.secex_ymbp secex
+        where bra_id = sybip.bra_id
+        and month = 0
+        and hs_id_len = 6
+        and opp_gain_wld is not null
+        and year = (select max(year) from dataviva.secex_ymbp)
+        order by opp_gain_wld desc
+        limit 1
+        -- Em caso de empate, olhar ao produto com a menor distancia (distance_wld)
+    ),
+    industry_opp_gain = (
+    -- Atividade Econômica com maior ganho de oportunidade
+        select opp_gain from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and opp_gain is not null
+        and opp_gain = (
+            select max(opp_gain) from dataviva.rais_ybi
+            where bra_id = sybip.bra_id
+            and year = '2013'
+            and opp_gain is not null
+        )
+        order by opp_gain desc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
+    ),
+    industry_opp_gain_id = (
+    -- Atividade Econômica com maior ganho de oportunidade
+        select cnae_id from dataviva.rais_ybi
+        where bra_id = sybip.bra_id
+        and cnae_id_len = 6
+        and year = '2013'
+        and opp_gain is not null
+        and opp_gain = (
+            select max(opp_gain) from dataviva.rais_ybi
+            where bra_id = sybip.bra_id
+            and year = '2013'
+            and opp_gain is not null
+        )
+        order by opp_gain desc
+        limit 1
+        -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
+    );
