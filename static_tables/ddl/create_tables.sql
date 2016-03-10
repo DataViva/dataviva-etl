@@ -82,6 +82,7 @@ CREATE TABLE `dataviva_client`.`stat_ybhs` (
 
  CREATE TABLE `dataviva_client`.`stat_ybtrade_partner` (
   `year` YEAR NOT NULL COMMENT '',
+  `bra_id` VARCHAR(11) NULL COMMENT '',
   `wld_id` VARCHAR(11) NULL COMMENT '',
   `trade_balance` BIGINT NULL COMMENT '',
   `export_val` BIGINT COMMENT '',
