@@ -85,6 +85,8 @@ create table stat_ybio(
     employers varchar(255)
 );
 
+---- falta
+
 -- Oportunidades Econômicas
 create table stat_ybip(
     year varchar(4),
