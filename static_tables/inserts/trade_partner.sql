@@ -1,8 +1,8 @@
+-- INSERT BRAZIL
 
+INSERT INTO stat_ybtrade_partner (year, bra_id, wld_id, trade_balance, export_val, weight_value_export, import_val, weight_value_import, top_municipality_export, municipality_export, top_municipality_import, municipality_import, top_export_product, top_export_product_value, top_import_product, top_import_product_value, product_higher_trade_balance, product_higher_value, product_lower_trade_balance, product_lower_value)
 
-INSERT INTO stat_ybtrade_partner (year, wld_id, trade_balance, export_val, weight_value_export, import_val, weight_value_import, top_municipality_export, municipality_export, top_municipality_import, municipality_import, top_export_product, top_export_product_value, top_import_product, top_import_product_value, product_higher_trade_balance, product_higher_value, product_lower_trade_balance, product_lower_value)
-
-SELECT year, wld_id, export_val - import_val as trade_balance, export_val, export_val / export_kg, import_val, import_val / import_kg,
+SELECT year, 0, wld_id, export_val - import_val as trade_balance, export_val, export_val / export_kg, import_val, import_val / import_kg,
 (SELECT bra_id from dataviva.secex_ymbw where year = '2014' and month = '0' and bra_id_len = 9 and wld_id = dataviva.secex_ymw.wld_id order by export_val desc limit 1) as Top_municipality_export_to,
 (SELECT export_val from dataviva.secex_ymbw where year = '2014' and month = '0' and bra_id_len = 9 and wld_id = dataviva.secex_ymw.wld_id order by export_val desc limit 1) as Top_municipality_export_value,
 (SELECT bra_id from dataviva.secex_ymbw where year = '2014' and month = '0' and bra_id_len = 9 and wld_id = dataviva.secex_ymw.wld_id order by import_val desc limit 1) as Top_municipality_import_to,
