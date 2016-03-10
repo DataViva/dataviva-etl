@@ -79,3 +79,24 @@ CREATE TABLE `dataviva_client`.`stat_ybhs` (
   `top_export_value` BIGINT NULL COMMENT '',
   `top_import_origin` VARCHAR(7) NULL COMMENT '',
   `top_import_value` BIGINT NULL COMMENT '');
+
+ CREATE TABLE `dataviva_client`.`stat_ybtrade_partner` (
+  `year` YEAR NOT NULL COMMENT '',
+  `wld_id` VARCHAR(11) NULL COMMENT '',
+  `trade_balance` BIGINT NULL COMMENT '',
+  `export_val` BIGINT COMMENT '',
+  `weight_value_export` DECIMAL NULL COMMENT '',
+  `import_val` BIGINT NULL COMMENT '',
+  `weight_value_import` DECIMAL NULL COMMENT '',
+  `top_municipality_export` VARCHAR(45) NULL COMMENT '',
+  `municipality_export` BIGINT NULL COMMENT '',
+  `top_municipality_import` VARCHAR(45) NULL COMMENT '',
+  `municipality_import` BIGINT NULL COMMENT '',
+  `top_export_product` VARCHAR(7) NULL COMMENT '',
+  `top_export_product_value` BIGINT NULL COMMENT '',
+  `top_import_product` VARCHAR(7) NULL COMMENT '',
+  `top_import_product_value` BIGINT NULL COMMENT '',
+  `product_higher_trade_balance` VARCHAR(7) NULL COMMENT '',
+  `product_higher_value` BIGINT NULL COMMENT '',
+  `product_lower_trade_balance` VARCHAR(7) NULL COMMENT '',
+  `product_lower_value` BIGINT NULL COMMENT '');
