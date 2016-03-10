@@ -1,5 +1,3 @@
-INSERT INTO stat_ybu (year, bra_id, university_id, enrollments, entrants, graduates, top_course_enrollments, course_enrollments, top_course_entrants, course_entrants, top_course_graduates, course_graduates)
-
 insert into stat_yb (year, bra_id) values ('2014', 0);
 
 -- Brasil 
@@ -104,4 +102,4 @@ insert into stat_yb (year, bra_id) values ('2014', 0);
 
     -- Salário e Emprego:
 
-    
+
