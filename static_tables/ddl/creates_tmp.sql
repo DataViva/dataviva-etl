@@ -112,7 +112,9 @@ create table stat_ybuc(
     top_course_enrollments  varchar(255),
     top_course_enrollments_id  varchar(10),
     top_school_enrollment  varchar(255),
-    top_school_enrollment_id  varchar(10)
+    top_school_enrollment_id  varchar(10),
+    technical_course_enrollment varchar(255),
+    technical_course_enrollment_id varchar(10)
     
 );
 

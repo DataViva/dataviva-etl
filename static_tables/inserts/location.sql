@@ -262,7 +262,7 @@ select id from dataviva.attrs_bra;
         and year = '2013'
     );
 
--- Oportunidades Econômicas 
+-- Oportunidades Econômicas -- rodar remoto
     insert into stat_ybip (bra_id) 
         select id from dataviva.attrs_bra;
 
@@ -369,7 +369,11 @@ select id from dataviva.attrs_bra;
         limit 1
         -- Em caso de empate, olhar a atividade com maior número de empregos (num_jobs)
     );
+-- Educação
+    insert into stat_ybuc (bra_id) 
+        select id from dataviva.attrs_bra;
 
+    
 
 
 
