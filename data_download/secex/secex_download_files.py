@@ -48,8 +48,8 @@ def save(engine, years, months, locations, products, trade_partners):
                     for trade_partner in trade_partners:
                         conditions[4] = trade_partner.condition
                         table = select_table(conditions)
-                        name_file='data/files_secex/secex_'+str(year.name)+'_'+str(month.name)+'_'+str(location.name)+'_'+str(product.name)+'_'+str(trade_partner.name)+'.csv'
-                        
+                        name_file='data/files_secex/secex-'+str(year.name)+'-'+str(month.name)+'-'+str(location.name)+'-'+str(product.name)+'-'+str(trade_partner.name)+'.csv'
+
                         if table not in table_columns.keys():
                             table_columns[table] = get_colums(table, engine)
 
@@ -78,7 +78,8 @@ years = [
     Condition('year=2010', '2010'),
     Condition('year=2011', '2011'),
     Condition('year=2012', '2012'),
-    Condition('year=2013', '2013')]
+    Condition('year=2013', '2013'),
+    Condition('year=2014', '2014')]
 
 months = [
     Condition('month=0', 'all'),

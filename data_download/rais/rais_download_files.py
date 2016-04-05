@@ -45,7 +45,7 @@ def save(engine, years, locations, industrys, occupations):
                 for occupation in occupations:
                     conditions[3] = occupation.condition
                     table = select_table(conditions)
-                    name_file='data/files_rais/rais_'+str(year.name)+'_'+str(location.name)+'_'+str(industry.name)+'_'+str(occupation.name)+'.csv'
+                    name_file='data/files_rais/rais-'+str(year.name)+'-'+str(location.name)+'-'+str(industry.name)+'-'+str(occupation.name)+'.csv'
 
                     if table not in table_columns.keys():
                         table_columns[table] = get_colums(table, engine)
