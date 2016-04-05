@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-python data_download/db_connect.py
+ python data_download/rais/rais_download_files.py
 Os arquivos serão salvos em /data
 '''
 from collections import namedtuple
@@ -26,6 +26,7 @@ def select_table(conditions):
 
     return 'rais_' + s
 
+
 def get_colums(table, engine):
     column_rows = engine.execute("SELECT COLUMN_NAME FROM information_schema.columns WHERE TABLE_NAME='"+table+"' AND COLUMN_NAME NOT LIKE %s", "%_len")
     return [row[0] for row in column_rows]
@@ -49,7 +50,7 @@ def save(engine, years, locations, industrys, occupations):
                     if table not in table_columns.keys():
                         table_columns[table] = get_colums(table, engine)
 
-                    f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions)+ ' LIMIT 10 ', engine)
+                    f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
                     f.to_csv(name_file, index = False)
                     
                     zf=zipfile.ZipFile(name_file.split('.')[0]+'.zip','w')
