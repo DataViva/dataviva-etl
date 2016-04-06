@@ -52,10 +52,10 @@ def save(engine, years, locations, courses):
                 f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
                 f.to_csv(name_file, index=False)
 
-#                zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
-#                zf.write(name_file)
-#                zf.close()
-#                os.system("rm "+name_file)
+                zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
+                zf.write(name_file)
+                zf.close()
+                os.system("rm "+name_file)
 
 
 Condition = namedtuple('Condition', ['condition', 'name'])
