@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 '''
  python data_download/rais/rais_download_files.py
-Os arquivos serão salvos em /data
+ Os arquivos serão salvos em /data
 '''
 from collections import namedtuple
 from sqlalchemy import create_engine
 import pandas as pd
 import zipfile
 import os
+
 
 def select_table(conditions):
     s = 'y'
@@ -45,15 +46,15 @@ def save(engine, years, locations, industrys, occupations):
                 for occupation in occupations:
                     conditions[3] = occupation.condition
                     table = select_table(conditions)
-                    name_file='data/files_rais/rais-'+str(year.name)+'-'+str(location.name)+'-'+str(industry.name)+'-'+str(occupation.name)+'.csv'
+                    name_file = 'data/files_rais/rais-'+str(year.name)+'-'+str(location.name)+'-'+str(industry.name)+'-'+str(occupation.name)+'.csv'
 
                     if table not in table_columns.keys():
                         table_columns[table] = get_colums(table, engine)
 
                     f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
-                    f.to_csv(name_file, index = False)
-                    
-                    zf=zipfile.ZipFile(name_file.split('.')[0]+'.zip','w')
+                    f.to_csv(name_file, index=False)
+
+                    zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
                     zf.write(name_file)
                     zf.close()
                     os.system("rm "+name_file)

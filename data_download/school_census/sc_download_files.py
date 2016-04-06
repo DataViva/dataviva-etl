@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
  python data_download/rais/rais_download_files.py
-Os arquivos serão salvos em /data
+ Os arquivos serão salvos em /data
 '''
 from collections import namedtuple
 from sqlalchemy import create_engine
@@ -14,7 +14,7 @@ import os
 
 
 def select_table(conditions):
-    s = 'ym'
+    s = 'y'
     # 0 year, 1 location, 3 course
     if conditions[1] != ' 1 = 1 ':
         s += 'b'
@@ -27,10 +27,10 @@ def select_table(conditions):
 
     return 'sc_' + s
 
+
 def get_colums(table, engine):
     column_rows = engine.execute("SELECT COLUMN_NAME FROM information_schema.columns WHERE TABLE_NAME='"+table+"' AND COLUMN_NAME NOT LIKE %s", "%_len")
     return [row[0] for row in column_rows]
-
 
 
 def save(engine, years, locations, courses):
@@ -43,9 +43,19 @@ def save(engine, years, locations, courses):
             conditions[1] = location.condition
             for course in courses:
                 conditions[2] = course.condition
-                print select_table(conditions)
-                print conditions
-                import pdb; pdb.set_trace()
+                table = select_table(conditions)
+                name_file = 'data/files_sc/sc-'+str(year.name)+'-'+str(location.name)+'-'+str(course.name)+'.csv'
+
+                if table not in table_columns.keys():
+                        table_columns[table] = get_colums(table, engine)
+                
+                f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
+                f.to_csv(name_file, index=False)
+
+#                zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
+#                zf.write(name_file)
+#                zf.close()
+#                os.system("rm "+name_file)
 
 
 Condition = namedtuple('Condition', ['condition', 'name'])

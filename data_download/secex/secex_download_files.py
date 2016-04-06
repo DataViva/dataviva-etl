@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-python data_download/secex/secex_download_files.py 
-Os arquivos serão salvos em /data
+ python data_download/secex/secex_download_files.py
+ Os arquivos serão salvos em /data
 '''
 from collections import namedtuple
 from sqlalchemy import create_engine
@@ -48,19 +48,18 @@ def save(engine, years, months, locations, products, trade_partners):
                     for trade_partner in trade_partners:
                         conditions[4] = trade_partner.condition
                         table = select_table(conditions)
-                        name_file='data/files_secex/secex-'+str(year.name)+'-'+str(month.name)+'-'+str(location.name)+'-'+str(product.name)+'-'+str(trade_partner.name)+'.csv'
+                        name_file = 'data/files_secex/secex-'+str(year.name)+'-'+str(month.name)+'-'+str(location.name)+'-'+str(product.name)+'-'+str(trade_partner.name)+'.csv'
 
                         if table not in table_columns.keys():
                             table_columns[table] = get_colums(table, engine)
 
                         f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
-                        f.to_csv(name_file, index = False)
+                        f.to_csv(name_file, index=False)
 
-                        zf=zipfile.ZipFile(name_file.split('.')[0]+'.zip','w')
+                        zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
                         zf.write(name_file)
                         zf.close()
                         os.system("rm "+name_file)
-
 
 
 Condition = namedtuple('Condition', ['condition', 'name'])
