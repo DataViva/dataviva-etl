@@ -6,8 +6,7 @@
 from collections import namedtuple
 from sqlalchemy import create_engine
 import pandas as pd
-import zipfile
-import os
+import os, bz2
 
 
 # sc_yb, sc_yc, sc_ybc
@@ -33,16 +32,10 @@ def get_colums(table, engine):
     return [row[0] for row in column_rows]
 
 
-def zip_file(name_file):
-    zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
-    zf.write(name_file)
-    zf.close()
-    os.system("rm "+name_file)
-
-
 def save(engine, years, locations, courses):
     conditions = [' 1 = 1', ' 1 = 1', ' 1 = 1']  # 5 condicoes
     table_columns = {}
+    output_path='data/files_sc/'
 
     for year in years:
         conditions[0] = year.condition
@@ -51,15 +44,15 @@ def save(engine, years, locations, courses):
             for course in courses:
                 conditions[2] = course.condition
                 table = select_table(conditions)
-                name_file = 'data/files_sc/sc-'+str(year.name)+'-'+str(location.name)+'-'+str(course.name)+'.csv'
+                name_file = 'sc-'+str(year.name)+'-'+str(location.name)+'-'+str(course.name)
 
                 if table not in table_columns.keys():
                         table_columns[table] = get_colums(table, engine)
-                
-                f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
-                f.to_csv(name_file, index=False)
 
-                zip_file(name_file=name_file)
+                f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
+
+                new_file_path = os.path.abspath(os.path.join(output_path, name_file+".csv.bz2")) #pega desda da rais do pc
+                f.to_csv(bz2.BZ2File(new_file_path, 'wb'), sep=",", index=False, float_format="%.3f")
 
 
 Condition = namedtuple('Condition', ['condition', 'name'])
