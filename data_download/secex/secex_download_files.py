@@ -82,18 +82,7 @@ years = [
 
 months = [
     Condition('month=0', 'all'),
-    Condition('month=1', '1'),
-    Condition('month=2', '2'),
-    Condition('month=3', '3'),
-    Condition('month=4', '4'),
-    Condition('month=5', '5'),
-    Condition('month=6', '6'),
-    Condition('month=7', '7'),
-    Condition('month=8', '8'),
-    Condition('month=9', '9'),
-    Condition('month=10', '10'),
-    Condition('month=11', '11'),
-    Condition('month=12', '12')]
+    Condition('month!=0', 'months')]
 
 locations = [
     Condition(' 1 = 1 ', 'all'),
