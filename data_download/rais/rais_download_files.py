@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
  python data_download/rais/rais_download_files.py
- Os arquivos serão salvos em /data
+ The files will be saved in /data/files_rais
 '''
 from collections import namedtuple
 from sqlalchemy import create_engine
@@ -33,6 +33,13 @@ def get_colums(table, engine):
     return [row[0] for row in column_rows]
 
 
+def zip_file(name_file):
+    zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
+    zf.write(name_file)
+    zf.close()
+    os.system("rm "+name_file)
+
+
 def save(engine, years, locations, industrys, occupations):
     conditions = [' 1 = 1', ' 1 = 1', ' 1 = 1', ' 1 = 1']  # 4 condicoes
     table_columns = {}
@@ -54,10 +61,7 @@ def save(engine, years, locations, industrys, occupations):
                     f = pd.read_sql_query('SELECT '+','.join(table_columns[table])+' FROM '+table+' WHERE '+' and '.join(conditions), engine)
                     f.to_csv(name_file, index=False)
 
-                    zf = zipfile.ZipFile(name_file.split('.')[0]+'.zip', 'w')
-                    zf.write(name_file)
-                    zf.close()
-                    os.system("rm "+name_file)
+                    zip_file(name_file=name_file)
 
 
 Condition = namedtuple('Condition', ['condition', 'name'])
