@@ -24,7 +24,7 @@ def main(file_path):
     # Discover encoding type of file reading fist line
     with open(file_path, 'r') as fp:
         first_line = fp.readline()
-    m = magic.Magic(mime_encoding=True)
+    m = magic.Magic(mime_encoding=True, magic_file="magic")
 
     encoding = m.from_buffer(first_line)
 

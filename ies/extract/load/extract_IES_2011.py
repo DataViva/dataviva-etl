@@ -24,7 +24,7 @@ def main(file_path):
 
     # Discover encoding type of file
     blob = open(file_path).read()
-    m = magic.Magic(mime_encoding=True)
+    m = magic.Magic(mime_encoding=True,magic_file="magic")
     encoding = m.from_buffer(blob)
 
     # Set encoding to this python file

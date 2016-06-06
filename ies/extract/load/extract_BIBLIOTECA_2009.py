@@ -5,7 +5,7 @@ from file_encoding import file_encoding
 from df_to_sql import write_sql
 
 '''
-
+python ies/extract/load/extract_BIBLIOTECA_2009.py Y:/IES_2009/BIBLIOTECA.txt
 USAGE EXAMPLE:
 python ies/extract/load/extract_BIBLIOTECA_2009.py ies/extract/data/IES_2009/BIBLIOTECA.txt
 
