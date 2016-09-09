@@ -1,3 +1,5 @@
+-- Select Aluno 2014
+
 use dataviva_raw;
 
 -- Filtro e seleção da tabela Aluno
@@ -34,19 +36,14 @@ set IES_2014_ALUNO_STEP2.CO_LOCAL_OFERTA_IES = IES_2014_CURSO_STEP1.CO_LOCAL_OFE
 
 
 -- ---------------------------------------------------------------------------------
--- Recodificações - Banco ALUNO
+-- Recodificações 
 
 # Categoria Administrativa
-
-select CO_CATEGORIA_ADMINISTRATIVA, count(*) from IES_2014_ALUNO_STEP2 group by CO_CATEGORIA_ADMINISTRATIVA;
-
-
 update IES_2014_ALUNO_STEP2 set CO_CATEGORIA_ADMINISTRATIVA = 
-if(CO_CATEGORIA_ADMINISTRATIVA = '7', '6', CO_CATEGORIA_ADMINISTRATIVA)
+if(CO_CATEGORIA_ADMINISTRATIVA = '7', '6', CO_CATEGORIA_ADMINISTRATIVA);
 
 
 # Grau Acadêmico
-
 update IES_2014_ALUNO_STEP2 set CO_GRAU_ACADEMICO = 
 if(CO_GRAU_ACADEMICO = '        ', '-1', CO_GRAU_ACADEMICO);
 
@@ -58,60 +55,32 @@ alter table IES_2014_ALUNO_STEP2 add (ANO_INGRESSO varchar(4), MES_INGRESSO varc
 update IES_2014_ALUNO_STEP2 set MES_INGRESSO = substring(DT_INGRESSO_CURSO,3,3);
 update IES_2014_ALUNO_STEP2 set MES_INGRESSO = if(MES_INGRESSO='JAN',1,if(MES_INGRESSO='JUL',7,0));
 
-select MES_INGRESSO, count(*) from IES_2014_ALUNO_STEP2 group by MES_INGRESSO;
-
-
-
-
 update IES_2014_ALUNO_STEP2 set ANO_INGRESSO = substring(DT_INGRESSO_CURSO,6,4);
-select ANO_INGRESSO, count(*) from IES_2014_ALUNO_STEP2 group by ANO_INGRESSO;
 
 -- Cor do Aluno
-
 update IES_2014_ALUNO_STEP2 set CO_COR_RACA_ALUNO= if(CO_COR_RACA_ALUNO = '0' or CO_COR_RACA_ALUNO = '6', '-1', CO_COR_RACA_ALUNO);
 
 -- UF nascimento
-
 update IES_2014_ALUNO_STEP2 set CO_UF_NASCIMENTO = if(CO_UF_NASCIMENTO = '        ', '-1', CO_UF_NASCIMENTO);
 
-
 -- Município nascimento
-select CO_MUNICIPIO_NASCIMENTO, count(*) from IES_2014_ALUNO_STEP2 group by CO_MUNICIPIO_NASCIMENTO;
-
 update IES_2014_ALUNO_STEP2 
 set CO_MUNICIPIO_NASCIMENTO = if(CO_MUNICIPIO_NASCIMENTO = '        ', '-1', CO_MUNICIPIO_NASCIMENTO);
 
-
 -- Turno do Aluno
-
-select CO_TURNO_ALUNO, count(*) from IES_2014_ALUNO_STEP2 group by CO_TURNO_ALUNO;
-
 update IES_2014_ALUNO_STEP2 set CO_TURNO_ALUNO = if(CO_TURNO_ALUNO = '', '-1', CO_TURNO_ALUNO);
 
 -- Codigo do Municipio IES
-
-select CO_MUNICIPIO, count(*) from IES_2014_ALUNO_STEP2 group by CO_MUNICIPIO;
-
 update IES_2014_ALUNO_STEP2 set CO_MUNICIPIO = if(CO_MUNICIPIO = '        ', '-1', CO_MUNICIPIO);
 
 -- Codigo OCDE
-
-select CO_OCDE, count(*) from IES_2014_ALUNO_STEP1 group by CO_OCDE;
 update IES_2014_ALUNO_STEP2 set CO_OCDE = if(CO_OCDE = '            ', '-1', CO_OCDE);
 
 -- Codigo local de oferta
-
-select CO_LOCAL_OFERTA_IES, count(*) from IES_2014_ALUNO_STEP2 group by CO_LOCAL_OFERTA_IES;
-
 update IES_2014_ALUNO_STEP2 set CO_LOCAL_OFERTA_IES = if(CO_LOCAL_OFERTA_IES = '        ', '-1', CO_LOCAL_OFERTA_IES);
 
-
 -- Organizacao Academica
-
-select CO_ORGANIZACAO_ACADEMICA, count(*) from IES_2014_ALUNO_STEP2 group by CO_ORGANIZACAO_ACADEMICA;
-
 update IES_2014_ALUNO_STEP2 set CO_ORGANIZACAO_ACADEMICA = if(CO_ORGANIZACAO_ACADEMICA = '5', '4', CO_ORGANIZACAO_ACADEMICA);
-
 
 -- Criando a tabela final:
 drop table if exists IES_2014_ALUNO_STEP3;
@@ -139,11 +108,3 @@ select CO_LOCAL_OFERTA_IES, count(*) from IES_2014_ALUNO_STEP3 group by CO_LOCAL
 select ANO_INGRESSO, count(*) from IES_2014_ALUNO_STEP3 group by ANO_INGRESSO;
 select MES_INGRESSO, count(*) from IES_2014_ALUNO_STEP3 group by MES_INGRESSO;
 
-
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
--- ---------------------------------------------------------------------------------------------
