@@ -9,3 +9,5 @@ CO_MUN_GEO char(7),
 KG_LIQUIDO numeric(15),
 VL_FOB	numeric(15)
 ); 
+
+teste
