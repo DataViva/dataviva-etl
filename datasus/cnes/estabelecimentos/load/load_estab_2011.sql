@@ -74,7 +74,7 @@ insert into estab_2011 select*from stce1106;
 insert into estab_2011 select*from stce1107;
 insert into estab_2011 select*from stce1108;
 insert into estab_2011 select*from stce1109;
-insert into estab_2011 select*from stce1111;
+insert into estab_2011 select*from stce1110;
 insert into estab_2011 select*from stce1111;
 insert into estab_2011 select*from stce1112;
 
