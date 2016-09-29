@@ -1,3 +1,5 @@
+#SELECT ESTAB
+
 use cnes_estabelecimentos;
 
 create table ESTAB_2012_STEP1
