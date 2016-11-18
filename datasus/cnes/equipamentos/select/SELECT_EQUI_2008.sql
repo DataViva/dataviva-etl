@@ -28,6 +28,28 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 
 alter table EQUI_2008_STEP2 drop regsaude; ##ainda não finalizado
 
+/* adicionar o regsaude */
+
+drop table regsaude;
+
+create table regsaude(
+	cod_regsaude varchar(5),
+    municipio varchar(6)
+);
+
+load data local infile 'H:/datasus/cnes/classifcacao/regsaude.csv'
+into table regsaude
+fields terminated by ';'
+lines terminated by '\n'
+ignore 1 lines;
+
+
+alter table EQUI_2008_STEP2 add regsaude varchar(5);
+
+update EQUI_2008_STEP2 left join regsaude 
+on EQUI_2008_STEP2.codmun = regsaude.municipio
+set EQUI_2008_STEP2.regsaude = regsaude.cod_regsaude;
+
 /* Eliminar a variavel micr_reg */
 
 alter table EQUI_2008_STEP2 drop micr_reg;
@@ -69,11 +91,7 @@ select * from  EQUI_2008_STEP2 left join retencao
 on EQUI_2008_STEP2.retencao = retencao.fonte;
 
 
+/* ind_sus e ins_nsus na mesma variável */ 
 
-
-
-/* Agrupar a variável tp_unid */      
-
-##olhar agrupamentos
-
-/* ind_sus e ins_nsus na mesma variável */            
+alter table EQUI_2008_STEP2 drop ind_nsus;           
+       
