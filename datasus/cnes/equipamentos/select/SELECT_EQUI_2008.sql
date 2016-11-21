@@ -37,7 +37,7 @@ create table regsaude(
     municipio varchar(6)
 );
 
-load data local infile 'H:/datasus/cnes/classifcacao/regsaude.csv'
+load data local infile 'Y:/Correspondencia_Classificacoes/regsaude.csv'
 into table regsaude
 fields terminated by ';'
 lines terminated by '\n'
