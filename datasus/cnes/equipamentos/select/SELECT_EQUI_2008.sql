@@ -52,6 +52,7 @@ set EQUI_2008_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
 
+
 alter table EQUI_2008_STEP2 drop micr_reg;
 
 /* Recodificando a variavel esfera_a */ 
@@ -64,10 +65,11 @@ create table esfera(
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
 
+alter table EQUI_2008_STEP2 drop esfera;
 alter table EQUI_2008_STEP2 add esfera varchar(2);
 
 update EQUI_2008_STEP2 left join esfera 
-on EQUI_2008_STEP2.esfera_a = esfera_a
+on EQUI_2008_STEP2.esfera_a = esfera.esfera_a
 set EQUI_2008_STEP2.esfera = esfera.esfera;
 
 /* Recodificando a variavel retenção */ 
