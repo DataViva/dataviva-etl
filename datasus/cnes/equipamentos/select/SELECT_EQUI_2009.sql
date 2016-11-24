@@ -6,7 +6,7 @@ use cnes_equi;
 
 create table EQUI_2009_STEP1
 select  cnes, codufmun, regsaude, micr_reg, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, tipequip, codequip, qt_exist, qt_uso, ind_sus, ind_nsus, competen  
-from equi_2008;
+from equi_2009;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
@@ -65,7 +65,7 @@ create table esfera(
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
 
-alter table EQUI_2008_STEP2 drop esfera;
+alter table EQUI_2009_STEP2 drop esfera;
 alter table EQUI_2009_STEP2 add esfera varchar(2);
 
 update EQUI_2009_STEP2 left join esfera 
@@ -73,7 +73,6 @@ on EQUI_2009_STEP2.esfera_a = esfera.esfera_a
 set EQUI_2009_STEP2.esfera = esfera.esfera;
 
 /* Recodificando a variavel retenção */ 
-
 
 create table retencao (
     fonte varchar(2),
@@ -96,4 +95,7 @@ on EQUI_2009_STEP2.retencao = retencao.fonte;
 /* ind_sus e ins_nsus na mesma variável */ 
 
 alter table EQUI_2009_STEP2 drop ind_nsus;           
-       
+
+-- Criando tabela final - STEP3: 
+
+create table EQUI_2009_STEP3 select * from EQUI_2009_STEP2;     

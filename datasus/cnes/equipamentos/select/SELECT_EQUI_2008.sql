@@ -74,7 +74,6 @@ set EQUI_2008_STEP2.esfera = esfera.esfera;
 
 /* Recodificando a variavel retenção */ 
 
-
 create table retencao (
     fonte varchar(2),
     retencao varchar(2)
@@ -95,5 +94,9 @@ on EQUI_2008_STEP2.retencao = retencao.fonte;
 
 /* ind_sus e ins_nsus na mesma variável */ 
 
-alter table EQUI_2008_STEP2 drop ind_nsus;           
+alter table EQUI_2008_STEP2 drop ind_nsus;  
+
+-- Criando tabela final - STEP3: 
+
+create table EQUI_2008_STEP3 select * from EQUI_2008_STEP2;        
        
