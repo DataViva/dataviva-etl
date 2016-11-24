@@ -26,8 +26,7 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 
 /* Eliminar a variavel regsaude */
 
-alter table EQUI_2011_STEP2 drop regsaude; ##ainda não finalizado
-
+alter table EQUI_2011_STEP2 drop regsaude; 
 /* adicionar o regsaude */
 
 drop table regsaude;
