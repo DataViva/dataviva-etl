@@ -65,7 +65,6 @@ create table esfera(
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
 
-alter table EQUI_2012_STEP2 drop esfera;
 alter table EQUI_2012_STEP2 add esfera varchar(2);
 
 update EQUI_2012_STEP2 left join esfera 
@@ -74,7 +73,7 @@ set EQUI_2012_STEP2.esfera = esfera.esfera;
 
 /* Recodificando a variavel retenção */ 
 
-
+drop table retencao;
 create table retencao (
     fonte varchar(2),
     retencao varchar(2)

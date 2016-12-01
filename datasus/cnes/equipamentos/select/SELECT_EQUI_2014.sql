@@ -73,7 +73,7 @@ set EQUI_2014_STEP2.esfera = esfera.esfera;
 
 /* Recodificando a variavel retenção */ 
 
-
+drop table retencao;
 create table retencao (
     fonte varchar(2),
     retencao varchar(2)
