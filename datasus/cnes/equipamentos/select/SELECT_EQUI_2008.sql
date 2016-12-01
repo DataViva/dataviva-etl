@@ -65,7 +65,6 @@ create table esfera(
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
 
-alter table EQUI_2008_STEP2 drop esfera;
 alter table EQUI_2008_STEP2 add esfera varchar(2);
 
 update EQUI_2008_STEP2 left join esfera 
