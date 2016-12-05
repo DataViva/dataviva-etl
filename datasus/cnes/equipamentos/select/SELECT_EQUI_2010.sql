@@ -31,7 +31,6 @@ alter table EQUI_2010_STEP2 drop regsaude;
 /* adicionar o regsaude */
 
 drop table regsaude;
-
 create table regsaude(
 	cod_regsaude varchar(5),
     municipio varchar(6)
@@ -51,7 +50,6 @@ on EQUI_2010_STEP2.codmun = regsaude.municipio
 set EQUI_2010_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
-
 
 alter table EQUI_2010_STEP2 drop micr_reg;
 

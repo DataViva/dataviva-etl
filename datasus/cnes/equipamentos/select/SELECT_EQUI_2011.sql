@@ -27,10 +27,10 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 /* Eliminar a variavel regsaude */
 
 alter table EQUI_2011_STEP2 drop regsaude; 
+
 /* adicionar o regsaude */
 
 drop table regsaude;
-
 create table regsaude(
 	cod_regsaude varchar(5),
     municipio varchar(6)
@@ -50,7 +50,6 @@ on EQUI_2011_STEP2.codmun = regsaude.municipio
 set EQUI_2011_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
-
 
 alter table EQUI_2011_STEP2 drop micr_reg;
 
