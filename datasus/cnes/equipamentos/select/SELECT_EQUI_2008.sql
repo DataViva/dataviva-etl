@@ -90,10 +90,26 @@ set EQUI_2008_STEP2.retencao_2 = retencao.retencao;
 select * from  EQUI_2008_STEP2 left join retencao 
 on EQUI_2008_STEP2.retencao = retencao.fonte;
 
+/* Recodificando a variavel niv_hier */
+
+create table niv_hier (
+    fonte varchar(2),
+    niv_hier varchar(2)
+);
+
+insert into retencao values ('10','10'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),(' ','99'); 
+
+update EQUI_2008_STEP2 left join niv_hier 
+on EQUI_2008_STEP2.niv_hier  = niv_hier.fonte
+set EQUI_2008_STEP2.niv_hier_2 = niv_hier.niv_hier;
+
+
+select * from  EQUI_2008_STEP2 left join niv_hier  
+on EQUI_2008_STEP2.niv_hier = niv_hier .fonte;
 
 /* ind_sus e ins_nsus na mesma variável */ 
 
-alter table EQUI_2008_STEP2 drop ind_nsus;  
+alter table EQUI_2008_STEP2 drop ind_nsus; 
 
 -- Criando tabela final - STEP3: 
 
