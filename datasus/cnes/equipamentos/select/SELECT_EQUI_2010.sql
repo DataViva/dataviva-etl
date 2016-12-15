@@ -51,6 +51,7 @@ set EQUI_2010_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
 
+
 alter table EQUI_2010_STEP2 drop micr_reg;
 
 /* Recodificando a variavel esfera_a */ 
@@ -68,6 +69,8 @@ alter table EQUI_2010_STEP2 add esfera varchar(2);
 update EQUI_2010_STEP2 left join esfera 
 on EQUI_2010_STEP2.esfera_a = esfera.esfera_a
 set EQUI_2010_STEP2.esfera = esfera.esfera;
+
+alter table EQUI_2010_STEP2 drop esfera_a;
 
 /* Recodificando a variavel retenção */ 
 
@@ -88,6 +91,29 @@ set EQUI_2010_STEP2.retencao_2 = retencao.retencao;
 
 select * from  EQUI_2010_STEP2 left join retencao 
 on EQUI_2010_STEP2.retencao = retencao.fonte;
+
+alter table EQUI_2010_STEP2 drop retencao;
+
+/* Recodificando a variavel niv_hier */
+
+create table niv_hier (
+    fonte varchar(2),
+    niv_hier varchar(2)
+);
+
+insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
+
+alter table EQUI_2010_STEP2 add niv_hier_2 varchar (2);
+
+update EQUI_2010_STEP2 left join niv_hier 
+on EQUI_2010_STEP2.niv_hier = niv_hier.fonte
+set EQUI_2010_STEP2.niv_hier_2 = niv_hier.niv_hier;
+
+
+select * from  EQUI_2010_STEP2 left join niv_hier  
+on EQUI_2010_STEP2.niv_hier = niv_hier .fonte;
+
+alter table EQUI_2010_STEP2 drop niv_hier;
 
 
 /* ind_sus e ins_nsus na mesma variável */ 
