@@ -3,6 +3,9 @@ use dataviva_raw;
 
 -- Selecionando as variaveis
 drop table if exists SC_2008_ESCOLA_STEP1;
+
+select * from SC_2008_ESCOLA_STEP1;
+
 create table SC_2008_ESCOLA_STEP1 
 select PK_COD_ENTIDADE, DESC_SITUACAO_FUNCIONAMENTO, NUM_FUNCIONARIOS, ID_ALIMENTACAO, ID_EDUCACAO_INDIGENA
 from SC_2008_ESCOLA;
