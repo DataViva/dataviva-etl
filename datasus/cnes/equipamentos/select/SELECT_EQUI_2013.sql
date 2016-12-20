@@ -95,6 +95,9 @@ on EQUI_2013_STEP2.retencao = retencao.fonte;
 
 alter table EQUI_2013_STEP2 drop retencao;
 
+
+/* alterando variavel niv_hier */
+
 create table niv_hier (
     fonte varchar(2),
     niv_hier varchar(2)
