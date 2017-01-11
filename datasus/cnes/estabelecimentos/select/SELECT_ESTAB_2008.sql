@@ -133,4 +133,28 @@ on ESTAB_2008_STEP2.niv_hier = niv_hier .fonte;
 
 alter table ESTAB_2008_STEP2 drop niv_hier;
 
+/* nivate_a e nivate_h - concatenar */
 
+select concat( nivate_a, '  ',  nivate_h)
+
+
+/* renomear qinst01 p/ sala pediatrica */
+
+alter table ESTAB_2008_STEP2 change qinst01 qt_sala_pedi int(3);
+
+
+/* agrupar qinst02, qinst03, qinst04 e renomear para sala adulto */
+
+select SUM(qinst02 , qinst03 , qinst04)
+from shop
+group by dealer
+
+
+select * from ESTAB_2008_STEP2;
+
+CREATE TABLE ESTAB_2008_STEP2 AS
+SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto, 
+(qtinst06 + qtinst07 + qtinst08) AS nova2
+FROM ESTAB_2008_STEP1;
+
+drop table ESTAB_2008_STEP2;
