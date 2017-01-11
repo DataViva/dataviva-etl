@@ -154,7 +154,7 @@ select * from ESTAB_2008_STEP2;
 
 CREATE TABLE ESTAB_2008_STEP2 AS
 SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto, 
-(qtinst06 + qtinst07 + qtinst08) AS nova2
+(qtinst06 + qtinst07 + qtinst08) AS qt_sala_obs_adulto
 FROM ESTAB_2008_STEP1;
 
 drop table ESTAB_2008_STEP2;
