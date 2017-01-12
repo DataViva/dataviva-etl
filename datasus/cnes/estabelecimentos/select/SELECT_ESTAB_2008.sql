@@ -17,7 +17,14 @@ from estab_2008;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
-create table ESTAB_2008_STEP2 select * from ESTAB_2008_STEP1;
+CREATE TABLE ESTAB_2008_STEP2 AS
+SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto_ue, 
+(qtinst06 + qtinst07 + qtinst08) AS qt_sala_obs_adulto_ue,
+(qtinst19 + qtinst20 + qtinst22) AS qt_sala_rep_amb,
+(qtleit06 + qtleit07 + qtleit08) AS qt_leito_rep_ue,
+(qtleit20 + qtleit21 + qtleit22) AS qt_leito_rep_amb,
+(qtleit38 + qtleit39 + qtleit40) AS qt_leito_rn_nn 
+FROM ESTAB_2008_STEP1;
 
 /* Renomeando a variável MUNICIPIO */
 
@@ -34,19 +41,19 @@ if(codmun in('530020','530030','530040','530050','530060','530070',
 /* Niv_dep substituir 5 por um 1 nos anos 2008 e 2009 */
 
 create table niv_dep1(
-    niv_dep varchar(1),
+    fonte varchar(1),
     niv_dep1 varchar(1)
 );
 
-insert into esfera values('1','1'),('5','1'),('3','3');
+insert into niv_dep1 values('1','1'),('5','1'),('3','3');
 
-alter table ESTAB_2008_STEP2 add esfera niv_dep1 varchar (1);
+alter table ESTAB_2008_STEP2 add niv_dep1 varchar(2);
 
-update ESTAB_2008_STEP2 left join niv_dep 
-on ESTAB_2008_STEP2.niv_dep = niv_dep1.niv_dep
+update ESTAB_2008_STEP2 left join niv_dep1 
+on ESTAB_2008_STEP2.niv_dep = niv_dep1.fonte
 set ESTAB_2008_STEP2.niv_dep1 = niv_dep1.niv_dep1;
 
-alter table EESTAB_2008_STEP2 drop niv_dep;
+alter table ESTAB_2008_STEP2 drop niv_dep;
 
 /* Eliminar a variavel regsaude */
 
@@ -137,24 +144,94 @@ alter table ESTAB_2008_STEP2 drop niv_hier;
 
 select concat( nivate_a, '  ',  nivate_h)
 
+/* renomear qleitp1 p/ qt_leito_hosp_cirurg */
 
-/* renomear qinst01 p/ sala pediatrica */
+alter table ESTAB_2008_STEP2 change qleitp1 qt_leito_hosp_cirurg int(4);
 
-alter table ESTAB_2008_STEP2 change qinst01 qt_sala_pedi int(3);
+/* renomear qleitp2 p/ qt_leito_hosp_clin */
+
+alter table ESTAB_2008_STEP2 change qleitp2 qt_leito_hosp_clin int(4);
+
+/* renomear qleitp3 p/ qt_leito_hosp_complex */
+
+alter table ESTAB_2008_STEP2 change qleitp3 qt_leito_hosp_complex int(4);
+
+/* renomear qtinst01 p/ qt_sala_pedi_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst01 qt_sala_pedi_ue int(4);
+
+/*apagar qtinst02, qtinst03, qtinst04 */
+
+alter table EQUI_2008_STEP2 drop qtinst02;
+alter table EQUI_2008_STEP2 drop qtinst03;
+alter table EQUI_2008_STEP2 drop qtinst04;
+
+/* renomear qtinst05 p/ qt_sala_rep_pedi_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst05 qt_sala_rep_pedi_ue int(4);
+
+/*apagar qtinst02, qtinst03, qtinst04 */
+
+alter table EQUI_2008_STEP2 drop qtinst06;
+alter table EQUI_2008_STEP2 drop qtinst07;
+alter table EQUI_2008_STEP2 drop qtinst08;
+
+/* renomear qtinst09 p/ qt_cons_odonto_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst09 qt_cons_odonto_ue int(4);
+
+/* renomear qtinst10 p/ qt_cons_higie_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst10 qt_sala_higie_ue int(4);
+
+/* renomear qtinst11 p/ qt_sala_gesso_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst11 qt_sala_gesso_ue int(4);
+
+/* renomear qtinst12 p/ qt_sala_curativo_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst12 qt_sala_curativo_ue int(4);
+
+/* renomear qtinst13 p/ qt_sala_peqcirur_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst13 qt_sala_peqcirur_ue int(4);
+
+/* renomear qtinst14 p/ qt_sala_consu_med_ue */
+
+alter table ESTAB_2008_STEP2 change qtinst14 qt_sala_consu_med_ue int(4);
+
+/* renomear qtinst15 p/ qt_cons_clincbasica_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst15 qt_cons_clincbasica_amb int(4);
+
+/* renomear qtinst16 p/ qt_cons_clincesp_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst16 qt_cons_clincesp_amb int(4);
+
+/* renomear qtinst17 p/ qt_cons_clincesp_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst17 qt_cons_clincesp_amb int(4);
+
+/* renomear qtinst18 p/ qt_cons_med_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst18 qt_cons_med_amb int(4);
+
+/*apagar qtinst19, qtinst20, qtinst22 */
+
+alter table EQUI_2008_STEP2 drop qtinst19;
+alter table EQUI_2008_STEP2 drop qtinst20;
+alter table EQUI_2008_STEP2 drop qtinst22;
+
+/* renomear qtinst21 p/ qt_sala_rep_ped_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst21 qt_sala_rep_ped_amb int(4);
+
+/* renomear qtinst23 p/ qt_cons_odonto_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst23 qt_cons_odonto_amb int(4);
+
+/* renomear qtinst24 p/ qt_sala_peqcirur_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst24 qt_sala_peqcirur_amb int(4);
 
 
-/* agrupar qinst02, qinst03, qinst04 e renomear para sala adulto */
-
-select SUM(qinst02 , qinst03 , qinst04)
-from shop
-group by dealer
-
-
-select * from ESTAB_2008_STEP2;
-
-CREATE TABLE ESTAB_2008_STEP2 AS
-SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto, 
-(qtinst06 + qtinst07 + qtinst08) AS qt_sala_obs_adulto
-FROM ESTAB_2008_STEP1;
-
-drop table ESTAB_2008_STEP2;
