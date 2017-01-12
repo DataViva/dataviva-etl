@@ -22,7 +22,7 @@ SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto_ue,
 (qtinst06 + qtinst07 + qtinst08) AS qt_sala_obs_adulto_ue,
 (qtinst19 + qtinst20 + qtinst22) AS qt_sala_rep_amb,
 (qtleit06 + qtleit07 + qtleit08) AS qt_leito_rep_ue,
-(qtleit20 + qtleit21 + qtleit22) AS qt_leito_rep_amb,
+(qtleit19 + qtleit20 + qtleit22) AS qt_leito_rep_amb,
 (qtleit38 + qtleit39 + qtleit40) AS qt_leito_rn_nn 
 FROM ESTAB_2008_STEP1;
 
@@ -234,4 +234,78 @@ alter table ESTAB_2008_STEP2 change qtinst23 qt_cons_odonto_amb int(4);
 
 alter table ESTAB_2008_STEP2 change qtinst24 qt_sala_peqcirur_amb int(4);
 
+/* renomear qtinst25 p/ qt_sala_enf_amb */
 
+alter table ESTAB_2008_STEP2 change qtinst25 qt_sala_enf_amb int(4);
+
+/* renomear qtinst26 p/ qt_sala_imun_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst26 qt_sala_imun_amb int(4);
+
+/* renomear qtinst27 p/ qt_sala_nebu_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst27 qt_sala_nebu_amb int(4);
+
+/* renomear qtinst28 p/ qt_sala_gesso_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst28 qt_sala_gesso_amb int(4);
+
+/* renomear qtinst29 p/ qt_sala_cura_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst29 qt_sala_cura_amb int(4);
+
+/* renomear qtinst30 p/ qt_sala_ciruramb_amb */
+
+alter table ESTAB_2008_STEP2 change qtinst30 qt_sala_ciruramb_amb int(4);
+
+/* renomear qtinst31 p/ qt_sala_cirur_cc */
+
+alter table ESTAB_2008_STEP2 change qtinst31 qt_sala_cirur_cc int(4);
+
+/* renomear qtinst32 p/ qt_sala_recup_cc */
+
+alter table ESTAB_2008_STEP2 change qtinst32 qt_sala_recup_cc int(4);
+
+/* renomear qtinst33 p/ qt_sala_ciruramb_cc */
+
+alter table ESTAB_2008_STEP2 change qtinst33 qt_sala_ciruramb_cc int(4);
+
+/* renomear qtinst34 p/ qt_sala_preparto_co */
+
+alter table ESTAB_2008_STEP2 change qtinst34 qt_sala_preparto_co int(4);
+
+/* renomear qtinst35 p/ qt_sala_partonor_co */
+
+alter table ESTAB_2008_STEP2 change qtinst35 qt_sala_partonor_co int(4);
+
+/* renomear qtinst36 p/ qt_sala_curetagem_co */
+
+alter table ESTAB_2008_STEP2 change qtinst36 qt_sala_curetagem_co int(4);
+
+/* renomear qtinst37 p/ qt_sala_cirur_co */
+
+alter table ESTAB_2008_STEP2 change qtinst37 qt_sala_cirur_co int(4);
+
+/* renomear qtleit05 p/ qt_leito_rep_pedi_ue*/
+
+alter table ESTAB_2008_STEP2 change qtleit05 qt_leito_rep_pedi_ue int(4);
+
+/*apagar qtleit06, qtleit07, qtleit08*/
+
+alter table EQUI_2008_STEP2 drop qtleit06;
+alter table EQUI_2008_STEP2 drop qtleit07;
+alter table EQUI_2008_STEP2 drop qtleit08;
+
+/* renomear qtleit09 p/ qt_equip_odonto_ue*/
+
+alter table ESTAB_2008_STEP2 change qtleit09 qt_equip_odonto_ue int(4);
+
+/* renomear qtleit21 p/ qt_leito_rep_pedi_ue*/
+
+alter table ESTAB_2008_STEP2 change qtleit21 qt_leito_rep_pedi_ue int(4);
+
+/*apagar qtleit19, qtleit20, qtleit22 */
+
+alter table EQUI_2008_STEP2 drop qtleit19;
+alter table EQUI_2008_STEP2 drop qtleit20;
+alter table EQUI_2008_STEP2 drop qtleit22;
