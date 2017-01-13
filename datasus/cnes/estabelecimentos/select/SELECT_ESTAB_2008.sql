@@ -142,19 +142,19 @@ alter table ESTAB_2008_STEP2 drop niv_hier;
 
 /* nivate_a e nivate_h - concatenar */
 
-select concat( nivate_a, '  ',  nivate_h)
+select concat(nivate_a , '  ',  nivate_h)
 
-/* renomear qleitp1 p/ qt_leito_hosp_cirurg */
+/* renomear qtleitp1 p/ qt_leito_hosp_cirurg */
 
-alter table ESTAB_2008_STEP2 change qleitp1 qt_leito_hosp_cirurg int(4);
+alter table ESTAB_2008_STEP2 change qtleitp1 qt_leito_hosp_cirurg int(4);
 
-/* renomear qleitp2 p/ qt_leito_hosp_clin */
+/* renomear qtleitp2 p/ qt_leito_hosp_clin */
 
-alter table ESTAB_2008_STEP2 change qleitp2 qt_leito_hosp_clin int(4);
+alter table ESTAB_2008_STEP2 change qtleitp2 qt_leito_hosp_clin int(4);
 
-/* renomear qleitp3 p/ qt_leito_hosp_complex */
+/* renomear qtleitp3 p/ qt_leito_hosp_complex */
 
-alter table ESTAB_2008_STEP2 change qleitp3 qt_leito_hosp_complex int(4);
+alter table ESTAB_2008_STEP2 change qtleitp3 qt_leito_hosp_complex int(4);
 
 /* renomear qtinst01 p/ qt_sala_pedi_ue */
 
@@ -162,9 +162,9 @@ alter table ESTAB_2008_STEP2 change qtinst01 qt_sala_pedi_ue int(4);
 
 /*apagar qtinst02, qtinst03, qtinst04 */
 
-alter table EQUI_2008_STEP2 drop qtinst02;
-alter table EQUI_2008_STEP2 drop qtinst03;
-alter table EQUI_2008_STEP2 drop qtinst04;
+alter table ESTAB_2008_STEP2 drop qtinst02;
+alter table ESTAB_2008_STEP2 drop qtinst03;
+alter table ESTAB_2008_STEP2 drop qtinst04;
 
 /* renomear qtinst05 p/ qt_sala_rep_pedi_ue */
 
@@ -172,9 +172,9 @@ alter table ESTAB_2008_STEP2 change qtinst05 qt_sala_rep_pedi_ue int(4);
 
 /*apagar qtinst02, qtinst03, qtinst04 */
 
-alter table EQUI_2008_STEP2 drop qtinst06;
-alter table EQUI_2008_STEP2 drop qtinst07;
-alter table EQUI_2008_STEP2 drop qtinst08;
+alter table ESTAB_2008_STEP2 drop qtinst06;
+alter table ESTAB_2008_STEP2 drop qtinst07;
+alter table ESTAB_2008_STEP2 drop qtinst08;
 
 /* renomear qtinst09 p/ qt_cons_odonto_ue */
 
@@ -218,9 +218,9 @@ alter table ESTAB_2008_STEP2 change qtinst18 qt_cons_med_amb int(4);
 
 /*apagar qtinst19, qtinst20, qtinst22 */
 
-alter table EQUI_2008_STEP2 drop qtinst19;
-alter table EQUI_2008_STEP2 drop qtinst20;
-alter table EQUI_2008_STEP2 drop qtinst22;
+alter table ESTAB_2008_STEP2 drop qtinst19;
+alter table ESTAB_2008_STEP2 drop qtinst20;
+alter table ESTAB_2008_STEP2 drop qtinst22;
 
 /* renomear qtinst21 p/ qt_sala_rep_ped_amb */
 
@@ -292,9 +292,9 @@ alter table ESTAB_2008_STEP2 change qtleit05 qt_leito_rep_pedi_ue int(4);
 
 /*apagar qtleit06, qtleit07, qtleit08*/
 
-alter table EQUI_2008_STEP2 drop qtleit06;
-alter table EQUI_2008_STEP2 drop qtleit07;
-alter table EQUI_2008_STEP2 drop qtleit08;
+alter table ESTAB_2008_STEP2 drop qtleit06;
+alter table ESTAB_2008_STEP2 drop qtleit07;
+alter table ESTAB_2008_STEP2 drop qtleit08;
 
 /* renomear qtleit09 p/ qt_equip_odonto_ue*/
 
@@ -306,6 +306,25 @@ alter table ESTAB_2008_STEP2 change qtleit21 qt_leito_rep_pedi_ue int(4);
 
 /*apagar qtleit19, qtleit20, qtleit22 */
 
-alter table EQUI_2008_STEP2 drop qtleit19;
-alter table EQUI_2008_STEP2 drop qtleit20;
-alter table EQUI_2008_STEP2 drop qtleit22;
+alter table ESTAB_2008_STEP2 drop qtleit19;
+alter table ESTAB_2008_STEP2 drop qtleit20;
+alter table ESTAB_2008_STEP2 drop qtleit22;
+
+/* renomear qtleit23 p/ qt_equip_odonto_amb*/
+
+alter table ESTAB_2008_STEP2 change qtleit23 qt_equip_odonto_amb int(4);
+
+/* renomear qtleit32 p/ qt_sala_recuo_cc*/
+
+alter table ESTAB_2008_STEP2 change qtleit32 qt_sala_recuo_cc int(4);
+
+/* renomear qtleit34 p/ qt_sala_recuo_cc*/
+
+alter table ESTAB_2008_STEP2 change qtleit34 qt_leito_preparto_co int(4);
+
+/*apagar qtleit38, qtleit39, qtleit40 */
+
+alter table ESTAB_2008_STEP2 drop qtleit38;
+alter table ESTAB_2008_STEP2 drop qtleit39;
+alter table ESTAB_2008_STEP2 drop qtleit40;
+
