@@ -6,13 +6,13 @@ use cnes_estabelecimentos;
 
 create table ESTAB_2008_STEP1
 select cnes, codufmun, cod_cep, cpf_cnpj, pf_pj, niv_dep, cnpj_man, regsaude, vinc_sus, esfera_a, retencao, tp_unid, niv_hier, tp_prest, nivate_a,
-gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m, nivate_a, gesprg3e, gesprg3m, gesprg5e, gesprg5m, gesprg6e, gesprg6m, nivate_h, qtleitp1, 
-qtleitp2, qtleitp3, qtinst01, qtinst02, qtinst03, qtinst04, qtinst05, qtinst06, qtinst07, qtinst08, qtinst09, qtinst10, qtinst11, qtinst12, qtinst13, 
-qtinst14, urgemerg, qtinst15, qtinst16, qtinst17, qtinst18, qtinst19, qtinst20, qtinst21, qtinst22, qtinst23, qtinst24, qtinst25, qtinst26, qtinst27, 
-qtinst28, qtinst29, qtinst30, atendamb, qtinst31, qtinst32, qtinst33, centrcir, qtinst34, qtinst35, qtinst36, qtinst37, centrobs, qtleit05, qtleit06, 
-qtleit07, qtleit08, qtleit09, qtleit19, qtleit20, qtleit21, qtleit22, qtleit23, qtleit32, qtleit34, qtleit38, qtleit39, qtleit40, centrneo, atendhos, 
-coletres, ap01cv01, ap01cv02, ap01cv05, ap01cv06, ap02cv01, ap02cv02, ap02cv05, ap02cv06, ap03cv01, ap03cv02, ap03cv05, ap03cv06, ap04cv01, ap04cv02, 
-ap04cv05, ap04cv06, competen
+gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m, gesprg3e, gesprg3m, gesprg5e, gesprg5m, gesprg6e, gesprg6m, nivate_h, qtleitp1, qtleitp2, 
+qtleitp3, qtinst01, qtinst02, qtinst03, qtinst04, qtinst05, qtinst06, qtinst07, qtinst08, qtinst09, qtinst10, qtinst11, qtinst12, qtinst13, qtinst14, 
+urgemerg, qtinst15, qtinst16, qtinst17, qtinst18, qtinst19, qtinst20, qtinst21, qtinst22, qtinst23, qtinst24, qtinst25, qtinst26, qtinst27, qtinst28, 
+qtinst29, qtinst30, atendamb, qtinst31, qtinst32, qtinst33, centrcir, qtinst34, qtinst35, qtinst36, qtinst37, centrobs, qtleit05, qtleit06, qtleit07, 
+qtleit08, qtleit09, qtleit19, qtleit20, qtleit21, qtleit22, qtleit23, qtleit32, qtleit34, qtleit38, qtleit39, qtleit40, centrneo, atendhos, coletres, 
+ap01cv01, ap01cv02, ap01cv05, ap01cv06, ap02cv01, ap02cv02, ap02cv05, ap02cv06, ap03cv01, ap03cv02, ap03cv05, ap03cv06, ap04cv01, ap04cv02, ap04cv05, 
+ap04cv06, competen
 from estab_2008;
 
 
@@ -24,7 +24,14 @@ SELECT *, (qtinst02 + qtinst03 + qtinst04) AS qt_sala_atend_adulto_ue,
 (qtinst19 + qtinst20 + qtinst22) AS qt_sala_rep_amb,
 (qtleit06 + qtleit07 + qtleit08) AS qt_leito_rep_ue,
 (qtleit19 + qtleit20 + qtleit22) AS qt_leito_rep_amb,
-(qtleit38 + qtleit39 + qtleit40) AS qt_leito_rn_nn 
+(qtleit38 + qtleit39 + qtleit40) AS qt_leito_rn_nn,
+concat(gesprg1e, gesprg1m) AS atencaobasica,
+concat(gesprg2e, gesprg2m) AS mediacomplexidade,
+concat(gesprg4e, gesprg4m) AS altacomplexidade,
+concat(ap01cv01, ap01cv02, ap01cv05, ap01cv06) as tipointernacao,
+concat(ap02cv01, ap02cv02, ap02cv05, ap02cv06) as tipodeambulatorio,
+concat(ap03cv01, ap03cv02, ap03cv05, ap03cv06) as tipodesadt,
+concat(ap04cv01, ap04cv02, ap04cv05, ap04cv06) as tipodeurgencia 
 FROM ESTAB_2008_STEP1;
 
 /* Renomeando a variável MUNICIPIO */
@@ -143,10 +150,11 @@ alter table ESTAB_2008_STEP2 drop niv_hier;
 
 /* gesprg1e , gesprg1m - concatenar */
 
+alter table cnes_estabelecimentos.estab_2008 
 
-select gesprg1e, gesprg1m , concat(gesprg1e, gesprg1m) AS atencaobasica,
-gesprg2e, gesprg2m , concat(gesprg2e, gesprg2m) AS mediacomplexidade,
-gesprg4e, gesprg4m , concat(gesprg4e, gesprg4m) AS altacomplexidade
+select concat(gesprg1e, gesprg1m) AS atencaobasica,
+concat(gesprg2e, gesprg2m) AS mediacomplexidade,
+concat(gesprg4e, gesprg4m) AS altacomplexidade
 from cnes_estabelecimentos.estab_2008;
 
 /* renomear qtleitp1 p/ qt_leito_hosp_cirurg */
