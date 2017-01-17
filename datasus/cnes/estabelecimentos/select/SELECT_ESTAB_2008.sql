@@ -148,14 +148,6 @@ on ESTAB_2008_STEP2.niv_hier = niv_hier .fonte;
 
 alter table ESTAB_2008_STEP2 drop niv_hier;
 
-/* gesprg1e , gesprg1m - concatenar */
-
-alter table cnes_estabelecimentos.estab_2008 
-
-select concat(gesprg1e, gesprg1m) AS atencaobasica,
-concat(gesprg2e, gesprg2m) AS mediacomplexidade,
-concat(gesprg4e, gesprg4m) AS altacomplexidade
-from cnes_estabelecimentos.estab_2008;
 
 /* renomear qtleitp1 p/ qt_leito_hosp_cirurg */
 
@@ -341,3 +333,25 @@ alter table ESTAB_2008_STEP2 drop qtleit38;
 alter table ESTAB_2008_STEP2 drop qtleit39;
 alter table ESTAB_2008_STEP2 drop qtleit40;
 
+/*apagar ap01cv01, ap01cv02, ap01cv05, ap01cv06, ap02cv01,ap02cv02, ap02cv05, ap02cv06,ap03cv01, ap03cv02, ap03cv05, ap03cv06, ap04cv01, ap04cv02, ap04cv05, ap04cv06 */
+
+alter table ESTAB_2008_STEP2 drop ap01cv01;
+alter table ESTAB_2008_STEP2 drop ap01cv02;
+alter table ESTAB_2008_STEP2 drop ap01cv05;
+alter table ESTAB_2008_STEP2 drop ap01cv06;
+alter table ESTAB_2008_STEP2 drop ap02cv01;
+alter table ESTAB_2008_STEP2 drop ap02cv02;
+alter table ESTAB_2008_STEP2 drop ap02cv05;
+alter table ESTAB_2008_STEP2 drop ap02cv06;
+alter table ESTAB_2008_STEP2 drop ap03cv01;
+alter table ESTAB_2008_STEP2 drop ap03cv02;
+alter table ESTAB_2008_STEP2 drop ap03cv05;
+alter table ESTAB_2008_STEP2 drop ap03cv06;
+alter table ESTAB_2008_STEP2 drop ap04cv01;
+alter table ESTAB_2008_STEP2 drop ap04cv02;
+alter table ESTAB_2008_STEP2 drop ap04cv05;
+alter table ESTAB_2008_STEP2 drop ap04cv06;
+
+-- Criando tabela final - STEP3: 
+
+create table ESTAB_2008_STEP3 select * from ESTAB_2008_STEP2;    
