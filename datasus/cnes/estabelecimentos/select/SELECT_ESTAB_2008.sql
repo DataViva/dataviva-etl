@@ -69,8 +69,6 @@ alter table ESTAB_2008_STEP2 drop regsaude;
 
 /* adicionar o regsaude */
 
-drop table regsaude;
-
 create table regsaude(
 	cod_regsaude varchar(5),
     municipio varchar(6)
@@ -84,13 +82,10 @@ ignore 1 lines;
 
 alter table ESTAB_2008_STEP2 add regsaude varchar(5);
 
-update ESTAB_2008_STEP2 left join regsaude 
-on ESTAB_2008_STEP2.codmun = regsaude.municipio
-set ESTAB_2008_STEP2.regsaude = regsaude.cod_regsaude;
+
 
 /* Recodificando a variavel esfera_a */ 
 
-drop table esfera;
 create table esfera(
     esfera_a varchar(2),
     esfera varchar(2)

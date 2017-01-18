@@ -1,4 +1,4 @@
-load data local infile 'H:/secex/Dados/Importacao/IMP_2016_MUN.csv'
+load data local infile 'Z:/secex/IMP_2016_MUN.csv'
 into table SECEX_2016_IMP
 character set 'latin1'
 fields terminated by ';'

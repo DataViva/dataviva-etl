@@ -33,9 +33,13 @@ create table SECEX_2016_IMP_STEP1 select * from SECEX_2016_IMP;
 alter table SECEX_2016_IMP_STEP1 add HS_07 varchar(4);
 
 # Os codigos 3826, 9619, 9991, 9992, 9997 e 9998 não aparecem em 2007
-update SECEX_2015_IMP_STEP1 set HS_07=if(CO_SH4='0308','0307',if(CO_SH4='9619', '4818',CO_SH4));
+update SECEX_2016_IMP_STEP1 
+set HS_07=if(CO_SH4='0308','0307',
+		  if(CO_SH4='9619', '4818',
+          if(CO_SH4='3826','3024',CO_SH4)));
 
-select * from SECEX_2015_IMP_STEP1 where CO_SH4='0308';
-select * from SECEX_2015_IMP_STEP1 where CO_SH4='9619';
+select * from SECEX_2016_IMP_STEP1 where CO_SH4='0308';
+select * from SECEX_2016_IMP_STEP1 where CO_SH4='3826';
+select * from SECEX_2016_IMP_STEP1 where CO_SH4='9619';
 
 

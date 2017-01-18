@@ -1,3 +1,7 @@
+use dataviva_raw;
+
+drop table if exists SECEX_2016_EXP;
+
 CREATE TABLE SECEX_2016_EXP(
 CO_ANO char(4),
 CO_MES char(2),
