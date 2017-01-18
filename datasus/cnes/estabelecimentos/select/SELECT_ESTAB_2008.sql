@@ -83,7 +83,6 @@ ignore 1 lines;
 alter table ESTAB_2008_STEP2 add regsaude varchar(5);
 
 
-
 /* Recodificando a variavel esfera_a */ 
 
 create table esfera(
@@ -115,7 +114,6 @@ alter table ESTAB_2008_STEP2 add retencao_2 varchar (2);
 update ESTAB_2008_STEP2 left join retencao 
 on ESTAB_2008_STEP2.retencao = retencao.fonte
 set ESTAB_2008_STEP2.retencao_2 = retencao.retencao;
-
 
 select * from  ESTAB_2008_STEP2 left join retencao 
 on ESTAB_2008_STEP2.retencao = retencao.fonte;
@@ -198,7 +196,7 @@ alter table ESTAB_2008_STEP2 change qtinst13 qt_sala_peqcirur_ue int(4);
 
 /* renomear qtinst14 p/ qt_sala_consu_med_ue */
 
-alter table ESTAB_2008_STEP2 change qtinst14 qt_sala_consu_med_ue int(4);
+alter table ESTAB_2008_STEP2 change qtinst14 qt_sala_cons_med_ue int(4);
 
 /* renomear qtinst15 p/ qt_cons_clincbasica_amb */
 
@@ -208,13 +206,13 @@ alter table ESTAB_2008_STEP2 change qtinst15 qt_cons_clincbasica_amb int(4);
 
 alter table ESTAB_2008_STEP2 change qtinst16 qt_cons_clincesp_amb int(4);
 
-/* renomear qtinst17 p/ qt_cons_clincesp_amb */
+/* renomear qtinst17 p/ qt_cons_clincind_amb */
 
-alter table ESTAB_2008_STEP2 change qtinst17 qt_cons_clincesp_amb int(4);
+alter table ESTAB_2008_STEP2 change qtinst17 qt_cons_clincind_amb int(4);
 
-/* renomear qtinst18 p/ qt_cons_med_amb */
+/* renomear qtinst18 p/ qt_cons_nmed_amb */
 
-alter table ESTAB_2008_STEP2 change qtinst18 qt_cons_med_amb int(4);
+alter table ESTAB_2008_STEP2 change qtinst18 qt_cons_nmed_amb int(4);
 
 /*apagar qtinst19, qtinst20, qtinst22 */
 
@@ -346,6 +344,15 @@ alter table ESTAB_2008_STEP2 drop ap04cv01;
 alter table ESTAB_2008_STEP2 drop ap04cv02;
 alter table ESTAB_2008_STEP2 drop ap04cv05;
 alter table ESTAB_2008_STEP2 drop ap04cv06;
+
+/*apagar gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m */
+
+alter table ESTAB_2008_STEP2 drop gesprg1e;
+alter table ESTAB_2008_STEP2 drop gesprg1m;
+alter table ESTAB_2008_STEP2 drop gesprg2e;
+alter table ESTAB_2008_STEP2 drop gesprg2m;
+alter table ESTAB_2008_STEP2 drop gesprg4e;
+alter table ESTAB_2008_STEP2 drop gesprg4m;
 
 -- Criando tabela final - STEP3: 
 
