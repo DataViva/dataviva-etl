@@ -348,7 +348,7 @@ alter table ESTAB_2008_STEP2 drop ap04cv02;
 alter table ESTAB_2008_STEP2 drop ap04cv05;
 alter table ESTAB_2008_STEP2 drop ap04cv06;
 
-/*apagar gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m */
+/*apagar gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m, gesprg3e, gesprg3m, gesprg5e, gesprg5m, gesprg6e, gesprg6m */
 
 alter table ESTAB_2008_STEP2 drop gesprg1e;
 alter table ESTAB_2008_STEP2 drop gesprg1m;
@@ -356,6 +356,12 @@ alter table ESTAB_2008_STEP2 drop gesprg2e;
 alter table ESTAB_2008_STEP2 drop gesprg2m;
 alter table ESTAB_2008_STEP2 drop gesprg4e;
 alter table ESTAB_2008_STEP2 drop gesprg4m;
+alter table ESTAB_2008_STEP2 drop gesprg3e;
+alter table ESTAB_2008_STEP2 drop gesprg3m;
+alter table ESTAB_2008_STEP2 drop gesprg5e;
+alter table ESTAB_2008_STEP2 drop gesprg5m;
+alter table ESTAB_2008_STEP2 drop gesprg6e;
+alter table ESTAB_2008_STEP2 drop gesprg6m;
 
 -- Criando tabela final - STEP3: 
 
