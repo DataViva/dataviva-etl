@@ -305,9 +305,9 @@ alter table ESTAB_2008_STEP2 drop qtleit08;
 
 alter table ESTAB_2008_STEP2 change qtleit09 qt_equip_odonto_ue int(4);
 
-/* renomear qtleit21 p/ qt_leito_rep_pedi_ue*/
+/* renomear qtleit21 p/ qt_leito_rep_pedi_amb*/
 
-alter table ESTAB_2008_STEP2 change qtleit21 qt_leito_rep_pedi_ue int(4);
+alter table ESTAB_2008_STEP2 change qtleit21 qt_leito_rep_pedi_amb int(4);
 
 /*apagar qtleit19, qtleit20, qtleit22 */
 
@@ -352,7 +352,7 @@ alter table ESTAB_2008_STEP2 drop ap04cv02;
 alter table ESTAB_2008_STEP2 drop ap04cv05;
 alter table ESTAB_2008_STEP2 drop ap04cv06;
 
-/*apagar gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m, gesprg3e, gesprg3m, gesprg5e, gesprg5m, gesprg6e, gesprg6m */
+/*apagar gesprg1e, gesprg1m, gesprg2e, gesprg2m, gesprg4e, gesprg4m */
 
 alter table ESTAB_2008_STEP2 drop gesprg1e;
 alter table ESTAB_2008_STEP2 drop gesprg1m;
@@ -360,12 +360,6 @@ alter table ESTAB_2008_STEP2 drop gesprg2e;
 alter table ESTAB_2008_STEP2 drop gesprg2m;
 alter table ESTAB_2008_STEP2 drop gesprg4e;
 alter table ESTAB_2008_STEP2 drop gesprg4m;
-alter table ESTAB_2008_STEP2 drop gesprg3e;
-alter table ESTAB_2008_STEP2 drop gesprg3m;
-alter table ESTAB_2008_STEP2 drop gesprg5e;
-alter table ESTAB_2008_STEP2 drop gesprg5m;
-alter table ESTAB_2008_STEP2 drop gesprg6e;
-alter table ESTAB_2008_STEP2 drop gesprg6m;
 
 -- Criando tabela final - STEP3: 
 
