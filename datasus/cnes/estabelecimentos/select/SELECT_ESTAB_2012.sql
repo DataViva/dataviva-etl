@@ -319,11 +319,11 @@ alter table ESTAB_2012_STEP2 drop qtleit22;
 
 alter table ESTAB_2012_STEP2 change qtleit23 qt_equip_odonto_amb int(4);
 
-/* renomear qtleit32 p/ qt_sala_recuo_cc*/
+/* renomear qtleit32 p/ qt_leito_recu_cc*/
 
-alter table ESTAB_2012_STEP2 change qtleit32 qt_sala_recuo_cc int(4);
+alter table ESTAB_2009_STEP2 change qtleit32 qt_leito_recu_cc int(4);
 
-/* renomear qtleit34 p/ qt_sala_recuo_cc*/
+/* renomear qtleit34 p/ qt_leito_preparto_co*/
 
 alter table ESTAB_2012_STEP2 change qtleit34 qt_leito_preparto_co int(4);
 
