@@ -85,6 +85,10 @@ ignore 1 lines;
 
 alter table ESTAB_2008_STEP2 add regsaude varchar(5);
 
+update ESTAB_2008_STEP2 left join regsaude 
+on ESTAB_2008_STEP2.codmun = regsaude.municipio
+set ESTAB_2008_STEP2.regsaude = regsaude.cod_regsaude;
+
 
 /* Recodificando a variavel esfera_a */ 
 
@@ -257,7 +261,7 @@ alter table ESTAB_2008_STEP2 change qtinst29 qt_sala_cura_amb int(4);
 
 /* renomear qtinst30 p/ qt_sala_ciruramb_amb */
 
-alter table ESTAB_2008_STEP2 change qtinst30 qt_sala_ciruramb_amb int(4);
+alter table ESTAB_2008_STEP2 change qtinst30 qt_sala_cirur_amb int(4);
 
 /* renomear qtinst31 p/ qt_sala_cirur_cc */
 
