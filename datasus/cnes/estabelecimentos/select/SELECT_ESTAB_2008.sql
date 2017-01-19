@@ -321,7 +321,7 @@ alter table ESTAB_2008_STEP2 change qtleit23 qt_equip_odonto_amb int(4);
 
 /* renomear qtleit32 p/ qt_sala_recuo_cc*/
 
-alter table ESTAB_2008_STEP2 change qtleit32 qt_sala_recuo_cc int(4);
+alter table ESTAB_2008_STEP2 change qtleit32 qt_sala_recup_cc int(4);
 
 /* renomear qtleit34 p/ qt_sala_recuo_cc*/
 
