@@ -305,9 +305,9 @@ alter table ESTAB_2009_STEP2 drop qtleit08;
 
 alter table ESTAB_2009_STEP2 change qtleit09 qt_equip_odonto_ue int(4);
 
-/* renomear qtleit21 p/ qt_leito_rep_pedi_ue*/
+/* renomear qtleit21 p/ qt_leito_rep_pedi_amb*/
 
-alter table ESTAB_2009_STEP2 change qtleit21 qt_leito_rep_pedi_ue int(4);
+alter table ESTAB_2008_STEP2 change qtleit21 qt_leito_rep_pedi_amb int(4);
 
 /*apagar qtleit19, qtleit20, qtleit22 */
 
