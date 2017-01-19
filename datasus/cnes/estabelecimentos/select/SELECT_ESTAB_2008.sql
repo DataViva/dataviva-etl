@@ -261,7 +261,7 @@ alter table ESTAB_2008_STEP2 change qtinst29 qt_sala_cura_amb int(4);
 
 /* renomear qtinst30 p/ qt_sala_ciruramb_amb */
 
-alter table ESTAB_2008_STEP2 change qtinst30 qt_sala_cirur_amb int(4);
+alter table ESTAB_2008_STEP2 change qtinst30 qt_sala_ciruramb_amb int(4);
 
 /* renomear qtinst31 p/ qt_sala_cirur_cc */
 
