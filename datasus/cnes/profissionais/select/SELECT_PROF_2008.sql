@@ -51,8 +51,8 @@ ignore 1 lines;
 alter table PROF_2008_STEP2 add regsaude varchar(5);
 
 update PROF_2008_STEP2 left join regsaude 
-on EQUI_2008_STEP2.codmun = regsaude.municipio
-set EQUI_2008_STEP2.regsaude = regsaude.cod_regsaude;
+on PROF_2008_STEP2.codmun = regsaude.municipio
+set PROF_2008_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Niv_dep substituir 5 por um 1 nos anos 2008 e 2009 */
 
