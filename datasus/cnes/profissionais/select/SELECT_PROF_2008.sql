@@ -129,3 +129,7 @@ on PROF_2008_STEP2.niv_hier = niv_hier .fonte;
 
 alter table PROF_2008_STEP2 drop niv_hier;
 
+
+/* alterando cbo's */
+update PROF_2008_STEP2 set cbo = 
+if(cbo='1999A1','142710',if(cbo='1999A2','142710',if(cbo='221555','221205',if(cbo='2335225','233225',cbo))));
