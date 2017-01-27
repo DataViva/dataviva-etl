@@ -26,16 +26,17 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 
 /* Eliminar a variavel regsaude */
 
-alter table EQUI_2010_STEP2 drop regsaude; ##ainda não finalizado
+alter table EQUI_2010_STEP2 drop regsaude; 
 
 /* adicionar o regsaude */
 
-create table regsaude (
+drop table regsaude;
+create table regsaude(
 	cod_regsaude varchar(5),
     municipio varchar(6)
 );
 
-load data local infile 'H:/datasus/cnes/classifcacao/regsaude.csv'
+load data local infile 'Y:/Correspondencia_Classificacoes/regsaude.csv'
 into table regsaude
 fields terminated by ';'
 lines terminated by '\n'
@@ -49,6 +50,7 @@ on EQUI_2010_STEP2.codmun = regsaude.municipio
 set EQUI_2010_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
+
 
 alter table EQUI_2010_STEP2 drop micr_reg;
 
@@ -65,12 +67,14 @@ insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','9
 alter table EQUI_2010_STEP2 add esfera varchar(2);
 
 update EQUI_2010_STEP2 left join esfera 
-on EQUI_2010_STEP2.esfera_a = esfera_a
+on EQUI_2010_STEP2.esfera_a = esfera.esfera_a
 set EQUI_2010_STEP2.esfera = esfera.esfera;
+
+alter table EQUI_2010_STEP2 drop esfera_a;
 
 /* Recodificando a variavel retenção */ 
 
-
+drop table retencao;
 create table retencao (
     fonte varchar(2),
     retencao varchar(2)
@@ -88,8 +92,34 @@ set EQUI_2010_STEP2.retencao_2 = retencao.retencao;
 select * from  EQUI_2010_STEP2 left join retencao 
 on EQUI_2010_STEP2.retencao = retencao.fonte;
 
+alter table EQUI_2010_STEP2 drop retencao;
+
+/* Recodificando a variavel niv_hier */
+
+create table niv_hier (
+    fonte varchar(2),
+    niv_hier varchar(2)
+);
+
+insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
+
+alter table EQUI_2010_STEP2 add niv_hier_2 varchar (2);
+
+update EQUI_2010_STEP2 left join niv_hier 
+on EQUI_2010_STEP2.niv_hier = niv_hier.fonte
+set EQUI_2010_STEP2.niv_hier_2 = niv_hier.niv_hier;
+
+
+select * from  EQUI_2010_STEP2 left join niv_hier  
+on EQUI_2010_STEP2.niv_hier = niv_hier .fonte;
+
+alter table EQUI_2010_STEP2 drop niv_hier;
+
 
 /* ind_sus e ins_nsus na mesma variável */ 
 
-alter table EQUI_2010_STEP2 drop ind_nsus;           
-       
+alter table EQUI_2010_STEP2 drop ind_nsus;    
+
+-- STEP 3: Tabela Final
+      
+create table EQUI_2010_STEP3 select * from EQUI_2010_STEP2; 

@@ -2,13 +2,13 @@
 
 rm(list=ls(all=TRUE))
 
-dadoshs07 <- read.csv("H:\\secex\\Recodificacao HS\\hs_2007.csv", header=TRUE,colClasses="factor")
+dadoshs07 <- read.csv("Z:\\secex\\hs_2007.csv", header=TRUE,colClasses="factor")
 names(dadoshs07) <- "hs"
 dadoshs07$id07 <- 1
 
 # Exportacao 2016
 
-exp16 <- read.csv("H:\\secex\\Recodificacao HS\\2016\\hs_16_exp.csv", header=TRUE,colClasses="factor")
+exp16 <- read.csv("Z:\\secex\\hs_16_exp.csv", header=TRUE,colClasses="factor")
 names(exp16) <- "hs"
 exp16$id16 <- 1
 
@@ -20,7 +20,7 @@ subset(codigos2016,is.na(id07)==TRUE)
 
 # Importacao 2015
 
-imp16<- read.csv("H:\\secex\\Recodificacao HS\\2016\\hs_16_imp.csv", header=TRUE,colClasses="factor")
+imp16<- read.csv("Z:\\secex\\hs_16_imp.csv", header=TRUE,colClasses="factor")
 names(imp16) <- "hs"
 imp16$id16 <- 1
 
