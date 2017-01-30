@@ -1,6 +1,6 @@
 #SELECT PROFISSIONAIS
 
--- Select prof_2008	
+-- Select prof_2009	
 
 use cnes_profissionais;
 
