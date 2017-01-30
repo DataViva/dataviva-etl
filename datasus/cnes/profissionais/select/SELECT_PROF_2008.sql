@@ -130,6 +130,31 @@ on PROF_2008_STEP2.niv_hier = niv_hier .fonte;
 alter table PROF_2008_STEP2 drop niv_hier;
 
 
-/* alterando cbo's */
+/* Alterando cbo's */
 update PROF_2008_STEP2 set cbo = 
 if(cbo='1999A1','142710',if(cbo='1999A2','142710',if(cbo='221555','221205',if(cbo='2335225','233225',cbo))));
+
+
+/* Apagar o cbounico*/
+
+alter table PROF_2008_STEP2 drop cbounico;
+
+/* Apagar o vincul_c*/
+
+alter table PROF_2008_STEP2 drop vincul_c;
+
+/* Apagar o vincul_a*/
+
+alter table PROF_2008_STEP2 drop vincul_a;
+
+/* Apagar o vincul_n*/
+
+alter table PROF_2008_STEP2 drop vincul_n;
+
+/* Apagar o profnsus*/
+
+alter table PROF_2008_STEP2 drop profnsus;
+
+-- Criando tabela final - STEP3: 
+
+create table PROF_2008_STEP3 select * from PROF_2008_STEP2;   
