@@ -34,7 +34,6 @@ alter table PROF_2008_STEP2 drop regsaude;
 
 /* adicionar o regsaude */
 
-drop table regsaude;
 
 create table regsaude(
 	cod_regsaude varchar(5),
@@ -134,6 +133,11 @@ alter table PROF_2008_STEP2 drop niv_hier;
 update PROF_2008_STEP2 set cbo = 
 if(cbo='1999A1','142710',if(cbo='1999A2','142710',if(cbo='221555','221205',if(cbo='2335225','233225',cbo))));
 
+/* Selecionar somente os 4 primeiros di*/
+
+select left(cbo, 4) from  PROF_2008_STEP2;
+
+update PROF_2008_STEP2 set cbo = left(cbo, 4);
 
 /* Apagar o cbounico*/
 
