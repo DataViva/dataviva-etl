@@ -10,7 +10,7 @@ use cnes_profissionais;
 create table PROF_2010_STEP1
 select cnes, codufmun, regsaude, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, cbo, cbounico,
 cns_prof, vinculac, vincul_c, vincul_a, vincul_n, prof_sus, profnsus, horaoutr, horahosp, hora_amb, competen, ufmunres
-from PROF_2010;
+from prof_2010;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
@@ -41,8 +41,8 @@ create table regsaude(
     municipio varchar(6)
 );
 
-load data local infile 'Y:/Correspondencia_Classificacoes/regsaude.csv'
-into table regsaude
+load data local infile 'H:/dataviva-etl/datasus/regsaude.csv'
+into table regsaude 
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
