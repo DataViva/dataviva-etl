@@ -367,6 +367,10 @@ alter table ESTAB_2009_STEP2 drop gesprg5m;
 alter table ESTAB_2009_STEP2 drop gesprg6e;
 alter table ESTAB_2009_STEP2 drop gesprg6m;
 
+/*apagar competen */
+
+alter table ESTAB_2009_STEP2 drop competen;
+
 -- Criando tabela final - STEP3: 
 
 create table ESTAB_2009_STEP3 select * from ESTAB_2009_STEP2;    
