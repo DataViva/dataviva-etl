@@ -10,7 +10,7 @@ use cnes_profissionais;
 create table PROF_2014_STEP1
 select cnes, codufmun, regsaude, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, cbo, cbounico,
 cns_prof, vinculac, vincul_c, vincul_a, vincul_n, prof_sus, profnsus, horaoutr, horahosp, hora_amb, competen, ufmunres
-from PROF_2014;
+from prof_2014;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
@@ -72,12 +72,12 @@ alter table PROF_2014_STEP2 drop niv_dep;
 
 /* Recodificando a variavel esfera_a */ 
 
-create table esfera(
+/*create table esfera(
     esfera_a varchar(2),
     esfera varchar(2)
 );
 
-insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
+insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');*/
 
 alter table PROF_2014_STEP2 add esfera varchar(2);
 

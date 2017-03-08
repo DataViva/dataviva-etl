@@ -10,7 +10,7 @@ use cnes_profissionais;
 create table PROF_2013_STEP1
 select cnes, codufmun, regsaude, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, cbo, cbounico,
 cns_prof, vinculac, vincul_c, vincul_a, vincul_n, prof_sus, profnsus, horaoutr, horahosp, hora_amb, competen, ufmunres
-from PROF_2013;
+from prof_2013;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
@@ -20,7 +20,7 @@ create table PROF_2013_STEP2 select * from PROF_2013_STEP1;
 
 alter table PROF_2013_STEP2 change codufmun codmun VARCHAR(6);
 
-/*Aletrando codigos dos municipios satelites de Brasilia */ #conferir se as cidades foram substituidas
+/*Alterando codigos dos municipios satelites de Brasilia */ #conferir se as cidades foram substituidas
 
 update PROF_2013_STEP2 set codmun = 
 if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
