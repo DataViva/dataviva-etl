@@ -4,15 +4,13 @@ use cnes_leitos;
 
 -- STEP 1: Criando a tabela com as variávies selecionadas:
 
-use cnes_leitos;
-
 create table LEITOS_2008_STEP1
 select cnes, codufmun, regsaude, micr_reg, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, tp_leito, codleito, qt_exist, qt_contr, qt_sus, qt_nsus, competen
 from leitos_2008;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
-LEITOS_2008_STEP2 select * from LEITOS_2008_STEP1;
+create table LEITOS_2008_STEP2 select * from LEITOS_2008_STEP1;
 
 /* Renomeando a variável MUNICIPIO */
 
@@ -39,7 +37,7 @@ create table regsaude(
     municipio varchar(6)
 );
 
-load data local infile 'Y:/Correspondencia_Classificacoes/regsaude.csv'
+load data local infile 'H:/dataviva-etl/datasus/regsaude.csv'
 into table regsaude
 fields terminated by ';'
 lines terminated by '\n'
@@ -54,7 +52,7 @@ set LEITOS_2008_STEP2.regsaude = regsaude.cod_regsaude;
 
 /* Eliminar a variavel micr_reg */
 
-alter table  drop micr_reg;
+alter table LEITOS_2008_STEP2 drop micr_reg;
 
 /* Niv_dep substituir 5 por um 1 */
 
@@ -131,10 +129,9 @@ on LEITOS_2008_STEP2.niv_hier = niv_hier .fonte;
 
 alter table LEITOS_2008_STEP2 drop niv_hier;
 
-
 /* Alterar COMPETEN*/
 
-SELECT REPLACE (competen ,'200812' , '2008') FROM cnes_leitos.leitos_2008 ;
+select replace(competen ,'200812' , '2008') FROM cnes_leitos.leitos_2008 ;
 
 
 
