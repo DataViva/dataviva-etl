@@ -5,18 +5,26 @@ use cnes_leitos;
 -- STEP 1: Criando a tabela com as variávies selecionadas:
 
 create table LEITOS_2008_STEP1
-select cnes, codufmun, regsaude, micr_reg, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, tp_leito, codleito, qt_exist, qt_contr, qt_sus, qt_nsus, competen
+select cnes, codufmun, regsaude, micr_reg, pf_pj, cpf_cnpj, niv_dep, cnpj_man, 
+esfera_a, retencao, tp_unid, niv_hier, tp_leito, codleito, qt_exist, qt_contr, 
+qt_sus, qt_nsus, competen
 from leitos_2008;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
-create table LEITOS_2008_STEP2 select * from LEITOS_2008_STEP1;
+create table LEITOS_2008_STEP2 as
+select *, replace(competen ,'200812', '2008') as competen1
+from LEITOS_2008_STEP1;
+
+/*Apagando competen */
+
+alter table LEITOS_2008_STEP2 drop competen; 
 
 /* Renomeando a variável MUNICIPIO */
 
 alter table LEITOS_2008_STEP2 change codufmun codmun VARCHAR(6);
 
-/*Aletrando codigos dos municipios satelites de Brasilia */ #conferir se as cidades foram substituidas
+/*Aletrando codigos dos municipios satelites de Brasilia */ 
 
 update LEITOS_2008_STEP2 set codmun = 
 if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
@@ -29,8 +37,6 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 alter table LEITOS_2008_STEP2 drop regsaude; 
 
 /* adicionar o regsaude */
-
-drop table regsaude;
 
 create table regsaude(
 	cod_regsaude varchar(5),
@@ -78,7 +84,8 @@ create table esfera(
     esfera varchar(2)
 );
 
-insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
+insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),
+(' ','99'),('  ','99');
 
 alter table LEITOS_2008_STEP2 add esfera varchar(2);
 
@@ -95,7 +102,8 @@ create table retencao (
     retencao varchar(2)
 );
 
-insert into retencao values ('10','10'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),(' ','99'); 
+insert into retencao values ('10','10'),('11','11'),('12','12'),('13','13'),
+('14','14'),('15','15'),('16','16'),(' ','99'); 
 
 alter table LEITOS_2008_STEP2 add retencao_2 varchar (2);
 
@@ -115,7 +123,8 @@ create table niv_hier (
     niv_hier varchar(2)
 );
 
-insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
+insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),
+('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
 
 alter table LEITOS_2008_STEP2 add niv_hier_2 varchar (2);
 
@@ -124,14 +133,13 @@ on LEITOS_2008_STEP2.niv_hier = niv_hier.fonte
 set LEITOS_2008_STEP2.niv_hier_2 = niv_hier.niv_hier;
 
 
-select * from  LEITOS_2008_STEP2 left join niv_hier  
+select * from LEITOS_2008_STEP2 left join niv_hier  
 on LEITOS_2008_STEP2.niv_hier = niv_hier .fonte;
 
 alter table LEITOS_2008_STEP2 drop niv_hier;
 
-/* Alterar COMPETEN*/
+-- Criando tabela final - STEP3: 
 
-select replace(competen ,'200812' , '2008') FROM cnes_leitos.leitos_2008 ;
-
+create table LEITOS_2008_STEP3 select * from LEITOS_2008_STEP2; 
 
 
