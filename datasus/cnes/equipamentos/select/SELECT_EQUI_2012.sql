@@ -121,6 +121,21 @@ alter table EQUI_2012_STEP2 drop niv_hier;
 
 alter table EQUI_2012_STEP2 drop ind_nsus;   
 
+/*apagar competen */
+
+alter table EQUI_2012_STEP2 drop competen;
+
+/* inserindo ano*/
+
+create table competen(
+	competen1 varchar(4)
+);
+
+insert into competen values('2012');
+
+alter table EQUI_2012_STEP2 add competen1 varchar(4);
+update EQUI_2012_STEP2 set competen1='2012';        
+
 -- STEP 3: Tabela Final
 
 create table EQUI_2012_STEP3 select * from EQUI_2012_STEP2;         

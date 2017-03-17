@@ -117,10 +117,25 @@ on EQUI_2014_STEP2.niv_hier = niv_hier .fonte;
 
 alter table EQUI_2014_STEP2 drop niv_hier;
 
-
 /* ind_sus e ins_nsus na mesma variável */ 
 
-alter table EQUI_2014_STEP2 drop ind_nsus;   
+alter table EQUI_2014_STEP2 drop ind_nsus;  
+
+/*apagar competen */
+
+alter table EQUI_2014_STEP2 drop competen;
+
+
+/* inserindo ano*/
+
+create table competen(
+	competen1 varchar(4)
+);
+
+insert into competen values('2014');
+
+alter table EQUI_2014_STEP2 add competen1 varchar(4);
+update EQUI_2014_STEP2 set competen1='2014';         
 
 -- STEP 3: Tabela Final
 
