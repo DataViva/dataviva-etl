@@ -122,7 +122,6 @@ update PROF_2015_STEP2 left join niv_hier
 on PROF_2015_STEP2.niv_hier = niv_hier.fonte
 set PROF_2015_STEP2.niv_hier_2 = niv_hier.niv_hier;
 
-
 select * from  PROF_2015_STEP2 left join niv_hier  
 on PROF_2015_STEP2.niv_hier = niv_hier .fonte;
 
@@ -130,6 +129,7 @@ alter table PROF_2015_STEP2 drop niv_hier;
 
 
 /* Alterando cbo's */
+
 update PROF_2015_STEP2 set cbo = 
 if(cbo='1999A1','142710',if(cbo='1999A2','142710',if(cbo='221555','221205',if(cbo='2335225','233225',cbo))));
 
