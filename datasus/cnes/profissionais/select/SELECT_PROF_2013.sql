@@ -159,6 +159,21 @@ alter table PROF_2013_STEP2 drop vincul_n;
 
 alter table PROF_2013_STEP2 drop profnsus;
 
+/*apagar competen */
+
+alter table PROF_2013_STEP2 drop competen;
+
+/* inserindo ano*/
+
+create table competen(
+	competen1 varchar(4)
+);
+
+insert into competen values('2013');
+
+alter table PROF_2013_STEP2 add competen1 varchar(4);
+update PROF_2013_STEP2 set competen1='2013'; 
+
 -- Criando tabela final - STEP3: 
 
 create table PROF_2013_STEP3 select * from PROF_2013_STEP2;   
