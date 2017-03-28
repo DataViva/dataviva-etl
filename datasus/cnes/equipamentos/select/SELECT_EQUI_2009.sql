@@ -10,6 +10,7 @@ from equi_2009;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
+drop table if exists EQUI_2009_STEP2;
 create table EQUI_2009_STEP2 select * from EQUI_2009_STEP1;
 
 /* Renomeando a variável MUNICIPIO */
@@ -28,20 +29,21 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 
 alter table EQUI_2009_STEP2 drop regsaude; 
 
-/* adicionar o regsaude */
+/* adicionar o regsaude 
 
-drop table regsaude;
+drop table if exists regsaude;
 
 create table regsaude(
 	cod_regsaude varchar(5),
     municipio varchar(6)
 );
 
-load data local infile 'Y:/Correspondencia_Classificacoes/regsaude.csv'
+load data local infile 'H:/Projetos/dataviva-etl/datasus/regsaude.csv'
 into table regsaude
 fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
+*/
 
 
 alter table EQUI_2009_STEP2 add regsaude varchar(5);
@@ -55,9 +57,9 @@ set EQUI_2009_STEP2.regsaude = regsaude.cod_regsaude;
 
 alter table EQUI_2009_STEP2 drop micr_reg;
 
-/* Recodificando a variavel esfera_a */ 
+/* Recodificando a variavel esfera_a 
 
-drop table esfera;
+drop table if exists esfera;
 create table esfera(
     esfera_a varchar(2),
     esfera varchar(2)
@@ -65,6 +67,7 @@ create table esfera(
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
 
+*/
 alter table EQUI_2009_STEP2 add esfera varchar(2);
 
 update EQUI_2009_STEP2 left join esfera 
@@ -73,15 +76,17 @@ set EQUI_2009_STEP2.esfera = esfera.esfera;
 
 alter table EQUI_2009_STEP2 drop esfera_a;
 
-/* Recodificando a variavel retenção */ 
+/* Recodificando a variavel retenção  
 
-drop table retencao;
+drop table if exists retencao;
 create table retencao (
     fonte varchar(2),
     retencao varchar(2)
 );
 
+
 insert into retencao values ('10','10'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),(' ','99'); 
+*/
 
 alter table EQUI_2009_STEP2 add retencao_2 varchar (2);
 
@@ -89,19 +94,24 @@ update EQUI_2009_STEP2 left join retencao
 on EQUI_2009_STEP2.retencao = retencao.fonte
 set EQUI_2009_STEP2.retencao_2 = retencao.retencao;
 
-select * from  EQUI_2009_STEP2 left join retencao 
+/*select * from  EQUI_2009_STEP2 left join retencao 
 on EQUI_2009_STEP2.retencao = retencao.fonte;
+*/
 
 alter table EQUI_2009_STEP2 drop retencao;
 
-/* Recodificando a variavel niv_hier */
+/* Recodificando a variavel niv_hier 
 
+drop table if exists niv_hier;
 create table niv_hier (
     fonte varchar(2),
     niv_hier varchar(2)
 );
 
+
 insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
+
+*/
 
 alter table EQUI_2009_STEP2 add niv_hier_2 varchar (2);
 
@@ -110,8 +120,9 @@ on EQUI_2009_STEP2.niv_hier = niv_hier.fonte
 set EQUI_2009_STEP2.niv_hier_2 = niv_hier.niv_hier;
 
 
-select * from  EQUI_2009_STEP2 left join niv_hier  
+/* select * from  EQUI_2009_STEP2 left join niv_hier  
 on EQUI_2009_STEP2.niv_hier = niv_hier .fonte;
+*/
 
 alter table EQUI_2009_STEP2 drop niv_hier;
 
@@ -119,11 +130,11 @@ alter table EQUI_2009_STEP2 drop niv_hier;
 
 alter table EQUI_2009_STEP2 drop ind_nsus;        
 
-/*apagar competen */
+/*apagar competen 
 
 alter table EQUI_2009_STEP2 drop competen;
 
-/* inserindo ano*/
+/* inserindo ano
 
 create table competen(
 	competen1 varchar(4)
@@ -133,8 +144,10 @@ insert into competen values('2009');
 
 alter table EQUI_2009_STEP2 add competen1 varchar(4);
 update EQUI_2009_STEP2 set competen1='2009';
+*/
    
 
 -- Criando tabela final - STEP3: 
-
+drop table if exists EQUI_2009_STEP3;
 create table EQUI_2009_STEP3 select * from EQUI_2009_STEP2;     
+
