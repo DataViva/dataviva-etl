@@ -367,21 +367,6 @@ alter table ESTAB_2008_STEP2 drop gesprg5m;
 alter table ESTAB_2008_STEP2 drop gesprg6e;
 alter table ESTAB_2008_STEP2 drop gesprg6m;
 
-/*apagar competen */
-
-alter table ESTAB_2008_STEP2 drop competen;
-
-/* inserindo ano*/
-
-create table competen(
-	competen1 varchar(4)
-);
-
-insert into competen values('2008');
-
-alter table ESTAB_2008_STEP2 add competen1 varchar(4);
-update ESTAB_2008_STEP2 set competen1='2008'
-
 -- Criando tabela final - STEP3: 
 
 create table ESTAB_2008_STEP3 select * from ESTAB_2008_STEP2;    
