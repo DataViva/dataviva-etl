@@ -6,8 +6,6 @@ use cnes_profissionais;
 
 -- STEP 1: Criando a tabela com as variávies selecionadas:
 
-
-create table PROF_2008_STEP1
 select cnes, codufmun, regsaude, pf_pj, cpf_cnpj, niv_dep, cnpj_man, esfera_a, retencao, tp_unid, niv_hier, cbo, cbounico,
 cns_prof, vinculac, vincul_c, vincul_a, vincul_n, prof_sus, profnsus, horaoutr, horahosp, hora_amb, competen, ufmunres
 from prof_2008;
@@ -32,7 +30,7 @@ if(codmun in('530020','530030', '530040' ,'530050', '530060' , '530070',
 
 alter table PROF_2008_STEP2 drop regsaude; 
 
-/* adicionar o regsaude */
+/* adicionar o regsaude 
 
 
 create table regsaude(
@@ -46,14 +44,14 @@ fields terminated by ';'
 lines terminated by '\n'
 ignore 1 lines;
 
-
+*/
 alter table PROF_2008_STEP2 add regsaude varchar(5);
 
 update PROF_2008_STEP2 left join regsaude 
 on PROF_2008_STEP2.codmun = regsaude.municipio
 set PROF_2008_STEP2.regsaude = regsaude.cod_regsaude;
 
-/* Niv_dep substituir 5 por um 1 nos anos 2008 e 2009 */
+/* Niv_dep substituir 5 por um 1 nos anos 2008 e 2009 
 
 create table niv_dep1(
     fonte varchar(1),
@@ -61,6 +59,8 @@ create table niv_dep1(
 );
 
 insert into niv_dep1 values('1','1'),('5','1'),('3','3');
+
+*/
 
 alter table PROF_2008_STEP2 add niv_dep1 varchar(2);
 
@@ -70,7 +70,7 @@ set PROF_2008_STEP2.niv_dep1 = niv_dep1.niv_dep1;
 
 alter table PROF_2008_STEP2 drop niv_dep;
 
-/* Recodificando a variavel esfera_a */ 
+/* Recodificando a variavel esfera_a 
 
 create table esfera(
     esfera_a varchar(2),
@@ -78,6 +78,8 @@ create table esfera(
 );
 
 insert into esfera values('01','01'),('02','02'),('03','03'),('04','04'),(' ','99'),('  ','99');
+
+*/ 
 
 alter table PROF_2008_STEP2 add esfera varchar(2);
 
@@ -87,7 +89,7 @@ set PROF_2008_STEP2.esfera = esfera.esfera;
 
 alter table PROF_2008_STEP2 drop esfera_a;
 
-/* Recodificando a variavel retenção */ 
+/* Recodificando a variavel retenção  
 
 create table retencao (
     fonte varchar(2),
@@ -95,6 +97,8 @@ create table retencao (
 );
 
 insert into retencao values ('10','10'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),(' ','99'); 
+
+*/
 
 alter table PROF_2008_STEP2 add retencao_2 varchar (2);
 
@@ -107,7 +111,7 @@ on PROF_2008_STEP2.retencao = retencao.fonte;
 
 alter table PROF_2008_STEP2 drop retencao;
 
-/* Recodificando a variavel niv_hier */
+/* Recodificando a variavel niv_hier 
 
 create table niv_hier (
     fonte varchar(2),
@@ -115,6 +119,8 @@ create table niv_hier (
 );
 
 insert into niv_hier values ('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'), ('09','09'), ('  ','99'), (' ','99');
+
+*/
 
 alter table PROF_2008_STEP2 add niv_hier_2 varchar (2);
 
@@ -159,12 +165,12 @@ alter table PROF_2008_STEP2 drop vincul_n;
 
 alter table PROF_2008_STEP2 drop profnsus;
 
-/*apagar competen */
+/*apagar competen 
 
 alter table PROF_2008_STEP2 drop competen;
 
-
-/* inserindo ano*/
+*/
+/* inserindo ano
 
 create table competen(
 	competen1 varchar(4)
@@ -173,7 +179,9 @@ create table competen(
 insert into competen values('2008');
 
 alter table PROF_2008_STEP2 add competen1 varchar(4);
-update PROF_2008_STEP2 set competen1='2008';   
+update PROF_2008_STEP2 set competen1='2008'; 
+
+*/  
 
 -- Criando tabela final - STEP3: 
 
