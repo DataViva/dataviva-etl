@@ -10,7 +10,6 @@ from equi_2016;
 
 -- STEP 2: Transformação e Padronização das variáveis selecionadas no STEP 1:
 
-drop table if exists EQUI_2016_STEP2;
 create table EQUI_2016_STEP2 select * from EQUI_2016_STEP1;
 
 /* Renomeando a variável MUNICIPIO */
