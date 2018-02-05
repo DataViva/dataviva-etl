@@ -188,7 +188,7 @@ select CO_UF, count(*) from IES_2016_DOCENTE_STEP3 group by CO_UF;
 select QT_TEC_TOTAL, count(*) from IES_2016_DOCENTE_STEP3 group by QT_TEC_TOTAL;
 select IN_REFERENTE, count(*) from IES_2016_DOCENTE_STEP3 group by IN_REFERENTE;
 
--- Verificação comparada com Sinopse do INEP
+-- Verificação, comparando com a Sinopse do INEP (disponível em http://portal.inep.gov.br/web/guest/sinopses-estatisticas - acessado em 05/02/2018)
 
 -- Verificando IES por UF separado por categoria administrativa
 SELECT CO_CATEGORIA_ADMINISTRATIVA, count(distinct CO_IES) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '11%' group by CO_CATEGORIA_ADMINISTRATIVA;
@@ -218,3 +218,32 @@ SELECT CO_CATEGORIA_ADMINISTRATIVA, count(distinct CO_IES) FROM dataviva_raw.IES
 SELECT CO_CATEGORIA_ADMINISTRATIVA, count(distinct CO_IES) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '51%' group by CO_CATEGORIA_ADMINISTRATIVA;
 SELECT CO_CATEGORIA_ADMINISTRATIVA, count(distinct CO_IES) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '52%' group by CO_CATEGORIA_ADMINISTRATIVA;
 SELECT CO_CATEGORIA_ADMINISTRATIVA, count(distinct CO_IES) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '53%' group by CO_CATEGORIA_ADMINISTRATIVA;
+
+-- Verificando o número de docentes por UF
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '11%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '12%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '13%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '14%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '15%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '16%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '17%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '21%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '22%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '23%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '24%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '25%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '26%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '27%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '28%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '29%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '31%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '32%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '33%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '35%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '41%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '42%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '43%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '50%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '51%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '52%';
+SELECT count(*) FROM dataviva_raw.IES_2016_DOCENTE_STEP3 where CO_MUNICIPIO_IES like '53%';

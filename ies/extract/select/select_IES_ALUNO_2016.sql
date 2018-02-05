@@ -135,7 +135,7 @@ drop table if exists IES_2016_ALUNO_STEP3;
 create table IES_2016_ALUNO_STEP3 select * from IES_2016_ALUNO_STEP2;
 
 
--- Verificações
+-- Verificação, comparando com a Sinopse do INEP (disponível em http://portal.inep.gov.br/web/guest/sinopses-estatisticas - acessado em 05/02/2018)
 select CO_IES, count(*) from IES_2016_ALUNO_STEP3 group by CO_IES;
 select CO_CATEGORIA_ADMINISTRATIVA, count(*) from IES_2016_ALUNO_STEP2 group by CO_CATEGORIA_ADMINISTRATIVA;
 select CO_ORGANIZACAO_ACADEMICA, count(*) from IES_2016_ALUNO_STEP2 group by CO_ORGANIZACAO_ACADEMICA;
