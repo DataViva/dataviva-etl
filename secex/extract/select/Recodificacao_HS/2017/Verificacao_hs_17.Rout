@@ -1,0 +1,64 @@
+
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ### Recodificacao HS
+> 
+> rm(list=ls(all=TRUE))
+> 
+> dadoshs07 <- read.csv("/home/dev1/dev/projects/dataviva-etl/secex/extract/select/Recodificacao_HS/hs_2007.csv", header=TRUE,colClasses="factor")
+> names(dadoshs07) <- "hs"
+> dadoshs07$id07 <- 1
+> 
+> # Exportacao 2016
+> 
+> exp16 <- read.csv("/home/dev1/dev/projects/dataviva-etl/secex/extract/select/Recodificacao_HS/2017/hs_17_exp.csv", header=TRUE,colClasses="factor")
+> names(exp16) <- "hs"
+> exp16$id16 <- 1
+> 
+> codigos2016 <- merge(dadoshs07,exp16,by="hs",all=TRUE)
+> 
+> subset(codigos2016,is.na(id07)==TRUE)
+       hs id07 id16
+1257 0308   NA    1
+1258 3826   NA    1
+1259 9619   NA    1
+1260 9620   NA    1
+1261 9998   NA    1
+> 
+> # Corrigir no SQL
+> 
+> # Importacao 2015
+> 
+> imp16<- read.csv("/home/dev1/dev/projects/dataviva-etl/secex/extract/select/Recodificacao_HS/2017/hs_17_imp.csv", header=TRUE,colClasses="factor")
+> names(imp16) <- "hs"
+> imp16$id16 <- 1
+> 
+> imp2016_total <- merge(dadoshs07,imp16,by="hs",all=TRUE)
+> 
+> subset(imp2016_total,is.na(id07)==TRUE)
+       hs id07 id16
+1257 0308   NA    1
+1258 9619   NA    1
+1259 9620   NA    1
+> 
+> # Os c�digos 0308 e 9619 n�o aparecem em 2013
+> 
+> proc.time()
+   user  system elapsed 
+  0.288   0.031   0.361 
