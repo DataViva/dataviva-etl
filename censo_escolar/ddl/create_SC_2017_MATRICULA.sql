@@ -1,5 +1,10 @@
 use dataviva_raw;
 
+
+/* 
+    Tabela SC_2017_MATRICULA é removida, caso exista. 
+    Uma nova tabela SC_2017_MATRICULA é criada.
+*/
 drop table if exists SC_2017_MATRICULA;
 create table SC_2017_MATRICULA(
 NU_ANO_CENSO varchar (5),
@@ -96,6 +101,10 @@ TP_LOCALIZACAO_DIFERENCIADA varchar (15),
 IN_EDUCACAO_INDIGENA varchar (2)
 );
 
+/* 
+    Dados de matrículas obtidos junto ao INEP
+    são carregados na tabela SC_2017_MATRICULA.
+*/ 
 load data local infile '/home/dev1/Documents/ETL/Escolar/Microdados_Censo_Escolar_2017/DADOS/MATRICULA_CO.CSV'
 into table SC_2017_MATRICULA
 character set 'latin1'
@@ -130,5 +139,3 @@ character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select * from SC_2017_MATRICULA limit 50;

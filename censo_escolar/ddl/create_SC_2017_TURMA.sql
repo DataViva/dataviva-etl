@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela SC_2017_TURMA é removida, caso exista. 
+    Uma nova tabela SC_2017_TURMA é criada.
+*/
 drop table if exists SC_2017_TURMA;
 create table SC_2017_TURMA(
 NU_ANO_CENSO varchar (5),
@@ -92,11 +96,13 @@ TP_LOCALIZACAO_DIFERENCIADA varchar (15),
 IN_EDUCACAO_INDIGENA varchar (2)
 );
 
+/* 
+    Dados de turmas obtidos junto ao INEP
+    são carregados na tabela SC_2017_TURMA.
+*/
 load data local infile '/home/dev1/Documents/ETL/Escolar/Microdados_Censo_Escolar_2017/DADOS/TURMAS.CSV'
 into table SC_2017_TURMA
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select * from SC_2017_TURMA limit 50;

@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela SC_2017_ESCOLA é removida, caso exista. 
+    Uma nova tabela SC_2017_ESCOLA é criada.
+*/
 drop table if exists SC_2017_ESCOLA;
 create table SC_2017_ESCOLA(
 NU_ANO_CENSO varchar (5),
@@ -170,6 +174,10 @@ IN_COMUM_PROF varchar (2),
 IN_ESP_EXCLUSIVA_PROF varchar (2)
 );
 
+/* 
+    Dados de escolas obtidos junto ao INEP
+    são carregados na tabela SC_2017_ESCOLA.
+*/    
 load data local infile '/home/dev1/Documents/ETL/Escolar/Microdados_Censo_Escolar_2017/DADOS/ESCOLAS.CSV'
 into table SC_2017_ESCOLA
 character set 'latin1'
@@ -177,4 +185,3 @@ fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
 
-select * from SC_2017_ESCOLA limit 50;
