@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela IES_2016_LOCAL_OFERTA_POLO é removida, caso exista. 
+    Uma nova tabela IES_2016_LOCAL_OFERTA_POLO é criada.
+*/
 drop table if exists IES_2016_LOCAL_OFERTA_POLO;
 create table IES_2016_LOCAL_OFERTA_POLO(
 CO_LOCAL_OFERTA_IES varchar(8),
@@ -19,13 +23,13 @@ IN_LOCAL_OFERTA_POLO varchar(8),
 IN_LOCAL_OFERTA_UNID_ACADEMICA varchar(8),
 DT_INICIO_FUNCIONAMENTO varchar(20));
 
+/* 
+    Dados de locais de oferta obtidos junto ao INEP
+    são carregados na tabela IES_2016_LOCAL_OFERTA_POLO.
+*/
 load data local infile 'H:/HEDU/Dados/2016/DADOS/DM_LOCAL_OFERTA.csv'
 into table IES_2016_LOCAL_OFERTA_POLO
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select count(*) from IES_2016_LOCAL_OFERTA_POLO;
-select * from IES_2016_LOCAL_OFERTA_POLO;
-

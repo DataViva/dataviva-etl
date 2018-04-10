@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela IES_2016_IES é removida, caso exista. 
+    Uma nova tabela IES_2016_IES é criada.
+*/
 drop table if exists IES_2016_IES;
 create table IES_2016_IES(
 CO_IES varchar(8),
@@ -53,17 +57,14 @@ VL_DES_INVESTIMENTO varchar(20),
 VL_DES_PESQUISA varchar(20),
 VL_DES_OUTRAS varchar(20));
 
-
+/* 
+    Dados de instituições de ensino superior 
+    obtidos junto ao INEP são carregados
+    na tabela IES_2016_IES.
+*/
 load data local infile 'H:/HEDU/Dados/2016/DADOS/DM_IES.csv'
 into table IES_2016_IES
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select count(*) from IES_2016_IES;
-select * from IES_2016_IES;
-
-
-
-

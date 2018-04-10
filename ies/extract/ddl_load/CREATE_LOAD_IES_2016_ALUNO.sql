@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela IES_2016_ALUNO é removida, caso exista. 
+    Uma nova tabela IES_2016_ALUNO é criada.
+*/
 drop table if exists IES_2016_ALUNO;
 create table IES_2016_ALUNO(
 CO_IES varchar(8),
@@ -122,14 +126,14 @@ IN_INGRESSO_TOTAL varchar(8),
 IN_INGRESSO_VAGA_NOVA varchar(8),
 ANO_INGRESSO varchar(8));
 
-
+/* 
+    Dados de alunos de instituições de ensino
+    superior obtidos junto ao INEP são carregados
+    na tabela IES_2016_ALUNO.
+*/
 load data local infile 'H:/HEDU/Dados/2016/DADOS/DM_ALUNO.csv'
 into table IES_2016_ALUNO
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select count(*) from IES_2016_ALUNO;
-select * from IES_2016_ALUNO;
-

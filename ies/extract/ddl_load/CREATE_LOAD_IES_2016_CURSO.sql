@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela IES_2016_CURSO é removida, caso exista. 
+    Uma nova tabela IES_2016_CURSO é criada.
+*/
 drop table if exists IES_2016_CURSO;
 create table IES_2016_CURSO(
 CO_IES varchar(8),
@@ -99,17 +103,14 @@ QT_INGRESSO_CURSO varchar(8),
 QT_INGRESSO_VAGAS_NOVAS varchar(8),
 QT_VAGAS_TOTAIS varchar(8));
 
-
+/* 
+    Dados de cursos de instituições de ensino
+    superior obtidos junto ao INEP são carregados
+    na tabela IES_2016_CURSO.
+*/
 load data local infile 'H:/HEDU/Dados/2016/DADOS/DM_CURSO.csv'
 into table IES_2016_CURSO
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select count(*) from IES_2016_CURSO;
-select * from IES_2016_CURSO;
-
-
-
-

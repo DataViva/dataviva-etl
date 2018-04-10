@@ -1,5 +1,9 @@
 use dataviva_raw;
 
+/* 
+    Tabela IES_2016_DOCENTE é removida, caso exista. 
+    Uma nova tabela IES_2016_DOCENTE é criada.
+*/
 drop table if exists IES_2016_DOCENTE;
 create table IES_2016_DOCENTE(
 CO_IES varchar(8),
@@ -53,17 +57,14 @@ IN_EXERCICIO_DT_REF varchar(8),
 IN_VISITANTE varchar(8),
 IN_VISITANTE_IFES_VINCULO varchar(8));
 
-
+/* 
+    Dados de docentes de instituições de ensino
+    superior obtidos junto ao INEP são carregados
+    na tabela IES_2016_DOCENTE.
+*/
 load data local infile 'H:/HEDU/Dados/2016/DADOS/DM_DOCENTE.csv'
 into table IES_2016_DOCENTE
 character set 'latin1'
 fields terminated by '|'
 lines terminated by '\n'
 ignore 1 lines;
-
-select * from IES_2016_DOCENTE;
-
-select count(*) from IES_2016_DOCENTE;
-
-
-
