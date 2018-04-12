@@ -65,9 +65,9 @@ ignore 1 lines;
 
 alter table SC_2017_MATRICULA_STEP2 add COD_ETAPA_ENSINO int(10);
 
-update SC_2017_MATRICULA_STEP2_v2 left join etapa_ensino
-on SC_2017_MATRICULA_STEP2_v2.COD_ETAPA_ENSINO_A = etapa_ensino.FONTE
-set SC_2017_MATRICULA_STEP2_v2.COD_ETAPA_ENSINO = etapa_ensino.COD_ETAPA_ENSINO;
+update SC_2017_MATRICULA_STEP2 left join etapa_ensino
+on SC_2017_MATRICULA_STEP2.COD_ETAPA_ENSINO_A = etapa_ensino.FONTE
+set SC_2017_MATRICULA_STEP2.COD_ETAPA_ENSINO = etapa_ensino.COD_ETAPA_ENSINO;
 
 drop table etapa_ensino;
 
