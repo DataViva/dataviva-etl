@@ -1,7 +1,14 @@
--- select MATRICULA SC 2017
+/* 
+	Transformações nos dados do Censo Escolar a partir da tabela
+	SC_2017_MATRICULA 
+*/
+
 use dataviva_raw;
 
--- Criando uma tabela somente com os dados a serem usados
+/*
+	A tabela SC_2017_MATRICULA_STEP1 é criada para o passo 1 das
+	transformações.
+*/
 drop table if exists SC_2017_MATRICULA_STEP1;
 
 create table SC_2017_MATRICULA_STEP1 (
@@ -22,7 +29,10 @@ create table SC_2017_MATRICULA_STEP1 (
 	COD_ETAPA_ENSINO_A int(10)
 );
 
--- Filtrando somente as matrícula que não são turma de Atividade complementar
+/*
+	São mantidos apenas os registros de alunos com matrícula em
+	turma diferente de Atividade Complementar.
+*/	
 INSERT INTO SC_2017_MATRICULA_STEP1
 select NU_ANO_CENSO, CO_REGIAO, CO_MESORREGIAO, CO_MICRORREGIAO, CO_UF, CO_MUNICIPIO,
 	if(CO_CURSO_EDUC_PROFISSIONAL = '', null, CO_CURSO_EDUC_PROFISSIONAL), CO_ENTIDADE, ID_TURMA, TP_DEPENDENCIA,
@@ -30,15 +40,18 @@ select NU_ANO_CENSO, CO_REGIAO, CO_MESORREGIAO, CO_MICRORREGIAO, CO_UF, CO_MUNIC
 from SC_2017_MATRICULA
 where TP_TIPO_TURMA != '4';
 
--- Criando uma tabela para executar as transformações
+/*
+	A tabela SC_2017_MATRICULA_STEP2 é criada para o passo 2 das
+	transformações.
+*/
 drop table if exists SC_2017_MATRICULA_STEP2;
 
 create table SC_2017_MATRICULA_STEP2 select * from SC_2017_MATRICULA_STEP1;
 
--- Alterando a codificação de gênero para Feminino = 0 e Masculino = 1
+-- A codificação de gêneros é modificada.
 update SC_2017_MATRICULA_STEP2 set SEXO = if(SEXO = 2, 0, 1);
 
--- Nova correspondência de código para Etnia
+-- A codificação de etnias é modificada.
 create table etnia(FONTE varchar(1), COR_RACA int(1));
 
 insert into etnia values(0,-1),(1,2),(2,4),(3,8),(4,6),(5,1);
@@ -53,7 +66,10 @@ drop table etnia;
 
 alter table SC_2017_MATRICULA_STEP2 drop TP_COR_RACA;
 
--- Nova correspondência de código para etapa do ensino
+/*
+	Os códigos da etapa de ensino são alterados de acordo com 
+	mapeamento armazenado no serviço Amazon S3.
+*/	
 create table etapa_ensino(FONTE int(10), COD_ETAPA_ENSINO int(10));
 
 load data local infile '/home/dev1/Documents/Correspondencias_Classificacoes/ensino_tecnico/codigo_etapa_ensino_2017.txt'
@@ -73,29 +89,39 @@ drop table etapa_ensino;
 
 alter table SC_2017_MATRICULA_STEP2 drop COD_ETAPA_ENSINO_A;
 
--- Retirando EJA e Educação Infantil
--- Implicitamente são removidos os registros sem COD_ETAPA_ENSINO (NULL)
+/*
+	A tabela SC_2017_MATRICULA_STEP3 é criada para o passo 3 das
+	transformações. São removidos os registros com etapas de ensino
+	iguais a EJA, Educação Infantil e NULL.
+*/
 drop table if exists SC_2017_MATRICULA_STEP3;
 
 create table SC_2017_MATRICULA_STEP3
 select * from SC_2017_MATRICULA_STEP2
 where COD_ETAPA_ENSINO not in (1,7);
 
--- Adicionando um dígito zero aos códigos de curso que tem apenas 4 dígitos
+/*
+	O dígito 0 é adicionado à esquerda dos códigos de
+	curso que apresentam apenas 4 dígitos.
+*/	
 update dataviva_raw.SC_2017_MATRICULA_STEP3
 set COD_CURSO_PROF = concat('0', COD_CURSO_PROF)
 where length(COD_CURSO_PROF) = 4;
 
--- Colocando um código de curso para ensino fundamento e médio
--- xx002 para Ensino Fundamental 1
--- xx003 para Ensino Fundamental 2
--- xx004 para Ensino Médio
+/*
+	Ensinos Fundamental 1, Fundamental 2 e Médio recebem
+	códigos de curso (xx002, xx003 e xx004, respectivamente).
+*/
 update dataviva_raw.SC_2017_MATRICULA_STEP3
 set COD_CURSO_PROF = concat('xx00', COD_ETAPA_ENSINO)
 where COD_CURSO_PROF is null and
 (COD_ETAPA_ENSINO = 2 or COD_ETAPA_ENSINO = 3 or COD_ETAPA_ENSINO = 4);
 
--- Preparando os dados para o RedShift
+/*
+	A tabela SC_2017_MATRICULA_STEP4 é criada para o passo 4 das
+	transformações. Os dados são preparados para inserção no
+	banco Amazon Redshift.
+*/
 CREATE TABLE SC_2017_MATRICULA_STEP4 (
 	year integer,
 	region varchar(1),
@@ -151,17 +177,27 @@ group by state, gender order by gender,state;
 select state, ethnicity, count(*) from SC_2017_MATRICULA_STEP4 where sc_course = 'xx002' or sc_course = 'xx003'
 group by state, ethnicity order by ethnicity,state;
 
--- Ensino médio
--- DataViva não considera os dados de "Curso Técnico Integrado (Ensino Médio Integrado)" para ensino médio
--- e a sinopse considera. Deste modo, a validação tem que ser feita pegando a quantidade de matrícula 
--- para ensino médio menos a quantidade de matrículas para "Curso Técnico Integrado (Ensino Médio Integrado)" 
+/*
+	Ensino médio
+	DataViva não considera curso técnico integrado (ensino médio
+	integrado) nos dados de ensino médio.  Consequentemente, a 
+	validação deve ser feita considerando-se a diferença entre o
+	número de matrículas no ensino médio e o número de matrículas
+	em curso técnico integrado (ensino médio integrado).
+*/
 select state, administrative_dependency, count(*) from SC_2017_MATRICULA_STEP4
 where sc_course = 'xx004' group by state, administrative_dependency;
 
--- Ensino profissionalizante
--- Para validar matrícula em curso profissionalizante com o sinopse tem de se comparar com a soma de Curso 
--- Técnico Integrado (Ensino Médio Integrado), Curso Técnico - Concomitante e Curso Técnico - Subsequente da
--- sinopse. Os dados de Cursos FIC não foram inclusos no DataViva
+
+/* 
+	Ensino profissionalizante
+	Para validação de matrículas em cursos profissionalizantes, 
+	deve-se considerar a soma dos seguintes dados da sinopse: 
+	curso técnico integrado (ensino médio integrado), curso
+	técnico-concomitante e curso técnico-subsequente. Dados
+	de cursos FIC (formação inicial e continuada) não foram
+	incluídos na plataforma DataViva. 
+*/	
 select state, administrative_dependency, count(*) from SC_2017_MATRICULA_STEP4 where sc_course_field != 'xx' 
 group by state, administrative_dependency order by administrative_dependency, state;
 
@@ -177,16 +213,10 @@ where (sc_course = 'xx003' or sc_course = 'xx002') group by state order by state
 select state, count(distinct sc_class) from SC_2017_MATRICULA_STEP4
 where (sc_course = 'xx003' or sc_course = 'xx002') group by state order by state;
 
--- Ensino médio
--- DataViva não considera os dados de "Curso Técnico Integrado (Ensino Médio Integrado)" para ensino médio
--- e a sinopse considera. Deste modo, a validação tem que ser feita pegando a quantidade de matrícula 
--- para ensino médio menos a quantidade de matrículas para "Curso Técnico Integrado (Ensino Médio Integrado)"
+-- Ensino médio (vide comentários feitos anteriormente)
 select state, count(distinct sc_class) from SC_2017_MATRICULA_STEP4 where (sc_course = 'xx004')
 group by state order by state;
 
--- Ensino profissionalizante
--- Para validar turmas em curso profissionalizante com o sinopse tem que ser feita a comparação com a soma de Curso 
--- Técnico Integrado (Ensino Médio Integrado), Curso Técnico - Concomitante e Curso Técnico - Subsequente da sinopse.
--- Os dados de Cursos FIC não foram inclusos no DataViva
+-- Ensino profissionalizante (vide comentários feitos anteriormente)
 select state, count(distinct sc_class) from SC_2017_MATRICULA_STEP4 where (sc_course_field != 'xx')
 group by state order by state;
