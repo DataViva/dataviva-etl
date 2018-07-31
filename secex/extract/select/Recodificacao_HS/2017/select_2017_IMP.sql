@@ -1,26 +1,3 @@
-use dataviva_raw;
-
-drop table if exists SECEX_2017_IMP;
-
-CREATE TABLE SECEX_2017_IMP(
-	CO_ANO integer,
-	CO_MES integer,
-	CO_SH4 varchar(4),
-	CO_PAIS varchar(3),			
-	CO_UF varchar(2),
-	CO_PORTO varchar(4),		
-	CO_MUN_GEO varchar(7),
-	KG_LIQUIDO decimal (20,2),
-	VL_FOB decimal (20,2)
-); 
-
-load data local infile '/home/dev4/Desktop/SECEX/IMP_2017_MUN.csv'
-into table SECEX_2017_IMP
-character set 'latin1'
-fields terminated by ';'
-enclosed by '"'
-lines terminated by '\n'
-ignore 1 lines;
 
 /* 
     Transformações nos dados SECEX (importações) 
@@ -100,32 +77,6 @@ a variáveis geográficas.
 drop table if exists SECEX_2017_IMP_STEP2;
 
 create table SECEX_2017_IMP_STEP2 select * from SECEX_2017_IMP_STEP1;
-
-/*Homogeneização dos códigos de unidades federativas
-
-drop table if exists merge_uf;
-
-create table merge_uf(cod_ibge varchar(2), cod_mdic varchar(2));
-
-load data local infile '/home/dev4/Desktop/SECEX/UF_ibge_mdic.txt'
-into table merge_uf
-character set 'latin1'
-fields terminated by '\t'
-lines terminated by '\n'
-ignore 1 lines;
-
-alter table SECEX_2017_IMP_STEP2 add UF_IBGE varchar(2);
-
-update SECEX_2017_IMP_STEP2 left join merge_uf 
-on SECEX_2017_IMP_STEP2.CO_UF = merge_uf.cod_mdic
-set UF_IBGE = merge_uf.cod_ibge;
-
-update SECEX_2017_IMP_STEP2 set UF_IBGE = if(UF_IBGE is NULL, CO_UF, UF_IBGE);
-
-
-drop table merge_uf;
-
-*/
 
 drop table if exists merge_mun;
 
