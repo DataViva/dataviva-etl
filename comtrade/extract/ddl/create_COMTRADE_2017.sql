@@ -1,4 +1,4 @@
-CREATE TABLE COMTRADE_2011 (
+CREATE TABLE COMTRADE_2017 (
     classification char(2),
     year numeric(4),
     period numeric(4),

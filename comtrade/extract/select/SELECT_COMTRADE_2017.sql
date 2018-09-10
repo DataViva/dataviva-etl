@@ -1,24 +1,24 @@
--- Select COMTRADE_2013
+-- Select COMTRADE_2017
 
 use dataviva_raw;
 
-drop table if exists COMTRADE_2013_STEP1;
+drop table if exists COMTRADE_2017_STEP1;
 
-create table COMTRADE_2013_STEP1 
+create table COMTRADE_2017_STEP1 
 select  year, reporter_code as wld_id,
-    commodity_code as hs_id, trade_value as val_usd
-from COMTRADE_2013;
+	commodity_code as hs_id, trade_value as val_usd
+from COMTRADE_2017;
 
 -- Exporte os dados da tabela anterior executando o 
 -- seguinte comando no terminal:
 /* 
-    mysql -u dataviva -p -h 
-    etl.cuydh8dsqzfr.us-east-1.rds.amazonaws.com dataviva_raw -e 
-    "select * from COMTRADE_2013_STEP1" > comtrade_2013.csv
+	mysql -u dataviva -p -h 
+	etl.cuydh8dsqzfr.us-east-1.rds.amazonaws.com dataviva_raw -e 
+	"select * from COMTRADE_2017_STEP1" > comtrade_2017.csv
 */
 
 -- Com os dados gerados no paso anterior, execute o script (format_raw_data.py)
--- para calcular o PCI, ECI e a tabela YPW para o ano 2013. Disponível em:
+-- para calcular o PCI, ECI e a tabela YPW para o ano 2017. Disponível em:
 -- github.com/DataViva/dataviva-scripts/blob/master/scripts/comtrade/format_raw
 -- _data.py
 
@@ -46,21 +46,21 @@ CREATE TABLE IF NOT EXISTS comtrade_ypw (
     opp_gain numeric(20)
 );
 
-load data local infile '/comtrade/2013/comtrade_eci.tsv'
+load data local infile '/comtrade/2017/comtrade_eci.tsv'
 into table comtrade_eci
 character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile '/comtrade/2013/comtrade_pci.tsv'
+load data local infile '/comtrade/2017/comtrade_pci.tsv'
 into table comtrade_pci
 character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile '/comtrade/2013/comtrade_ypw.tsv'
+load data local infile '/comtrade/2017/comtrade_ypw.tsv'
 into table comtrade_ypw
 character set 'latin1'
 fields terminated by '\t'
@@ -68,5 +68,5 @@ lines terminated by '\n'
 ignore 1 lines
 (@vyear, @vhs_id, @vwld_id, @vval_usd, @vrca, @vdistance, @vopp_gain)
 SET year = @vyear, hs_id = @vhs_id, wld_id = @vwld_id,
-    val_usd = nullif(@vval_usd,''), rca = nullif(@vrca,''),
+	val_usd = nullif(@vval_usd,''), rca = nullif(@vrca,''),
     distance = nullif(@vdistance,''), opp_gain = nullif(@vopp_gain,'');

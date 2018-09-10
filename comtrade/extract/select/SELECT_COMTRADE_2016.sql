@@ -1,24 +1,24 @@
--- Select COMTRADE_2013
+-- Select COMTRADE_2016
 
 use dataviva_raw;
 
-drop table if exists COMTRADE_2013_STEP1;
+drop table if exists COMTRADE_2016_STEP1;
 
-create table COMTRADE_2013_STEP1 
+create table COMTRADE_2016_STEP1 
 select  year, reporter_code as wld_id,
     commodity_code as hs_id, trade_value as val_usd
-from COMTRADE_2013;
+from COMTRADE_2016;
 
 -- Exporte os dados da tabela anterior executando o 
 -- seguinte comando no terminal:
 /* 
     mysql -u dataviva -p -h 
     etl.cuydh8dsqzfr.us-east-1.rds.amazonaws.com dataviva_raw -e 
-    "select * from COMTRADE_2013_STEP1" > comtrade_2013.csv
+    "select * from COMTRADE_2016_STEP1" > comtrade_2016.csv
 */
 
 -- Com os dados gerados no paso anterior, execute o script (format_raw_data.py)
--- para calcular o PCI, ECI e a tabela YPW para o ano 2013. Disponível em:
+-- para calcular o PCI, ECI e a tabela YPW para o ano 2016. Disponível em:
 -- github.com/DataViva/dataviva-scripts/blob/master/scripts/comtrade/format_raw
 -- _data.py
 
@@ -46,21 +46,21 @@ CREATE TABLE IF NOT EXISTS comtrade_ypw (
     opp_gain numeric(20)
 );
 
-load data local infile '/comtrade/2013/comtrade_eci.tsv'
+load data local infile '/comtrade/2016/comtrade_eci.tsv'
 into table comtrade_eci
 character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile '/comtrade/2013/comtrade_pci.tsv'
+load data local infile '/comtrade/2016/comtrade_pci.tsv'
 into table comtrade_pci
 character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
 
-load data local infile '/comtrade/2013/comtrade_ypw.tsv'
+load data local infile '/comtrade/2016/comtrade_ypw.tsv'
 into table comtrade_ypw
 character set 'latin1'
 fields terminated by '\t'

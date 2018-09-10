@@ -5,50 +5,68 @@ use dataviva_raw;
 drop table if exists COMTRADE_2015_STEP1;
 
 create table COMTRADE_2015_STEP1 
-select  ANO, COD_REPORTER, DESC_REPORTER, COD_PRODUTO, PESO_LIQUIDO, VALOR, CLASSIFICACAO     
+select  year, reporter_code as wld_id,
+    commodity_code as hs_id, trade_value as val_usd
 from COMTRADE_2015;
 
--- Criando tabela para transformações
+-- Exporte os dados da tabela anterior executando o 
+-- seguinte comando no terminal:
+/* 
+    mysql -u dataviva -p -h 
+    etl.cuydh8dsqzfr.us-east-1.rds.amazonaws.com dataviva_raw -e 
+    "select * from COMTRADE_2015_STEP1" > comtrade_2015.csv
+*/
 
-drop table if exists COMTRADE_2015_STEP2;
-create table COMTRADE_2015_STEP2 select * from COMTRADE_2015_STEP1;
+-- Com os dados gerados no paso anterior, execute o script (format_raw_data.py)
+-- para calcular o PCI, ECI e a tabela YPW para o ano 2015. Disponível em:
+-- github.com/DataViva/dataviva-scripts/blob/master/scripts/comtrade/format_raw
+-- _data.py
 
--- ANO - sem modificações
+-- O script gera três arquivos compactados que correspondem a estes dados. 
+-- Após extrair os dados, execute os seguintes passos para criar as tabelas
+-- correspondente e carregar os dados no banco ETL:
 
--- PAIS_ORIGEM - código  do país de origem
+CREATE TABLE IF NOT EXISTS comtrade_eci (
+    wld_id char(6),
+    eci numeric(10,3)
+);
 
-alter table COMTRADE_2015_STEP2 change COD_REPORTER PAIS_ORIGEM varchar(3);
+CREATE TABLE IF NOT EXISTS comtrade_pci (
+    hs_id char(6),
+    pci numeric(10,3)
+);
 
--- PAIS_ORIGEM_DESC - nome do país de origem
+CREATE TABLE IF NOT EXISTS comtrade_ypw (
+    year numeric(4),
+    hs_id char(6),
+    wld_id char(5),
+    val_usd numeric(20),
+    rca numeric(10,3),
+    distance numeric(20),
+    opp_gain numeric(20)
+);
 
-alter table COMTRADE_2015_STEP2 change DESC_REPORTER PAIS_ORIGEM_DESC varchar(100);
+load data local infile '/comtrade/2015/comtrade_eci.tsv'
+into table comtrade_eci
+character set 'latin1'
+fields terminated by '\t'
+lines terminated by '\n'
+ignore 1 lines;
 
--- Classificação HS - mudar para codigos 2015
+load data local infile '/comtrade/2015/comtrade_pci.tsv'
+into table comtrade_pci
+character set 'latin1'
+fields terminated by '\t'
+lines terminated by '\n'
+ignore 1 lines;
 
-select distinct COD_PRODUTO from COMTRADE_2015_STEP2;
-
-alter table COMTRADE_2015_STEP2 add HS_07 char(4);
-
-update COMTRADE_2015_STEP2 set HS_07=
-		if(COD_PRODUTO='3826', '3024',
-        if(COD_PRODUTO='9619', '4818',
-        if(COD_PRODUTO='0308', '0307', COD_PRODUTO)));
-
-
-select * from COMTRADE_2015_STEP2 where COD_PRODUTO in ('3826','9619','0308');
-
--- PESO_LIQUIDO - não há modificações
-
--- VALOR - sem modificações
-
--- CLASSIFICACAO - deve ser descastada
-
-alter table COMTRADE_2015_STEP2 drop CLASSIFICACAO;
-
--- Criando tabela final
-
-drop table if exists COMTRADE_2015_STEP3;
-create table COMTRADE_2015_STEP3 select * from COMTRADE_2015_STEP2;
-
-
-select * from COMTRADE_2015_STEP3;
+load data local infile '/comtrade/2015/comtrade_ypw.tsv'
+into table comtrade_ypw
+character set 'latin1'
+fields terminated by '\t'
+lines terminated by '\n'
+ignore 1 lines
+(@vyear, @vhs_id, @vwld_id, @vval_usd, @vrca, @vdistance, @vopp_gain)
+SET year = @vyear, hs_id = @vhs_id, wld_id = @vwld_id,
+    val_usd = nullif(@vval_usd,''), rca = nullif(@vrca,''),
+    distance = nullif(@vdistance,''), opp_gain = nullif(@vopp_gain,'');
