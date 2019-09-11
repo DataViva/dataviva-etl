@@ -118,7 +118,7 @@ from IBGE_2016
 GROUP BY region_id;
 
 -- exportar dados da tabela
--- mysqldump -h etl.cuydh8dsqzfr.us-east-1.rds.amazonaws.com -u dataviva -p --database=dataviva attrs_ybs > attrs_ybs.sql
+-- mysqldump -h <database_host> -u dataviva -p --database=dataviva attrs_ybs > attrs_ybs.sql
 
--- importar os dados no banco de destino (por exxemplo para staging)
--- mysql -h staging.cuydh8dsqzfr.us-east-1.rds.amazonaws.com -u dataviva -p --database=dataviva  < "attrs_ybs.sql"
+-- importar os dados no banco de destino
+-- mysql -h <database_host> -u dataviva -p --database=dataviva  < attrs_ybs.sql
