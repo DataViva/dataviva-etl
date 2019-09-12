@@ -46,7 +46,7 @@ select
     year,
     LOWER(SUBSTRING(bra_id,1,3)) as bra_id,
     'gdp_pc' as stat_id,
-    AVG(gdp_pc) as stat_val
+    (SUM(gdp) / SUM(pop)) as stat_val
 from IBGE_2016
 GROUP BY state;
 
@@ -55,7 +55,7 @@ select
     year,
     LOWER(SUBSTRING(bra_id,1,1)) as bra_id,
     'gdp_pc' as stat_id,
-    AVG(gdp_pc) as stat_val
+    (SUM(gdp) / SUM(pop)) as stat_val
 from IBGE_2016
 GROUP BY region_id;
 
