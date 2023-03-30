@@ -4,42 +4,42 @@ load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_CE
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_MG_ES_RJ.txt'
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_NORDESTE.txt'
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_NORTE.txt'
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_SP.txt'
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 load data local infile 'C:/Users/Administrator/Desktop/data/2018/RAIS_VINC_ID_SUL.txt'
 into table RAIS_2018
 character set 'latin1'
 fields terminated by ';'
-lines terminated by '\n'
+lines terminated by '\r\n'
 ignore 1 lines;
 
 -- Os códigos a seguir são para incluir um índice para as principais variáveis e otimizar o processo de select no futuro.
