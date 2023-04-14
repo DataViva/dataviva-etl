@@ -87,3 +87,60 @@ drop table tamestab;
 update RAIS_2018_STEP1 set OCUP_2002 = 
    if(OCUP_2002 IN ('0101', '0102', '0103', '0201', '0202', '0203', '0211', '0212',
   '0301', '0302', '0303', '0311', '0312', '0000'),'-1', OCUP_2002);
+
+/*
+    A tabela RAIS_2018_STEP2 é criada para o passo 2
+    das transformações.
+*/
+drop table if exists RAIS_2018_STEP2;
+
+create table RAIS_2018_STEP2 select * from RAIS_2018_STEP1;
+
+drop table if exists natjur;
+
+-- Recodificação da variável NATUR_JUR
+create table natjur(
+    FONTE int(4),
+    DESCRICAO varchar(200),
+    NATUR_JUR int(1)
+);
+
+load data local infile 'C:/Users/Administrator/Desktop/data/Merge_Natureza_Juridica_2018.csv'
+into table natjur
+character set 'latin1'
+fields terminated by ';'
+lines terminated by '\n'
+ignore 1 lines;
+
+update RAIS_2018_STEP2 left join natjur 
+on RAIS_2018_STEP2.NATUR_JUR = natjur.FONTE
+set RAIS_2018_STEP2.NATUR_JUR = natjur.NATUR_JUR;
+
+drop table natjur; 
+
+/*
+    Criação das variáveis divisão e seção da indústria 
+    a partir de CLASS_CNAE_20
+*/   
+create table cnae (
+    CLASSE varchar(5),
+    DIVISAO varchar(2),
+    SECAO varchar(1));
+
+load data local infile 'C:/Users/Administrator/Desktop/data/estrutura_CNAE.txt'
+into table cnae
+fields terminated by ';'
+lines terminated by '\n'
+ignore 1 lines;
+
+update RAIS_2018_STEP2 left join cnae
+on RAIS_2018_STEP2.CLAS_CNAE_20 = cnae.CLASSE
+set RAIS_2018_STEP2.DIVISAO = cnae.DIVISAO, RAIS_2018_STEP2.SECAO = cnae.SECAO;
+
+drop table cnae;
+
+/*
+    Criação da variável grupo de ocupação  
+    a partir de OCUP_2002
+*/
+update RAIS_2018_STEP2 set GRUPO_OCUPACAO = left(OCUP_2002, 1);
