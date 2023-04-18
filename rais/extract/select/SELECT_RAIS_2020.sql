@@ -144,3 +144,55 @@ drop table cnae;
     a partir de OCUP_2002
 */
 update RAIS_2020_STEP2 set GRUPO_OCUPACAO = left(OCUP_2002, 1);
+
+-- Os códigos a seguir são para incluir um índice para as principais variáveis e otimizar o processo de select no futuro.
+
+CREATE INDEX index_municipio ON dataviva_raw.RAIS_2020_STEP2 (MUNICIPIO);
+CREATE INDEX index_cnae ON dataviva_raw.RAIS_2020_STEP2 (CLAS_CNAE_20);
+CREATE INDEX index_cbo ON dataviva_raw.RAIS_2020_STEP2 (OCUP_2002);
+CREATE INDEX index_mun_cnae_cbo_emp ON dataviva_raw.RAIS_2020_STEP2 (MUNICIPIO, CLAS_CNAE_20, OCUP_2002);
+
+
+/*
+    A tabela RAIS_2020_STEP3 é criada para o passo 3
+    das transformações.
+*/
+drop table if exists RAIS_2020_STEP3;
+
+create table RAIS_2020_STEP3 select * from RAIS_2020_STEP2;
+
+/* 
+    Códigos de municípios, mesorregiões e microrregiões do IBGE 
+    (ftp://geoftp.ibge.gov.br/organizacao_do_territorio/estrutura_territorial/divisao_territorial/)
+    são carregados na tabela MUNICIPIOS_2017.
+*/   
+drop table if exists MUNICIPIOS_2017;
+
+create table MUNICIPIOS_2017 (
+    CO_MUN_6 varchar(6),
+    CO_MUN_7 varchar(7),
+    CO_REGIAO varchar(1),
+    CO_UF varchar(2),
+    CO_MESORREGIAO varchar(4),
+    CO_MICRORREGIAO varchar(5)   
+);
+
+load data local infile '/home/dev1/Desktop/ETL_2017/Municipios_Micro_Meso_Regioes.csv'
+into table MUNICIPIOS_2017
+character set 'latin1'
+fields terminated by '\t'
+lines terminated by '\n'
+ignore 1 lines;
+
+alter table RAIS_2020_STEP3 add (REGIAO varchar(1), UF varchar(2), 
+                                 MESORREGIAO varchar(4), MICRORREGIAO varchar(5));
+
+update RAIS_2020_STEP3 left join MUNICIPIOS_2017
+on RAIS_2020_STEP3.MUNICIPIO = MUNICIPIOS_2017.CO_MUN_6
+set RAIS_2020_STEP3.REGIAO = MUNICIPIOS_2017.CO_REGIAO,
+    RAIS_2020_STEP3.UF = MUNICIPIOS_2017.CO_UF,
+    RAIS_2020_STEP3.MESORREGIAO = MUNICIPIOS_2017.CO_MESORREGIAO,
+    RAIS_2020_STEP3.MICRORREGIAO = MUNICIPIOS_2017.CO_MICRORREGIAO,
+    RAIS_2020_STEP3.MUNICIPIO = MUNICIPIOS_2017.CO_MUN_7;
+
+drop table MUNICIPIOS_2017;
