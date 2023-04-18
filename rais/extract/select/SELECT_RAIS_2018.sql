@@ -149,9 +149,6 @@ update RAIS_2018_STEP2 set GRUPO_OCUPACAO = left(OCUP_2002, 1);
 -- Os códigos a seguir são para incluir um índice para as principais variáveis e otimizar o processo de select no futuro.
 
 CREATE INDEX index_municipio ON dataviva_raw.RAIS_2018_STEP2 (MUNICIPIO);
-CREATE INDEX index_cnae ON dataviva_raw.RAIS_2018_STEP2 (CLAS_CNAE_20);
-CREATE INDEX index_cbo ON dataviva_raw.RAIS_2018_STEP2 (OCUP_2002);
-CREATE INDEX index_mun_cnae_cbo_emp ON dataviva_raw.RAIS_2018_STEP2 (MUNICIPIO, CLAS_CNAE_20, OCUP_2002);
 
 
 /*
@@ -161,6 +158,8 @@ CREATE INDEX index_mun_cnae_cbo_emp ON dataviva_raw.RAIS_2018_STEP2 (MUNICIPIO, 
 drop table if exists RAIS_2018_STEP3;
 
 create table RAIS_2018_STEP3 select * from RAIS_2018_STEP2;
+
+CREATE INDEX index_municipio ON dataviva_raw.RAIS_2018_STEP3 (MUNICIPIO);
 
 /* 
     Códigos de municípios, mesorregiões e microrregiões do IBGE 
@@ -184,6 +183,13 @@ character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
+
+CREATE INDEX index_municipio ON dataviva_raw.MUNICIPIOS_2017 (CO_MUN_6);
+CREATE INDEX index_7dig ON dataviva_raw.MUNICIPIOS_2017 (CO_MUN_7);
+CREATE INDEX index_regiao ON dataviva_raw.MUNICIPIOS_2017 (CO_REGIAO);
+CREATE INDEX index_uf ON dataviva_raw.MUNICIPIOS_2017 (CO_UF);
+CREATE INDEX index_mesoregiao ON dataviva_raw.MUNICIPIOS_2017 (CO_MESORREGIAO);
+CREATE INDEX index_microregiao ON dataviva_raw.MUNICIPIOS_2017 (CO_MICRORREGIAO);
 
 alter table RAIS_2018_STEP3 add (REGIAO varchar(1), UF varchar(2), 
                                  MESORREGIAO varchar(4), MICRORREGIAO varchar(5));
