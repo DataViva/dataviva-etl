@@ -157,9 +157,8 @@ CREATE INDEX index_municipio ON dataviva_raw.RAIS_2018_STEP2 (MUNICIPIO);
 */
 drop table if exists RAIS_2018_STEP3;
 
-create table RAIS_2018_STEP3 select * from RAIS_2018_STEP2;
+create table RAIS_2018_STEP3 (INDEX index_municipio (MUNICIPIO)) select * from RAIS_2018_STEP2;
 
-CREATE INDEX index_municipio ON dataviva_raw.RAIS_2018_STEP3 (MUNICIPIO);
 
 /* 
     Códigos de municípios, mesorregiões e microrregiões do IBGE 
@@ -168,28 +167,23 @@ CREATE INDEX index_municipio ON dataviva_raw.RAIS_2018_STEP3 (MUNICIPIO);
 */   
 drop table if exists MUNICIPIOS_2017;
 
-create table MUNICIPIOS_2017 (
+CREATE TABLE MUNICIPIOS_2017 (
     CO_MUN_6 varchar(6),
     CO_MUN_7 varchar(7),
     CO_REGIAO varchar(1),
     CO_UF varchar(2),
     CO_MESORREGIAO varchar(4),
-    CO_MICRORREGIAO varchar(5)   
+    CO_MICRORREGIAO varchar(5),
+    INDEX index_municipio (CO_MUN_6)   
 );
 
-load data local infile '/home/dev1/Desktop/ETL_2017/Municipios_Micro_Meso_Regioes.csv'
+load data local infile 'C:/Users/Administrator/Desktop/data/Municipios_Micro_Meso_Regioes.csv'
 into table MUNICIPIOS_2017
 character set 'latin1'
 fields terminated by '\t'
 lines terminated by '\n'
 ignore 1 lines;
 
-CREATE INDEX index_municipio ON dataviva_raw.MUNICIPIOS_2017 (CO_MUN_6);
-CREATE INDEX index_7dig ON dataviva_raw.MUNICIPIOS_2017 (CO_MUN_7);
-CREATE INDEX index_regiao ON dataviva_raw.MUNICIPIOS_2017 (CO_REGIAO);
-CREATE INDEX index_uf ON dataviva_raw.MUNICIPIOS_2017 (CO_UF);
-CREATE INDEX index_mesoregiao ON dataviva_raw.MUNICIPIOS_2017 (CO_MESORREGIAO);
-CREATE INDEX index_microregiao ON dataviva_raw.MUNICIPIOS_2017 (CO_MICRORREGIAO);
 
 alter table RAIS_2018_STEP3 add (REGIAO varchar(1), UF varchar(2), 
                                  MESORREGIAO varchar(4), MICRORREGIAO varchar(5));
