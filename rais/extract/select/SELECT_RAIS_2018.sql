@@ -197,3 +197,52 @@ set RAIS_2018_STEP3.REGIAO = MUNICIPIOS_2017.CO_REGIAO,
     RAIS_2018_STEP3.MUNICIPIO = MUNICIPIOS_2017.CO_MUN_7;
 
 drop table MUNICIPIOS_2017;
+
+
+/*
+    A tabela RAIS_2018_STEP4 é criada para o passo 4 das
+    transformações. Os dados são preparados para inserção no
+    banco Amazon Redshift.
+*/
+
+drop table if exists RAIS_2018_STEP4;
+
+create table RAIS_2018_STEP4 (
+    year integer,
+    region varchar(1),
+    mesoregion varchar(4),
+    microregion varchar(5),
+    state varchar(2),
+    municipality varchar(7),
+    occupation_family varchar(4),
+    occupation_group varchar(1),
+    industry_class varchar(5),
+    industry_division varchar(2),
+    industry_section varchar(1),
+    establishment varchar(14),
+    employee varchar(11),
+    ethnicity varchar(2),
+    establishment_size varchar(2),
+    gender varchar(1),
+    legal_nature varchar(2),
+    literacy varchar(2),
+    simple varchar(2),
+    age integer,
+    wage numeric(17,2),
+    hidden boolean,
+    INDEX index_municipio (municipality),
+    INDEX index_cbo (occupation_family),
+    INDEX index_cnae (industry_class),
+    INDEX index_misto (municipality, occupation_family, industry_class)
+);
+
+insert into RAIS_2018_STEP4 (
+  year, region, mesoregion, microregion, state, municipality, occupation_family, occupation_group,
+  industry_class, industry_division, industry_section, establishment, employee, ethnicity,
+  establishment_size, gender, legal_nature, literacy, simple, age, wage, hidden)
+select 2018, REGIAO, MESORREGIAO, MICRORREGIAO, UF, MUNICIPIO, OCUP_2002, GRUPO_OCUPACAO,
+  CLAS_CNAE_20, DIVISAO, SECAO, IDENTIFICAD, PIS, RACA_COR, 
+  TAM_ESTAB, SEXO, NATUR_JUR, GR_INSTRUCAO, IND_SIMPLES, IDADE, REM_DEZ_RS, true   
+from RAIS_2018_STEP3;
+
+drop table if exists RAIS_2018_STEP1, RAIS_2018_STEP2, RAIS_2018_STEP3;
