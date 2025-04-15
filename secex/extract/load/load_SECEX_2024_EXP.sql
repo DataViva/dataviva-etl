@@ -1,4 +1,4 @@
-load data local infile '/home/rodrigo/Documents/Econ/DataViva/SECEX/exports/EXP_2024_MUN.csv'
+LOAD DATA LOCAL INFILE 'D:\\Dataviva\\dados\\EXP_2024_MUN.csv'
 into table SECEX_2024_EXP
 character set 'latin1'
 fields terminated by ';'
