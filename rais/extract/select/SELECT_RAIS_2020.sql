@@ -159,7 +159,6 @@ drop table if exists RAIS_2020_STEP3;
 
 create table RAIS_2020_STEP3 (INDEX index_municipio (MUNICIPIO)) select * from RAIS_2020_STEP2;
 
-
 /* 
     Códigos de municípios, mesorregiões e microrregiões do IBGE 
     (ftp://geoftp.ibge.gov.br/organizacao_do_territorio/estrutura_territorial/divisao_territorial/)
